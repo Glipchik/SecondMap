@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using SecondMap.Services.StoreManagementService.DAL.Context;
+using SecondMap.Services.StoreManagementService.DAL.Extensions;
 
 namespace SecondMap.Services.StoreManagementService.API
 {
@@ -20,6 +21,8 @@ namespace SecondMap.Services.StoreManagementService.API
 			builder.Services.AddDbContext<StoreManagementDbContext>(optionsBuilder =>
 				optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
 				));
+
+			builder.Services.AddDataAccessLayerServiceCollection();
 
 			var app = builder.Build();
 
