@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SecondMap.Services.StoreManagementService.DAL.Context;
 
-namespace SecondMap.Services.StoreManagementServices.API
+namespace SecondMap.Services.StoreManagementService.API
 {
 	public class Program
 	{
@@ -16,6 +16,10 @@ namespace SecondMap.Services.StoreManagementServices.API
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
+
+			builder.Services.AddDbContext<StoreManagementDbContext>(optionsBuilder =>
+				optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
+				));
 
 			var app = builder.Build();
 
