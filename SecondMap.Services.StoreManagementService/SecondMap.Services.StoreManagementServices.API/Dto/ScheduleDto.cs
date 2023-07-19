@@ -2,8 +2,9 @@
 
 namespace SecondMap.Services.StoreManagementService.API.Dto
 {
-	public class ScheduleDto : BaseDto
+	public class ScheduleDto 
 	{
+		public int Id { get; set; }
 		public int StoreId { get; set; }
 		public DayOfWeekEu Day { get; set; }
 		public TimeOnly OpeningTime { get; set; }
