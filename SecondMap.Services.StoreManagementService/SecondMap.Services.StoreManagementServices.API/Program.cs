@@ -23,6 +23,7 @@ namespace SecondMap.Services.StoreManagementService.API
 				));
 
 			builder.Services.AddDataAccessLayerServiceCollection();
+			builder.Services.AddBusinessLogicLayerServiceCollection();
 
 			var app = builder.Build();
 
