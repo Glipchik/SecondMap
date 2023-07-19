@@ -4,11 +4,13 @@ using SecondMap.Services.StoreManagementService.DAL.Models;
 
 namespace SecondMap.Services.StoreManagementService.API.Controllers
 {
-	public class RoleController : ControllerBase
+	[Route("api/[controller]")]
+	[ApiController]
+	public class RolesController : ControllerBase
 	{
 		private readonly IRoleService _roleService;
 
-		public RoleController(IRoleService roleService)
+		public RolesController(IRoleService roleService)
 		{
 			_roleService = roleService;
 		}

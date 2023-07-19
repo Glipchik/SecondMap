@@ -6,11 +6,11 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class ReviewController : ControllerBase
+	public class ReviewsController : ControllerBase
 	{
 		private readonly IReviewService _reviewService;
 
-		public ReviewController(IReviewService reviewService)
+		public ReviewsController(IReviewService reviewService)
 		{
 			_reviewService = reviewService;
 		}
