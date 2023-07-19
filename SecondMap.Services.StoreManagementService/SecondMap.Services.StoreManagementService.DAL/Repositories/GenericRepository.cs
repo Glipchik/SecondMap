@@ -7,38 +7,38 @@ namespace SecondMap.Services.StoreManagementService.DAL.Repositories
 {
 	public abstract class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 	{
-		private readonly StoreManagementDbContext _dbContext;
+		protected readonly StoreManagementDbContext _dbContext;
 
 		protected GenericRepository(StoreManagementDbContext dbContext)
 		{
 			_dbContext = dbContext;
 		}
 
-		public async Task AddAsync(T entity)
+		public virtual async Task AddAsync(T entity)
 		{
 			await _dbContext.Set<T>().AddAsync(entity);
 
 			await _dbContext.SaveChangesAsync();
 		}
 
-		public async Task DeleteAsync(T entity)
+		public virtual async Task DeleteAsync(T entity)
 		{
 			_dbContext.Set<T>().Remove(entity);
 
 			await _dbContext.SaveChangesAsync();
 		}
 
-		public async Task<List<T>> GetAllAsync()
+		public virtual async Task<List<T>> GetAllAsync()
 		{
 			return await _dbContext.Set<T>().ToListAsync();
 		}
 
-		public async Task<T?> GetByIdAsync(int id)
+		public virtual async Task<T?> GetByIdAsync(int id)
 		{
 			return await _dbContext.Set<T>().FindAsync(id);
 		}
 
-		public async Task<T?> UpdateAsync(T entity)
+		public virtual async Task<T?> UpdateAsync(T entity)
 		{
 			if (!_dbContext.Set<T>().Contains(entity))
 				return null;
