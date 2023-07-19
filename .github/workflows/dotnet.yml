@@ -20,6 +20,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+    - name: Enter the working directory
+      run: cd ../../SecondMap.Services.StoreManagementService
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
