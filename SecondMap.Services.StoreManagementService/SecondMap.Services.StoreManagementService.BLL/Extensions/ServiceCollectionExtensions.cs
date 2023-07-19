@@ -10,7 +10,6 @@ namespace SecondMap.Services.StoreManagementService.DAL.Extensions
 		{
 			services.AddScoped<IReviewService, ReviewService>();
 			services.AddScoped<IScheduleService, ScheduleService>();
-			services.AddScoped<IRoleService, RoleService>();
 			services.AddScoped<IStoreService, StoreService>();
 			services.AddScoped<IUserService, UserService>();
 
