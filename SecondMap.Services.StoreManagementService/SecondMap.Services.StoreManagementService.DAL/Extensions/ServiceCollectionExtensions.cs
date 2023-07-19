@@ -7,7 +7,7 @@ namespace SecondMap.Services.StoreManagementService.DAL.Extensions
 {
 	public static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection AddDataAccessLayerServiceCollection(this IServiceCollection services)
+		public static void AddRepositories(this IServiceCollection services)
 		{
 			services.AddScoped<IStoreRepository, StoreRepository>();
 
@@ -16,8 +16,6 @@ namespace SecondMap.Services.StoreManagementService.DAL.Extensions
 			services.AddScoped<IScheduleRepository, ScheduleRepository>();
 
 			services.AddScoped<IUserRepository, UserRepository>();
-
-			return services;
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace SecondMap.Services.StoreManagementService.API
 				optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
 				));
 
-			builder.Services.AddDataAccessLayerServiceCollection();
+			builder.Services.AddRepositories();
 
 			var app = builder.Build();
 
