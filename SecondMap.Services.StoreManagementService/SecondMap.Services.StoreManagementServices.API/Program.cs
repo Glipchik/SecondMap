@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using SecondMap.Services.StoreManagementService.BLL.Extensions;
 using SecondMap.Services.StoreManagementService.DAL.Context;
 using SecondMap.Services.StoreManagementService.DAL.Extensions;
 

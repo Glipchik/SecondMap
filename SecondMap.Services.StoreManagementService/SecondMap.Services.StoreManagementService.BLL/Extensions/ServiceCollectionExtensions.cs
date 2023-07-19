@@ -2,7 +2,7 @@
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Services;
 
-namespace SecondMap.Services.StoreManagementService.DAL.Extensions
+namespace SecondMap.Services.StoreManagementService.BLL.Extensions
 {
 	public static class ServiceCollectionExtensions
 	{
