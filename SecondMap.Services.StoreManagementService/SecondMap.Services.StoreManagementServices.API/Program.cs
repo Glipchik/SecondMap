@@ -23,6 +23,7 @@ namespace SecondMap.Services.StoreManagementService.API
 				));
 
 			builder.Services.AddRepositories();
+			builder.Services.AddServices();
 
 			var app = builder.Build();
 

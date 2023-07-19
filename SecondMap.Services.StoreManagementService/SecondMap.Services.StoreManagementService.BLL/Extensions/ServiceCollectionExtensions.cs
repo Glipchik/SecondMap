@@ -6,14 +6,12 @@ namespace SecondMap.Services.StoreManagementService.DAL.Extensions
 {
 	public static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection AddBusinessLogicLayerServiceCollection(this IServiceCollection services)
+		public static void AddServices(this IServiceCollection services)
 		{
 			services.AddScoped<IReviewService, ReviewService>();
 			services.AddScoped<IScheduleService, ScheduleService>();
 			services.AddScoped<IStoreService, StoreService>();
 			services.AddScoped<IUserService, UserService>();
-
-			return services;
 		}
 	}
 }
