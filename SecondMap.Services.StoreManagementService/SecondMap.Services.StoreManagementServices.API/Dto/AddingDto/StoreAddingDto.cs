@@ -1,8 +1,6 @@
-﻿using SecondMap.Services.StoreManagementService.DAL.Abstractions;
-
-namespace SecondMap.Services.StoreManagementService.DAL.Models
+﻿namespace SecondMap.Services.StoreManagementService.API.Dto.AddingDto
 {
-	public class Store : BaseEntity
+	public class StoreAddingDto
 	{
 		public string Name { get; set; } = null!;
 		public string Address { get; set; } = null!;
