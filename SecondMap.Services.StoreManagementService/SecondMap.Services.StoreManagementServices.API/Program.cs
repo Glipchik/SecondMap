@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using SecondMap.Services.StoreManagementService.API.Extensions;
 using SecondMap.Services.StoreManagementService.API.MappingProfiles;
 using SecondMap.Services.StoreManagementService.BLL.Extensions;
 using SecondMap.Services.StoreManagementService.DAL.Context;
@@ -24,6 +25,8 @@ namespace SecondMap.Services.StoreManagementService.API
 				));
 
 			builder.Services.AddServices();
+
+			builder.Services.AddValidators();
 
 			builder.Services.AddAutoMapper(typeof(ViewModelsToModelsProfile));
 
