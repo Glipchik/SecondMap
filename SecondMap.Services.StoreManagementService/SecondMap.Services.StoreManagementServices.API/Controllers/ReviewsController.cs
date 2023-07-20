@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SecondMap.Services.StoreManagementService.API.Dto;
 using SecondMap.Services.StoreManagementService.API.ViewModels;
+using SecondMap.Services.StoreManagementService.BLL.Exceptions;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 
@@ -44,7 +45,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 
 			if (!validationResult.IsValid)
 			{
-				throw new Exception("ValidationFailException");
+				throw new ValidationFailException($"Validation failed: {validationResult.Errors[0]}");
 			}
 
 			await _reviewService.AddReviewAsync(_mapper.Map<Review>(reviewToAdd));
@@ -59,7 +60,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 
 			if (!validationResult.IsValid)
 			{
-				throw new Exception("ValidationFailException");
+				throw new ValidationFailException($"Validation failed: {validationResult.Errors[0]}");
 			}
 
 			var mappedReviewToUpdate = _mapper.Map<Review>(reviewToUpdate);

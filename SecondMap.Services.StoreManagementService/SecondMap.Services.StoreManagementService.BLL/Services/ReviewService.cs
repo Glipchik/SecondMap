@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SecondMap.Services.StoreManagementService.BLL.Exceptions;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 using SecondMap.Services.StoreManagementService.DAL.Entities;
@@ -28,7 +29,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundReview == null)
 			{
-				throw new Exception("Review not found");
+				throw new NotFoundException("Review not found");
 			}
 
 			return _mapper.Map<Review>(foundReview);
@@ -45,7 +46,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedReview == null)
 			{
-				throw new Exception("Review not found");
+				throw new NotFoundException("Review not found");
 			}
 
 			return _mapper.Map<Review>(updatedReview);

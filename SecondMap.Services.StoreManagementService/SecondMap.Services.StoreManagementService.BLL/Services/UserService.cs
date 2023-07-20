@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SecondMap.Services.StoreManagementService.BLL.Exceptions;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 using SecondMap.Services.StoreManagementService.DAL.Entities;
@@ -28,7 +29,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundUser == null)
 			{
-				throw new Exception("User not found");
+				throw new NotFoundException("User not found");
 			}
 
 			return _mapper.Map<User>(foundUser);
@@ -45,7 +46,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedUser == null)
 			{
-				throw new Exception("User not found");
+				throw new NotFoundException("User not found");
 			}
 
 			return _mapper.Map<User>(updatedUser);

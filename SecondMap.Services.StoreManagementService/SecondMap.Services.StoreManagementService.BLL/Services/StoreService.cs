@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SecondMap.Services.StoreManagementService.BLL.Exceptions;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 using SecondMap.Services.StoreManagementService.DAL.Entities;
@@ -28,7 +29,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundStore == null)
 			{
-				throw new Exception("Store not found");
+				throw new NotFoundException("Store not found");
 			}
 
 			return _mapper.Map<Store>(foundStore);
@@ -45,7 +46,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedStore == null)
 			{
-				throw new Exception("Store not found");
+				throw new NotFoundException("Store not found");
 			}
 
 			return _mapper.Map<Store>(updatedStore);
