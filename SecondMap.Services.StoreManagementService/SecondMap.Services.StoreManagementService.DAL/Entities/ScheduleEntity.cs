@@ -1,9 +1,9 @@
 ﻿using SecondMap.Services.StoreManagementService.DAL.Abstractions;
 using SecondMap.Services.StoreManagementService.DAL.Enums;
 
-namespace SecondMap.Services.StoreManagementService.DAL.Models
+namespace SecondMap.Services.StoreManagementService.DAL.Entities
 {
-	public class Schedule : BaseEntity
+    public class ScheduleEntity : BaseEntity
 	{
 		public int StoreId { get; set; }
 		public DayOfWeekEu Day { get; set; }
@@ -11,6 +11,6 @@ namespace SecondMap.Services.StoreManagementService.DAL.Models
 		public TimeOnly ClosingTime { get; set; }
 		public bool IsClosed { get; set; }
 
-		public Store? Store { get; set; }
+		public StoreEntity? Store { get; set; }
 	}
 }

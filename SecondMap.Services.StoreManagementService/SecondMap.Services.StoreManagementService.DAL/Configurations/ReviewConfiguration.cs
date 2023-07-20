@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SecondMap.Services.StoreManagementService.DAL.Models;
+using SecondMap.Services.StoreManagementService.DAL.Entities;
 
 namespace SecondMap.Services.StoreManagementService.DAL.Configurations
 {
-	public class ReviewConfiguration : IEntityTypeConfiguration<Review>
+	public class ReviewConfiguration : IEntityTypeConfiguration<ReviewEntity>
 	{
-		public void Configure(EntityTypeBuilder<Review> builder)
+		public void Configure(EntityTypeBuilder<ReviewEntity> builder)
 		{
 			builder.HasKey(r => r.Id);
 

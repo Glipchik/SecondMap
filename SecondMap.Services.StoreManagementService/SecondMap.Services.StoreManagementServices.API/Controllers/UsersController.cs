@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SecondMap.Services.StoreManagementService.API.Dto;
+using SecondMap.Services.StoreManagementService.API.ViewModels;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
-using SecondMap.Services.StoreManagementService.DAL.Models;
+using SecondMap.Services.StoreManagementService.BLL.Models;
 
 namespace SecondMap.Services.StoreManagementService.API.Controllers
 {
@@ -9,43 +12,42 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 	public class UsersController : ControllerBase
 	{
 		private readonly IUserService _userService;
-
-		public UsersController(IUserService userService)
+		private readonly IMapper _mapper;
+		public UsersController(IUserService userService, IMapper mapper)
 		{
 			_userService = userService;
+			_mapper = mapper;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
-			return Ok(await _userService.GetAllAsync());
+			return Ok(_mapper.Map<List<UserDto>>(await _userService.GetAllAsync()));
 		}
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetByIdAsync(int id)
 		{
-			var foundUser = await _userService.GetByIdAsync(id);
+			var foundUser = _mapper.Map<UserDto>(await _userService.GetByIdAsync(id));
 
 			return Ok(foundUser);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddAsync([FromBody] User userToAdd)
+		public async Task<IActionResult> AddAsync([FromBody] UserViewModel userToAdd)
 		{
-			await _userService.AddUserAsync(userToAdd);
+			await _userService.AddUserAsync(_mapper.Map<User>(userToAdd));
 
 			return Ok();
 		}
 
 		[HttpPut("{id}")]
-		public async Task<IActionResult> UpdateAsync(int id, [FromBody] User userToUpdate)
+		public async Task<IActionResult> UpdateAsync(int id, [FromBody] UserViewModel userToUpdate)
 		{
-			if (id != userToUpdate.Id)
-			{
-				return BadRequest();
-			}
+			var mappedUserToUpdate = _mapper.Map<User>(userToUpdate);
+			mappedUserToUpdate.Id = id;
 
-			var updatedUser = await _userService.UpdateUserAsync(userToUpdate);
+			var updatedUser = _mapper.Map<UserDto>(await _userService.UpdateUserAsync(mappedUserToUpdate));
 
 			return Ok(updatedUser);
 		}

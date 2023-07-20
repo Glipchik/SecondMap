@@ -1,4 +1,5 @@
-﻿using SecondMap.Services.StoreManagementService.DAL.Models;
+﻿using SecondMap.Services.StoreManagementService.BLL.Models;
+using SecondMap.Services.StoreManagementService.DAL.Entities;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Interfaces
 {

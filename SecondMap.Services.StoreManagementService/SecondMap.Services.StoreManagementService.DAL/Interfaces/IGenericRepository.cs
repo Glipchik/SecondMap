@@ -2,7 +2,7 @@
 
 namespace SecondMap.Services.StoreManagementService.DAL.Interfaces
 {
-	public interface IGenericRepository<T> where T : BaseEntity
+    public interface IGenericRepository<T> where T : BaseEntity
 	{
 		public Task AddAsync(T entity);
 

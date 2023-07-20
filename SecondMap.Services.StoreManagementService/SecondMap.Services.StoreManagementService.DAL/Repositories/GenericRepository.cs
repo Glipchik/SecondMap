@@ -5,7 +5,7 @@ using SecondMap.Services.StoreManagementService.DAL.Interfaces;
 
 namespace SecondMap.Services.StoreManagementService.DAL.Repositories
 {
-	public abstract class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+    public abstract class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 	{
 		protected readonly StoreManagementDbContext _dbContext;
 

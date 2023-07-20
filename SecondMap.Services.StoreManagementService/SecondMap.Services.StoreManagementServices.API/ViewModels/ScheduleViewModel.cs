@@ -1,8 +1,8 @@
 ﻿using SecondMap.Services.StoreManagementService.DAL.Enums;
 
-namespace SecondMap.Services.StoreManagementService.API.Dto.AddingDto
+namespace SecondMap.Services.StoreManagementService.API.ViewModels
 {
-	public class ScheduleAddingDto
+	public class ScheduleViewModel
 	{
 		public int StoreId { get; set; }
 		public DayOfWeekEu Day { get; set; }

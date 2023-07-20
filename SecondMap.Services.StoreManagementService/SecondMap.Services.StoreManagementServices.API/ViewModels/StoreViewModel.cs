@@ -1,6 +1,6 @@
-﻿namespace SecondMap.Services.StoreManagementService.API.Dto.AddingDto
+﻿namespace SecondMap.Services.StoreManagementService.API.ViewModels
 {
-	public class StoreAddingDto
+	public class StoreViewModel
 	{
 		public string Name { get; set; } = null!;
 		public string Address { get; set; } = null!;

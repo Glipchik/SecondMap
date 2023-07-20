@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SecondMap.Services.StoreManagementService.API.Dto;
+using SecondMap.Services.StoreManagementService.API.ViewModels;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
-using SecondMap.Services.StoreManagementService.DAL.Models;
+using SecondMap.Services.StoreManagementService.BLL.Models;
 
 namespace SecondMap.Services.StoreManagementService.API.Controllers
 {
@@ -9,43 +12,43 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 	public class StoresController : ControllerBase
 	{
 		private readonly IStoreService _storeService;
+		private readonly IMapper _mapper;
 
-		public StoresController(IStoreService storeService)
+		public StoresController(IStoreService storeService, IMapper mapper)
 		{
 			_storeService = storeService;
+			_mapper = mapper;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
-			return Ok(await _storeService.GetAllAsync());
+			return Ok(_mapper.Map<List<StoreDto>>(await _storeService.GetAllAsync()));
 		}
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetByIdAsync(int id)
 		{
-			var foundStore = await _storeService.GetByIdAsync(id);
+			var foundStore = _mapper.Map<StoreDto>(await _storeService.GetByIdAsync(id));
 
 			return Ok(foundStore);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddAsync([FromBody] Store storeToAdd)
+		public async Task<IActionResult> AddAsync([FromBody] StoreViewModel storeToAdd)
 		{
-			await _storeService.AddStoreAsync(storeToAdd);
+			await _storeService.AddStoreAsync(_mapper.Map<Store>(storeToAdd));
 
 			return Ok();
 		}
 
 		[HttpPut("{id}")]
-		public async Task<IActionResult> UpdateAsync(int id, [FromBody] Store storeToUpdate)
+		public async Task<IActionResult> UpdateAsync(int id, [FromBody] StoreViewModel storeToUpdate)
 		{
-			if (id != storeToUpdate.Id)
-			{
-				return BadRequest();
-			}
+			var mappedStoreToUpdate = _mapper.Map<Store>(storeToUpdate);
+			mappedStoreToUpdate.Id = id;
 
-			var updatedStore = await _storeService.UpdateStoreAsync(storeToUpdate);
+			var updatedStore = _mapper.Map<StoreDto>(await _storeService.UpdateStoreAsync(mappedStoreToUpdate));
 
 			return Ok(updatedStore);
 		}

@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SecondMap.Services.StoreManagementService.API.Dto;
+using SecondMap.Services.StoreManagementService.API.ViewModels;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
-using SecondMap.Services.StoreManagementService.DAL.Models;
+using SecondMap.Services.StoreManagementService.BLL.Models;
 
 namespace SecondMap.Services.StoreManagementService.API.Controllers
 {
@@ -9,43 +12,43 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 	public class ReviewsController : ControllerBase
 	{
 		private readonly IReviewService _reviewService;
+		private readonly IMapper _mapper;
 
-		public ReviewsController(IReviewService reviewService)
+		public ReviewsController(IReviewService reviewService, IMapper mapper)
 		{
 			_reviewService = reviewService;
+			_mapper = mapper;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
-			return Ok(await _reviewService.GetAllAsync());
+			return Ok(_mapper.Map<List<ReviewDto>>(await _reviewService.GetAllAsync()));
 		}
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetByIdAsync(int id)
 		{
-			var foundReview = await _reviewService.GetByIdAsync(id);
+			var foundReview = _mapper.Map<ReviewDto>(await _reviewService.GetByIdAsync(id));
 
 			return Ok(foundReview);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddAsync([FromBody] Review reviewToAdd)
+		public async Task<IActionResult> AddAsync([FromBody] ReviewViewModel reviewToAdd)
 		{
-			await _reviewService.AddReviewAsync(reviewToAdd);
+			await _reviewService.AddReviewAsync(_mapper.Map<Review>(reviewToAdd));
 
 			return Ok();
 		}
 
 		[HttpPut("{id}")]
-		public async Task<IActionResult> UpdateAsync(int id, [FromBody] Review reviewToUpdate)
+		public async Task<IActionResult> UpdateAsync(int id, [FromBody] ReviewViewModel reviewToUpdate)
 		{
-			if (id != reviewToUpdate.Id)
-			{
-				return BadRequest();
-			}
-
-			var updatedReview = await _reviewService.UpdateReviewAsync(reviewToUpdate);
+			var mappedReviewToUpdate = _mapper.Map<Review>(reviewToUpdate);
+			mappedReviewToUpdate.Id = id;
+			
+			var updatedReview = _mapper.Map<ReviewDto>(await _reviewService.UpdateReviewAsync(mappedReviewToUpdate));
 
 			return Ok(updatedReview);
 		}

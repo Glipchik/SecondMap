@@ -1,21 +1,25 @@
-﻿using SecondMap.Services.StoreManagementService.BLL.Interfaces;
+﻿using AutoMapper;
+using SecondMap.Services.StoreManagementService.BLL.Interfaces;
+using SecondMap.Services.StoreManagementService.BLL.Models;
+using SecondMap.Services.StoreManagementService.DAL.Entities;
 using SecondMap.Services.StoreManagementService.DAL.Interfaces;
-using SecondMap.Services.StoreManagementService.DAL.Models;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Services
 {
 	public class ScheduleService : IScheduleService
 	{
 		private readonly IScheduleRepository _repository;
+		private readonly IMapper _mapper;
 
-		public ScheduleService(IScheduleRepository repository)
+		public ScheduleService(IScheduleRepository repository, IMapper mapper)
 		{
 			_repository = repository;
+			_mapper = mapper;
 		}
 
 		public async Task<List<Schedule>> GetAllAsync()
 		{
-			return await _repository.GetAllAsync();
+			return _mapper.Map<List<Schedule>>(await _repository.GetAllAsync());
 		}
 
 		public async Task<Schedule> GetByIdAsync(int id)
@@ -27,29 +31,29 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 				throw new Exception("Schedule not found");
 			}
 
-			return foundSchedule;
+			return _mapper.Map<Schedule>(foundSchedule);
 		}
 
 		public async Task AddScheduleAsync(Schedule scheduleToAdd)
 		{
-			await _repository.AddAsync(scheduleToAdd);
+			await _repository.AddAsync(_mapper.Map<ScheduleEntity>(scheduleToAdd));
 		}
 
 		public async Task<Schedule> UpdateScheduleAsync(Schedule scheduleToUpdate)
 		{
-			var updatedSchedule = await _repository.UpdateAsync(scheduleToUpdate);
+			var updatedSchedule = await _repository.UpdateAsync(_mapper.Map<ScheduleEntity>(scheduleToUpdate));
 
 			if (updatedSchedule == null)
 			{
 				throw new Exception("Schedule not found");
 			}
 
-			return updatedSchedule;
+			return _mapper.Map<Schedule>(updatedSchedule);
 		}
 
 		public async Task DeleteScheduleAsync(Schedule scheduleToDelete)
 		{
-			await _repository.DeleteAsync(scheduleToDelete);
+			await _repository.DeleteAsync(_mapper.Map<ScheduleEntity>(scheduleToDelete));
 		}
 	}
 }
