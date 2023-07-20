@@ -11,23 +11,29 @@ namespace SecondMap.Services.StoreManagementService.API.Helpers.Validators
 			RuleFor(s => s.Day).IsInEnum();
 			RuleFor(s => s.IsClosed).NotEmpty();
 
-			When(s => s.IsClosed == false, () =>
-			{
-				RuleFor(s => s.OpeningTime)
-					.NotEmpty().WithMessage("OpeningTime cannot be empty when store is open");
+			RuleFor(s => s)
+				.Custom((schedule, context) =>
+				{
+					if (schedule.IsClosed != null)
+					{
+						if ((bool)!schedule.IsClosed)
+						{
+							if (schedule.OpeningTime == null)
+								context.AddFailure("OpeningTime cannot be empty when store is open");
 
-				RuleFor(s => s.ClosingTime)
-					.NotEmpty().WithMessage("ClosingTime cannot be empty when store is open");
-			});
+							if (schedule.ClosingTime == null)
+								context.AddFailure("ClosingTime cannot be empty when store is open");
+						}
+						else
+						{
+							if (schedule.OpeningTime != null)
+								context.AddFailure("OpeningTime must be empty when store is closed");
 
-			When(s => s.IsClosed == true, () =>
-			{
-				RuleFor(s => s.OpeningTime)
-					.Empty().WithMessage("OpeningTime must be empty when store is closed");
-
-				RuleFor(s => s.ClosingTime)
-					.Empty().WithMessage("ClosingTime must be empty when store is closed");
-			});
+							if (schedule.ClosingTime != null)
+								context.AddFailure("ClosingTime must be empty when store is closed");
+						}
+					}
+				});
 		}
 	}
 }

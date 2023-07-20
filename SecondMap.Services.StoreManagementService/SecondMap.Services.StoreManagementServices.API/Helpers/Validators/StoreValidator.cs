@@ -9,8 +9,6 @@ namespace SecondMap.Services.StoreManagementService.API.Helpers.Validators
 		{
 			RuleFor(s => s.Name).NotEmpty().MaximumLength(256);
 			RuleFor(s => s.Address).NotEmpty().MaximumLength(256);
-			RuleFor(s => s.Rating).Empty()
-				.WithMessage("New store cant have rating yet");
 			RuleFor(s => s.Price).NotEmpty();
 		}
 	}
