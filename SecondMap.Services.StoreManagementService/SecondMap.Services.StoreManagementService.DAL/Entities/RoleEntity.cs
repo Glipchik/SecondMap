@@ -2,7 +2,7 @@
 
 namespace SecondMap.Services.StoreManagementService.DAL.Entities
 {
-    public class RoleEntity : BaseEntity
+	public class RoleEntity : BaseEntity
 	{
 		public string RoleName { get; set; } = null!;
 	}

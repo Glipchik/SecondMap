@@ -2,7 +2,7 @@
 
 namespace SecondMap.Services.StoreManagementService.DAL.Entities
 {
-    public class ReviewEntity : BaseEntity
+	public class ReviewEntity : BaseEntity
 	{
 		public int UserId { get; set; }
 		public int StoreId { get; set; }

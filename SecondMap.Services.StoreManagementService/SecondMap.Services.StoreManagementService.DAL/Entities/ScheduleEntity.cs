@@ -3,7 +3,7 @@ using SecondMap.Services.StoreManagementService.DAL.Enums;
 
 namespace SecondMap.Services.StoreManagementService.DAL.Entities
 {
-    public class ScheduleEntity : BaseEntity
+	public class ScheduleEntity : BaseEntity
 	{
 		public int StoreId { get; set; }
 		public DayOfWeekEu Day { get; set; }

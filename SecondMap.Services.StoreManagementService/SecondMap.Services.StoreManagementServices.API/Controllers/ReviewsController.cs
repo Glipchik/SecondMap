@@ -47,7 +47,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		{
 			var mappedReviewToUpdate = _mapper.Map<Review>(reviewToUpdate);
 			mappedReviewToUpdate.Id = id;
-			
+
 			var updatedReview = _mapper.Map<ReviewDto>(await _reviewService.UpdateReviewAsync(mappedReviewToUpdate));
 
 			return Ok(updatedReview);
