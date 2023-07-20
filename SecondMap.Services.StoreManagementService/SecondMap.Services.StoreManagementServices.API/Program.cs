@@ -29,7 +29,7 @@ namespace SecondMap.Services.StoreManagementService.API
 
 			builder.Services.AddValidators();
 
-			builder.Services.AddAutoMapper(typeof(ViewModelsToModelsProfile))
+			builder.Services.AddAutoMapper(typeof(ViewModelsToModelsProfile));
 
 			var app = builder.Build();
 
