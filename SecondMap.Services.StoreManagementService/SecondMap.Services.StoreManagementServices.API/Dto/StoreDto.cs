@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.StoreManagementService.API.Dto
 {
-	public class StoreDto 
+	public class StoreDto
 	{
 		public int Id { get; set; }
 		public string Name { get; set; } = null!;

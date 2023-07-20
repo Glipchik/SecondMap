@@ -4,7 +4,7 @@ using SecondMap.Services.StoreManagementService.DAL.Models;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Services
 {
-    public class UserService : IUserService
+	public class UserService : IUserService
 	{
 		private readonly IUserRepository _repository;
 

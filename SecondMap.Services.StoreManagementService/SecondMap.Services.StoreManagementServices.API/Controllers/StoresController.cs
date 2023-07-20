@@ -12,7 +12,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 
 		public StoresController(IStoreService storeService)
 		{
-			this._storeService = storeService;
+			_storeService = storeService;
 		}
 
 		[HttpGet]

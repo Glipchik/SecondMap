@@ -4,7 +4,7 @@ using SecondMap.Services.StoreManagementService.DAL.Models;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Services
 {
-    public class ReviewService : IReviewService
+	public class ReviewService : IReviewService
 	{
 		private readonly IReviewRepository _repository;
 

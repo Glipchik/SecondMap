@@ -2,7 +2,7 @@
 
 namespace SecondMap.Services.StoreManagementService.API.Dto
 {
-	public class ScheduleDto 
+	public class ScheduleDto
 	{
 		public int Id { get; set; }
 		public int StoreId { get; set; }

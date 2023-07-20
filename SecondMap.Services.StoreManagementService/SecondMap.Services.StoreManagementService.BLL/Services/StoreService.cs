@@ -4,7 +4,7 @@ using SecondMap.Services.StoreManagementService.DAL.Models;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Services
 {
-    public class StoreService : IStoreService
+	public class StoreService : IStoreService
 	{
 		private readonly IStoreRepository _repository;
 

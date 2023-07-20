@@ -4,7 +4,7 @@ using SecondMap.Services.StoreManagementService.DAL.Models;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Services
 {
-    public class ScheduleService : IScheduleService
+	public class ScheduleService : IScheduleService
 	{
 		private readonly IScheduleRepository _repository;
 
