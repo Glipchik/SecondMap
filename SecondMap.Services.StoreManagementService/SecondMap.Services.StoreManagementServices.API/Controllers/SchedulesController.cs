@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using SecondMap.Services.StoreManagementService.API.Dto;
 using SecondMap.Services.StoreManagementService.API.ViewModels;
+using SecondMap.Services.StoreManagementService.BLL.Constants;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 
 namespace SecondMap.Services.StoreManagementService.API.Controllers
 {
-	[Route("api/[controller]")]
+	[Route(ApiEndpoints.API_CONTROLLER_ROUTE)]
 	[ApiController]
 	public class SchedulesController : ControllerBase
 	{
@@ -23,11 +24,11 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
-			return Ok(_mapper.Map<List<ScheduleDto>>(await _scheduleService.GetAllAsync()));
+			return Ok(_mapper.Map<IEnumerable<ScheduleDto>>(await _scheduleService.GetAllAsync()));
 
 		}
 
-		[HttpGet("{id}")]
+		[HttpGet(ApiEndpoints.ID)]
 		public async Task<IActionResult> GetByIdAsync(int id)
 		{
 			var foundSchedule = _mapper.Map<ScheduleDto>(await _scheduleService.GetByIdAsync(id));
@@ -43,7 +44,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 			return Ok();
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut(ApiEndpoints.ID)]
 		public async Task<IActionResult> UpdateAsync(int id, [FromBody] ScheduleViewModel scheduleToUpdate)
 		{
 			var mappedScheduleToUpdate = _mapper.Map<Schedule>(scheduleToUpdate);
@@ -54,7 +55,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 			return Ok(updatedSchedule);
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete(ApiEndpoints.ID)]
 		public async Task<IActionResult> DeleteAsync(int id)
 		{
 			var foundSchedule = await _scheduleService.GetByIdAsync(id);

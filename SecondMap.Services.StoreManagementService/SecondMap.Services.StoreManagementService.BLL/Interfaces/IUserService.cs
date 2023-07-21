@@ -6,7 +6,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Interfaces
 	{
 		Task AddUserAsync(User userToAdd);
 		Task DeleteUserAsync(User userToDelete);
-		Task<List<User>> GetAllAsync();
+		Task<IEnumerable<User>> GetAllAsync();
 		Task<User> GetByIdAsync(int id);
 		Task<User> UpdateUserAsync(User userToUpdate);
 	}

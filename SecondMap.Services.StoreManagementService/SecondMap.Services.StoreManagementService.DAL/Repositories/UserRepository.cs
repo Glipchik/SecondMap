@@ -19,7 +19,7 @@ namespace SecondMap.Services.StoreManagementService.DAL.Repositories
 				.FirstOrDefaultAsync();
 		}
 
-		public override async Task<List<UserEntity>> GetAllAsync()
+		public override async Task<IEnumerable<UserEntity>> GetAllAsync()
 		{
 			return await _dbContext.Set<UserEntity>()
 				.Include(u => u.Role)
