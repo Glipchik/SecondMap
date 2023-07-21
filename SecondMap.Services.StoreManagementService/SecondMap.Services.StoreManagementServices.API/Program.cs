@@ -1,5 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
+using SecondMap.Services.StoreManagementService.API.MappingProfiles;
+using SecondMap.Services.StoreManagementService.BLL.Constants;
 using SecondMap.Services.StoreManagementService.BLL.Extensions;
 using SecondMap.Services.StoreManagementService.DAL.Context;
 
@@ -19,10 +21,12 @@ namespace SecondMap.Services.StoreManagementService.API
 			builder.Services.AddSwaggerGen();
 
 			builder.Services.AddDbContext<StoreManagementDbContext>(optionsBuilder =>
-				optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
+				optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString(DbConnections.DEFAULT_CONNECTION)
 				));
 
 			builder.Services.AddServices();
+
+			builder.Services.AddAutoMapper(typeof(ViewModelsToModelsProfile));
 
 			var app = builder.Build();
 
@@ -36,7 +40,6 @@ namespace SecondMap.Services.StoreManagementService.API
 			app.UseHttpsRedirection();
 
 			app.UseAuthorization();
-
 
 			app.MapControllers();
 

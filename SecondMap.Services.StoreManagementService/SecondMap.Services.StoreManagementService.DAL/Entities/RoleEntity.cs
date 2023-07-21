@@ -1,8 +1,8 @@
 ﻿using SecondMap.Services.StoreManagementService.DAL.Abstractions;
 
-namespace SecondMap.Services.StoreManagementService.DAL.Models
+namespace SecondMap.Services.StoreManagementService.DAL.Entities
 {
-	public class Role : BaseEntity
+	public class RoleEntity : BaseEntity
 	{
 		public string RoleName { get; set; } = null!;
 	}

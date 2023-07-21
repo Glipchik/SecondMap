@@ -1,9 +1,8 @@
-﻿using SecondMap.Services.StoreManagementService.DAL.Abstractions;
-
-namespace SecondMap.Services.StoreManagementService.DAL.Models
+﻿namespace SecondMap.Services.StoreManagementService.BLL.Models
 {
-	public class Store : BaseEntity
+	public class Store
 	{
+		public int Id { get; set; }
 		public string Name { get; set; } = null!;
 		public string Address { get; set; } = null!;
 		public int? Rating { get; set; }

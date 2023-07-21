@@ -1,56 +1,60 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SecondMap.Services.StoreManagementService.API.Dto;
+using SecondMap.Services.StoreManagementService.API.ViewModels;
+using SecondMap.Services.StoreManagementService.BLL.Constants;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
-using SecondMap.Services.StoreManagementService.DAL.Models;
+using SecondMap.Services.StoreManagementService.BLL.Models;
 
 namespace SecondMap.Services.StoreManagementService.API.Controllers
 {
-	[Route("api/[controller]")]
+	[Route(ApiEndpoints.API_CONTROLLER_ROUTE)]
 	[ApiController]
 	public class UsersController : ControllerBase
 	{
 		private readonly IUserService _userService;
+		private readonly IMapper _mapper;
 
-		public UsersController(IUserService userService)
+		public UsersController(IUserService userService, IMapper mapper)
 		{
 			_userService = userService;
+			_mapper = mapper;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
-			return Ok(await _userService.GetAllAsync());
+			return Ok(_mapper.Map<IEnumerable<UserDto>>(await _userService.GetAllAsync()));
 		}
 
-		[HttpGet("{id}")]
+		[HttpGet(ApiEndpoints.ID)]
 		public async Task<IActionResult> GetByIdAsync(int id)
 		{
-			var foundUser = await _userService.GetByIdAsync(id);
+			var foundUser = _mapper.Map<UserDto>(await _userService.GetByIdAsync(id));
 
 			return Ok(foundUser);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddAsync([FromBody] User userToAdd)
+		public async Task<IActionResult> AddAsync([FromBody] UserViewModel userToAdd)
 		{
-			await _userService.AddUserAsync(userToAdd);
+			var addedUser = _mapper.Map<UserDto>(await _userService.AddUserAsync(_mapper.Map<User>(userToAdd)));
 
-			return Ok();
+			return Ok(addedUser);
 		}
 
-		[HttpPut("{id}")]
-		public async Task<IActionResult> UpdateAsync(int id, [FromBody] User userToUpdate)
+		[HttpPut(ApiEndpoints.ID)]
+		public async Task<IActionResult> UpdateAsync(int id, [FromBody] UserViewModel userToUpdate)
 		{
-			if (id != userToUpdate.Id)
-			{
-				return BadRequest();
-			}
+			var mappedUserToUpdate = _mapper.Map<User>(userToUpdate);
+			mappedUserToUpdate.Id = id;
 
-			var updatedUser = await _userService.UpdateUserAsync(userToUpdate);
+			var updatedUser = _mapper.Map<UserDto>(await _userService.UpdateUserAsync(mappedUserToUpdate));
 
 			return Ok(updatedUser);
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete(ApiEndpoints.ID)]
 		public async Task<IActionResult> DeleteAsync(int id)
 		{
 			var foundUser = await _userService.GetByIdAsync(id);

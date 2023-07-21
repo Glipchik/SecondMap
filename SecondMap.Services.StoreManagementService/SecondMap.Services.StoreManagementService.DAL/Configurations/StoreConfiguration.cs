@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SecondMap.Services.StoreManagementService.DAL.Models;
+using SecondMap.Services.StoreManagementService.DAL.Entities;
 
 namespace SecondMap.Services.StoreManagementService.DAL.Configurations
 {
-	public class StoreConfiguration : IEntityTypeConfiguration<Store>
+	public class StoreConfiguration : IEntityTypeConfiguration<StoreEntity>
 	{
-		public void Configure(EntityTypeBuilder<Store> builder)
+		public void Configure(EntityTypeBuilder<StoreEntity> builder)
 		{
 			builder.HasKey(s => s.Id);
 

@@ -1,58 +1,60 @@
-﻿using SecondMap.Services.StoreManagementService.BLL.Interfaces;
+﻿using AutoMapper;
+using SecondMap.Services.StoreManagementService.BLL.Constants;
+using SecondMap.Services.StoreManagementService.BLL.Interfaces;
+using SecondMap.Services.StoreManagementService.BLL.Models;
+using SecondMap.Services.StoreManagementService.DAL.Entities;
 using SecondMap.Services.StoreManagementService.DAL.Interfaces;
-using SecondMap.Services.StoreManagementService.DAL.Models;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Services
 {
 	public class StoreService : IStoreService
 	{
 		private readonly IStoreRepository _repository;
+		private readonly IMapper _mapper;
 
-		public StoreService(IStoreRepository repository)
+		public StoreService(IStoreRepository repository, IMapper mapper)
 		{
 			_repository = repository;
+			_mapper = mapper;
 		}
 
-		// TODO: implement DTO to not pass DAL models through all layers
-		public async Task<List<Store>> GetAllAsync()
+		public async Task<IEnumerable<Store>> GetAllAsync()
 		{
-			return await _repository.GetAllAsync();
+			return _mapper.Map<IEnumerable<Store>>(await _repository.GetAllAsync());
 		}
 
-		// TODO: add custom exceptions to pass in exception middleware
 		public async Task<Store> GetByIdAsync(int id)
 		{
 			var foundStore = await _repository.GetByIdAsync(id);
 
 			if (foundStore == null)
 			{
-				throw new Exception("Store not found");
+				throw new Exception(ErrorMessages.STORE_NOT_FOUND);
 			}
 
-			return foundStore;
+			return _mapper.Map<Store>(foundStore);
 		}
 
-		// TODO: add validation
-		public async Task AddStoreAsync(Store storeToAdd)
+		public async Task<Store> AddStoreAsync(Store storeToAdd)
 		{
-			await _repository.AddAsync(storeToAdd);
+			return _mapper.Map<Store>(await _repository.AddAsync(_mapper.Map<StoreEntity>(storeToAdd)));
 		}
 
 		public async Task<Store> UpdateStoreAsync(Store storeToUpdate)
 		{
-			var updatedStore = await _repository.UpdateAsync(storeToUpdate);
+			var updatedStore = await _repository.UpdateAsync(_mapper.Map<StoreEntity>(storeToUpdate));
 
 			if (updatedStore == null)
 			{
-				throw new Exception("Store not found");
+				throw new Exception(ErrorMessages.STORE_NOT_FOUND);
 			}
 
-			return updatedStore;
+			return _mapper.Map<Store>(updatedStore);
 		}
 
 		public async Task DeleteStoreAsync(Store storeToDelete)
 		{
-			await _repository.DeleteAsync(storeToDelete);
+			await _repository.DeleteAsync(_mapper.Map<StoreEntity>(storeToDelete));
 		}
 	}
 }

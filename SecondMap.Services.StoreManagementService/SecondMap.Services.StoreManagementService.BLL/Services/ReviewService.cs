@@ -1,21 +1,26 @@
-﻿using SecondMap.Services.StoreManagementService.BLL.Interfaces;
+﻿using AutoMapper;
+using SecondMap.Services.StoreManagementService.BLL.Constants;
+using SecondMap.Services.StoreManagementService.BLL.Interfaces;
+using SecondMap.Services.StoreManagementService.BLL.Models;
+using SecondMap.Services.StoreManagementService.DAL.Entities;
 using SecondMap.Services.StoreManagementService.DAL.Interfaces;
-using SecondMap.Services.StoreManagementService.DAL.Models;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Services
 {
 	public class ReviewService : IReviewService
 	{
 		private readonly IReviewRepository _repository;
+		private readonly IMapper _mapper;
 
-		public ReviewService(IReviewRepository repository)
+		public ReviewService(IReviewRepository repository, IMapper mapper)
 		{
 			_repository = repository;
+			_mapper = mapper;
 		}
 
-		public async Task<List<Review>> GetAllAsync()
+		public async Task<IEnumerable<Review>> GetAllAsync()
 		{
-			return await _repository.GetAllAsync();
+			return _mapper.Map<IEnumerable<Review>>(await _repository.GetAllAsync());
 		}
 
 		public async Task<Review> GetByIdAsync(int id)
@@ -24,32 +29,32 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundReview == null)
 			{
-				throw new Exception("Review not found");
+				throw new Exception(ErrorMessages.REVIEW_NOT_FOUND);
 			}
 
-			return foundReview;
+			return _mapper.Map<Review>(foundReview);
 		}
 
-		public async Task AddReviewAsync(Review reviewToAdd)
+		public async Task<Review> AddReviewAsync(Review reviewToAdd)
 		{
-			await _repository.AddAsync(reviewToAdd);
+			return _mapper.Map<Review>(await _repository.AddAsync(_mapper.Map<ReviewEntity>(reviewToAdd)));
 		}
 
 		public async Task<Review> UpdateReviewAsync(Review reviewToUpdate)
 		{
-			var updatedReview = await _repository.UpdateAsync(reviewToUpdate);
+			var updatedReview = await _repository.UpdateAsync(_mapper.Map<ReviewEntity>(reviewToUpdate));
 
 			if (updatedReview == null)
 			{
-				throw new Exception("Review not found");
+				throw new Exception(ErrorMessages.REVIEW_NOT_FOUND);
 			}
 
-			return updatedReview;
+			return _mapper.Map<Review>(updatedReview);
 		}
 
 		public async Task DeleteReviewAsync(Review reviewToDelete)
 		{
-			await _repository.DeleteAsync(reviewToDelete);
+			await _repository.DeleteAsync(_mapper.Map<ReviewEntity>(reviewToDelete));
 		}
 	}
 }

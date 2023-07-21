@@ -14,11 +14,13 @@ namespace SecondMap.Services.StoreManagementService.DAL.Repositories
 			_dbContext = dbContext;
 		}
 
-		public virtual async Task AddAsync(T entity)
+		public virtual async Task<T> AddAsync(T entity)
 		{
 			await _dbContext.Set<T>().AddAsync(entity);
 
 			await _dbContext.SaveChangesAsync();
+
+			return entity;
 		}
 
 		public virtual async Task DeleteAsync(T entity)
@@ -28,7 +30,7 @@ namespace SecondMap.Services.StoreManagementService.DAL.Repositories
 			await _dbContext.SaveChangesAsync();
 		}
 
-		public virtual async Task<List<T>> GetAllAsync()
+		public virtual async Task<IEnumerable<T>> GetAllAsync()
 		{
 			return await _dbContext.Set<T>().ToListAsync();
 		}
