@@ -64,7 +64,7 @@ jobs:
             # mandatory
             -Dsonar.projectKey=Glipchik_SecondMap
             -Dsonar.organization=glebgang
-            -Dsonar.verbose=true
+            # -Dsonar.verbose=true
             # -Dsonar.sources=SecondMap.Services.StoreManagementService
             # Comma-separated paths to directories containing main source files.
             # -Dsonar.sources=
