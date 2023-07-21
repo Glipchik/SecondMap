@@ -6,5 +6,7 @@
 		public const string SCHEDULE_NOT_FOUND = "Schedule not found";
 		public const string STORE_NOT_FOUND = "Store not found";
 		public const string USER_NOT_FOUND = "User not found";
+
+		public const string VALIDATION_FAILED = "Validation failed";
 	}
 }
