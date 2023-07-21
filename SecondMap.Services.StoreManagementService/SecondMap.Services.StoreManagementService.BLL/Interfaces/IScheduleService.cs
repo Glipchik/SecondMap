@@ -6,7 +6,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Interfaces
 	{
 		Task AddScheduleAsync(Schedule scheduleToAdd);
 		Task DeleteScheduleAsync(Schedule scheduleToDelete);
-		Task<List<Schedule>> GetAllAsync();
+		Task<IEnumerable<Schedule>> GetAllAsync();
 		Task<Schedule> GetByIdAsync(int id);
 		Task<Schedule> UpdateScheduleAsync(Schedule scheduleToUpdate);
 	}

@@ -28,7 +28,7 @@ namespace SecondMap.Services.StoreManagementService.DAL.Repositories
 			await _dbContext.SaveChangesAsync();
 		}
 
-		public virtual async Task<List<T>> GetAllAsync()
+		public virtual async Task<IEnumerable<T>> GetAllAsync()
 		{
 			return await _dbContext.Set<T>().ToListAsync();
 		}

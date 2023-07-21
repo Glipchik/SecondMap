@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SecondMap.Services.StoreManagementService.BLL.Exceptions;
+using SecondMap.Services.StoreManagementService.BLL.Constants;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 using SecondMap.Services.StoreManagementService.DAL.Entities;
@@ -18,7 +18,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 			_mapper = mapper;
 		}
 
-		public async Task<List<Review>> GetAllAsync()
+		public async Task<IEnumerable<Review>> GetAllAsync()
 		{
 			return _mapper.Map<List<Review>>(await _repository.GetAllAsync());
 		}
@@ -29,7 +29,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundReview == null)
 			{
-				throw new NotFoundException("Review not found");
+				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
 			}
 
 			return _mapper.Map<Review>(foundReview);
@@ -46,7 +46,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedReview == null)
 			{
-				throw new NotFoundException("Review not found");
+				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
 			}
 
 			return _mapper.Map<Review>(updatedReview);

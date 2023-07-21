@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SecondMap.Services.StoreManagementService.BLL.Constants;
 using SecondMap.Services.StoreManagementService.BLL.Exceptions;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
@@ -18,7 +19,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 			_mapper = mapper;
 		}
 
-		public async Task<List<User>> GetAllAsync()
+		public async Task<IEnumerable<User>> GetAllAsync()
 		{
 			return _mapper.Map<List<User>>(await _repository.GetAllAsync());
 		}
@@ -29,7 +30,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundUser == null)
 			{
-				throw new NotFoundException("User not found");
+				throw new NotFoundException(ErrorMessages.USER_NOT_FOUND);
 			}
 
 			return _mapper.Map<User>(foundUser);
@@ -46,7 +47,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedUser == null)
 			{
-				throw new NotFoundException("User not found");
+				throw new NotFoundException(ErrorMessages.USER_NOT_FOUND);
 			}
 
 			return _mapper.Map<User>(updatedUser);

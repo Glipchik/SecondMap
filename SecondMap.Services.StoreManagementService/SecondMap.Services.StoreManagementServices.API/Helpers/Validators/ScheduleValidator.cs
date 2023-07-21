@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SecondMap.Services.StoreManagementService.API.ViewModels;
+using SecondMap.Services.StoreManagementService.BLL.Constants;
 
 namespace SecondMap.Services.StoreManagementService.API.Helpers.Validators
 {
@@ -19,18 +20,18 @@ namespace SecondMap.Services.StoreManagementService.API.Helpers.Validators
 						if ((bool)!schedule.IsClosed)
 						{
 							if (schedule.OpeningTime == null)
-								context.AddFailure("OpeningTime cannot be empty when store is open");
+								context.AddFailure(ErrorMessages.VALIDATION_FAILED);
 
 							if (schedule.ClosingTime == null)
-								context.AddFailure("ClosingTime cannot be empty when store is open");
+								context.AddFailure(ErrorMessages.VALIDATION_FAILED);
 						}
 						else
 						{
 							if (schedule.OpeningTime != null)
-								context.AddFailure("OpeningTime must be empty when store is closed");
+								context.AddFailure(ErrorMessages.VALIDATION_FAILED);
 
 							if (schedule.ClosingTime != null)
-								context.AddFailure("ClosingTime must be empty when store is closed");
+								context.AddFailure(ErrorMessages.VALIDATION_FAILED);
 						}
 					}
 				});
