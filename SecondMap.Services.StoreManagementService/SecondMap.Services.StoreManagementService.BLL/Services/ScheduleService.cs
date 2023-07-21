@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SecondMap.Services.StoreManagementService.BLL.Constants;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 using SecondMap.Services.StoreManagementService.DAL.Entities;
@@ -17,7 +18,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 			_mapper = mapper;
 		}
 
-		public async Task<List<Schedule>> GetAllAsync()
+		public async Task<IEnumerable<Schedule>> GetAllAsync()
 		{
 			return _mapper.Map<List<Schedule>>(await _repository.GetAllAsync());
 		}
@@ -28,7 +29,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundSchedule == null)
 			{
-				throw new Exception("Schedule not found");
+				throw new Exception(ErrorMessages.SCHEDULE_NOT_FOUND);
 			}
 
 			return _mapper.Map<Schedule>(foundSchedule);
@@ -45,7 +46,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedSchedule == null)
 			{
-				throw new Exception("Schedule not found");
+				throw new Exception(ErrorMessages.SCHEDULE_NOT_FOUND);
 			}
 
 			return _mapper.Map<Schedule>(updatedSchedule);

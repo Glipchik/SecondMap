@@ -6,7 +6,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Interfaces
 	{
 		Task AddReviewAsync(Review reviewToAdd);
 		Task DeleteReviewAsync(Review reviewToDelete);
-		Task<List<Review>> GetAllAsync();
+		Task<IEnumerable<Review>> GetAllAsync();
 		Task<Review> GetByIdAsync(int id);
 		Task<Review> UpdateReviewAsync(Review reviewToUpdate);
 	}
