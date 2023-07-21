@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using SecondMap.Services.StoreManagementService.API.Extensions;
 using SecondMap.Services.StoreManagementService.API.MappingProfiles;
 using SecondMap.Services.StoreManagementService.BLL.Constants;
 using SecondMap.Services.StoreManagementService.BLL.Extensions;
