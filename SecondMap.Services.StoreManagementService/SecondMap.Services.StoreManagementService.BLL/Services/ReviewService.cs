@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SecondMap.Services.StoreManagementService.BLL.Constants;
+using SecondMap.Services.StoreManagementService.BLL.Exceptions;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 using SecondMap.Services.StoreManagementService.DAL.Entities;
