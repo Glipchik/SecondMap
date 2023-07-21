@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SecondMap.Services.StoreManagementService.API.Dto;
 using SecondMap.Services.StoreManagementService.API.ViewModels;
@@ -15,13 +14,11 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 	{
 		private readonly IScheduleService _scheduleService;
 		private readonly IMapper _mapper;
-		private readonly IValidator<ScheduleViewModel> _validator;
 
-		public SchedulesController(IScheduleService scheduleService, IMapper mapper, IValidator<ScheduleViewModel> validator)
+		public SchedulesController(IScheduleService scheduleService, IMapper mapper)
 		{
 			_scheduleService = scheduleService;
 			_mapper = mapper;
-			_validator = validator;
 		}
 
 		[HttpGet]
@@ -42,13 +39,6 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddAsync([FromBody] ScheduleViewModel scheduleToAdd)
 		{
-			var validationResult = await _validator.ValidateAsync(scheduleToAdd);
-
-			if (!validationResult.IsValid)
-			{
-				throw new Exception(ErrorMessages.VALIDATION_FAILED);
-			}
-
 			await _scheduleService.AddScheduleAsync(_mapper.Map<Schedule>(scheduleToAdd));
 
 			return Ok();
@@ -57,12 +47,6 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpPut(ApiEndpoints.ID)]
 		public async Task<IActionResult> UpdateAsync(int id, [FromBody] ScheduleViewModel scheduleToUpdate)
 		{
-			var validationResult = await _validator.ValidateAsync(scheduleToUpdate);
-
-			if (!validationResult.IsValid)
-			{
-				throw new Exception(ErrorMessages.VALIDATION_FAILED);
-			}
 			var mappedScheduleToUpdate = _mapper.Map<Schedule>(scheduleToUpdate);
 			mappedScheduleToUpdate.Id = id;
 

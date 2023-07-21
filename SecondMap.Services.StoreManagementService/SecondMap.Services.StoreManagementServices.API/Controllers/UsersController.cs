@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SecondMap.Services.StoreManagementService.API.Dto;
 using SecondMap.Services.StoreManagementService.API.ViewModels;
@@ -15,13 +14,11 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 	{
 		private readonly IUserService _userService;
 		private readonly IMapper _mapper;
-		private readonly IValidator<UserViewModel> _validator;
 
-		public UsersController(IUserService userService, IMapper mapper, IValidator<UserViewModel> validator)
+		public UsersController(IUserService userService, IMapper mapper)
 		{
 			_userService = userService;
 			_mapper = mapper;
-			_validator = validator;
 		}
 
 		[HttpGet]
@@ -41,13 +38,6 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddAsync([FromBody] UserViewModel userToAdd)
 		{
-			var validationResult = await _validator.ValidateAsync(userToAdd);
-
-			if (!validationResult.IsValid)
-			{
-				throw new Exception(ErrorMessages.VALIDATION_FAILED);
-			}
-
 			await _userService.AddUserAsync(_mapper.Map<User>(userToAdd));
 
 			return Ok();
@@ -56,13 +46,6 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpPut(ApiEndpoints.ID)]
 		public async Task<IActionResult> UpdateAsync(int id, [FromBody] UserViewModel userToUpdate)
 		{
-			var validationResult = await _validator.ValidateAsync(userToUpdate);
-
-			if (!validationResult.IsValid)
-			{
-				throw new Exception(ErrorMessages.VALIDATION_FAILED);
-			}
-
 			var mappedUserToUpdate = _mapper.Map<User>(userToUpdate);
 			mappedUserToUpdate.Id = id;
 

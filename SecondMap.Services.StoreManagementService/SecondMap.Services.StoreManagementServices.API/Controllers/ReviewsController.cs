@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SecondMap.Services.StoreManagementService.API.Dto;
 using SecondMap.Services.StoreManagementService.API.ViewModels;
@@ -15,13 +14,11 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 	{
 		private readonly IReviewService _reviewService;
 		private readonly IMapper _mapper;
-		private readonly IValidator<ReviewViewModel> _validator;
 
-		public ReviewsController(IReviewService reviewService, IMapper mapper, IValidator<ReviewViewModel> validator)
+		public ReviewsController(IReviewService reviewService, IMapper mapper)
 		{
 			_reviewService = reviewService;
 			_mapper = mapper;
-			_validator = validator;
 		}
 
 		[HttpGet]
@@ -41,13 +38,6 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddAsync([FromBody] ReviewViewModel reviewToAdd)
 		{
-			var validationResult = await _validator.ValidateAsync(reviewToAdd);
-
-			if (!validationResult.IsValid)
-			{
-				throw new Exception(ErrorMessages.VALIDATION_FAILED);
-			}
-
 			await _reviewService.AddReviewAsync(_mapper.Map<Review>(reviewToAdd));
 
 			return Ok();
@@ -56,13 +46,6 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpPut(ApiEndpoints.ID)]
 		public async Task<IActionResult> UpdateAsync(int id, [FromBody] ReviewViewModel reviewToUpdate)
 		{
-			var validationResult = await _validator.ValidateAsync(reviewToUpdate);
-
-			if (!validationResult.IsValid)
-			{
-				throw new Exception(ErrorMessages.VALIDATION_FAILED);
-			}
-
 			var mappedReviewToUpdate = _mapper.Map<Review>(reviewToUpdate);
 			mappedReviewToUpdate.Id = id;
 
