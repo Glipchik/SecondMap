@@ -20,7 +20,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<IEnumerable<Review>> GetAllAsync()
 		{
-			return _mapper.Map<List<Review>>(await _repository.GetAllAsync());
+			return _mapper.Map<IEnumerable<Review>>(await _repository.GetAllAsync());
 		}
 
 		public async Task<Review> GetByIdAsync(int id)
@@ -35,9 +35,9 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 			return _mapper.Map<Review>(foundReview);
 		}
 
-		public async Task AddReviewAsync(Review reviewToAdd)
+		public async Task<Review> AddReviewAsync(Review reviewToAdd)
 		{
-			await _repository.AddAsync(_mapper.Map<ReviewEntity>(reviewToAdd));
+			return _mapper.Map<Review>(await _repository.AddAsync(_mapper.Map<ReviewEntity>(reviewToAdd)));
 		}
 
 		public async Task<Review> UpdateReviewAsync(Review reviewToUpdate)

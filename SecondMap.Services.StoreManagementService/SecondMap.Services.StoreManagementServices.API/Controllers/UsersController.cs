@@ -14,6 +14,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 	{
 		private readonly IUserService _userService;
 		private readonly IMapper _mapper;
+
 		public UsersController(IUserService userService, IMapper mapper)
 		{
 			_userService = userService;
@@ -37,9 +38,9 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddAsync([FromBody] UserViewModel userToAdd)
 		{
-			await _userService.AddUserAsync(_mapper.Map<User>(userToAdd));
+			var addedUser = _mapper.Map<UserDto>(await _userService.AddUserAsync(_mapper.Map<User>(userToAdd)));
 
-			return Ok();
+			return Ok(addedUser);
 		}
 
 		[HttpPut(ApiEndpoints.ID)]

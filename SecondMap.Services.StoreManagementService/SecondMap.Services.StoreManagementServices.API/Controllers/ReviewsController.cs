@@ -38,9 +38,9 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddAsync([FromBody] ReviewViewModel reviewToAdd)
 		{
-			await _reviewService.AddReviewAsync(_mapper.Map<Review>(reviewToAdd));
+			var addedReview = _mapper.Map<ReviewDto>(await _reviewService.AddReviewAsync(_mapper.Map<Review>(reviewToAdd)));
 
-			return Ok();
+			return Ok(addedReview);
 		}
 
 		[HttpPut(ApiEndpoints.ID)]

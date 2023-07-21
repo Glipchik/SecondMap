@@ -20,7 +20,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<IEnumerable<Store>> GetAllAsync()
 		{
-			return _mapper.Map<List<Store>>(await _repository.GetAllAsync());
+			return _mapper.Map<IEnumerable<Store>>(await _repository.GetAllAsync());
 		}
 
 		public async Task<Store> GetByIdAsync(int id)
@@ -35,9 +35,9 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 			return _mapper.Map<Store>(foundStore);
 		}
 
-		public async Task AddStoreAsync(Store storeToAdd)
+		public async Task<Store> AddStoreAsync(Store storeToAdd)
 		{
-			await _repository.AddAsync(_mapper.Map<StoreEntity>(storeToAdd));
+			return _mapper.Map<Store>(await _repository.AddAsync(_mapper.Map<StoreEntity>(storeToAdd)));
 		}
 
 		public async Task<Store> UpdateStoreAsync(Store storeToUpdate)

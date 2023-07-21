@@ -20,7 +20,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<IEnumerable<Schedule>> GetAllAsync()
 		{
-			return _mapper.Map<List<Schedule>>(await _repository.GetAllAsync());
+			return _mapper.Map<IEnumerable<Schedule>>(await _repository.GetAllAsync());
 		}
 
 		public async Task<Schedule> GetByIdAsync(int id)
@@ -35,9 +35,9 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 			return _mapper.Map<Schedule>(foundSchedule);
 		}
 
-		public async Task AddScheduleAsync(Schedule scheduleToAdd)
+		public async Task<Schedule> AddScheduleAsync(Schedule scheduleToAdd)
 		{
-			await _repository.AddAsync(_mapper.Map<ScheduleEntity>(scheduleToAdd));
+			return _mapper.Map<Schedule>(await _repository.AddAsync(_mapper.Map<ScheduleEntity>(scheduleToAdd)));
 		}
 
 		public async Task<Schedule> UpdateScheduleAsync(Schedule scheduleToUpdate)

@@ -39,9 +39,9 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddAsync([FromBody] ScheduleViewModel scheduleToAdd)
 		{
-			await _scheduleService.AddScheduleAsync(_mapper.Map<Schedule>(scheduleToAdd));
+			var addedSchedule = _mapper.Map<ScheduleDto>(await _scheduleService.AddScheduleAsync(_mapper.Map<Schedule>(scheduleToAdd)));
 
-			return Ok();
+			return Ok(addedSchedule);
 		}
 
 		[HttpPut(ApiEndpoints.ID)]

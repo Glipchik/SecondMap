@@ -38,9 +38,9 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddAsync([FromBody] StoreViewModel storeToAdd)
 		{
-			await _storeService.AddStoreAsync(_mapper.Map<Store>(storeToAdd));
+			var addedStore = _mapper.Map<Store>(await _storeService.AddStoreAsync(_mapper.Map<Store>(storeToAdd)));
 
-			return Ok();
+			return Ok(addedStore);
 		}
 
 		[HttpPut(ApiEndpoints.ID)]
