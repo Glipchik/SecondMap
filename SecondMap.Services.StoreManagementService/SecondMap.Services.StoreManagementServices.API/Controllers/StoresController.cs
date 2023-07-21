@@ -45,7 +45,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 
 			if (!validationResult.IsValid)
 			{
-				throw new Exception("ValidationFailException");
+				throw new Exception(ErrorMessages.VALIDATION_FAILED);
 			}
 
 			await _storeService.AddStoreAsync(_mapper.Map<Store>(storeToAdd));
@@ -60,7 +60,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 
 			if (!validationResult.IsValid)
 			{
-				throw new Exception("ValidationFailException");
+				throw new Exception(ErrorMessages.VALIDATION_FAILED);
 			}
 
 			var mappedStoreToUpdate = _mapper.Map<Store>(storeToUpdate);

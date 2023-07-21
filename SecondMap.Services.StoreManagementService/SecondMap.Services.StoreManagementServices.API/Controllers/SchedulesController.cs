@@ -46,7 +46,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 
 			if (!validationResult.IsValid)
 			{
-				throw new Exception("ValidationFailException");
+				throw new Exception(ErrorMessages.VALIDATION_FAILED);
 			}
 
 			await _scheduleService.AddScheduleAsync(_mapper.Map<Schedule>(scheduleToAdd));
@@ -61,7 +61,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 
 			if (!validationResult.IsValid)
 			{
-				throw new Exception("ValidationFailException");
+				throw new Exception(ErrorMessages.VALIDATION_FAILED);
 			}
 			var mappedScheduleToUpdate = _mapper.Map<Schedule>(scheduleToUpdate);
 			mappedScheduleToUpdate.Id = id;
