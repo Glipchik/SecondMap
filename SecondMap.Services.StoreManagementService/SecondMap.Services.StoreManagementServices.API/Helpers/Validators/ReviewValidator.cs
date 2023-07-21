@@ -11,7 +11,6 @@ namespace SecondMap.Services.StoreManagementService.API.Helpers.Validators
 			RuleFor(r => r.StoreId).Must(id => id > 0);
 			RuleFor(r => r.Rating).Must(rating => rating >= 0);
 			RuleFor(r => r.Description).MaximumLength(300);
-			;
 		}
 	}
 }
