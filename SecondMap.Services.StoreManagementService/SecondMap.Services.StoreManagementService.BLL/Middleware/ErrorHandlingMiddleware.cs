@@ -40,7 +40,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Middleware
 					break;
 
 				case ValidationFailException:
-					httpStatusCode = HttpStatusCode.UnprocessableEntity;
+					httpStatusCode = HttpStatusCode.BadRequest;
 					break;
 
 				default:

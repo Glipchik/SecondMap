@@ -1,4 +1,6 @@
-﻿namespace SecondMap.Services.StoreManagementService.BLL.Exceptions
+﻿using System.Runtime.Serialization;
+
+namespace SecondMap.Services.StoreManagementService.BLL.Exceptions
 {
 	[Serializable]
 	public class AlreadyExistsException : Exception
@@ -13,6 +15,10 @@
 		}
 
 		public AlreadyExistsException(string? message, Exception? innerException) : base(message, innerException)
+		{
+		}
+
+		protected AlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}
 	}
