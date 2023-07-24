@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SecondMap.Services.StoreManagementService.API.Dto;
 using SecondMap.Services.StoreManagementService.API.ViewModels;
 using SecondMap.Services.StoreManagementService.BLL.Constants;
+using SecondMap.Services.StoreManagementService.BLL.Exceptions;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 

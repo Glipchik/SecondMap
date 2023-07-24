@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SecondMap.Services.StoreManagementService.BLL.Constants;
+using SecondMap.Services.StoreManagementService.BLL.Exceptions;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 using SecondMap.Services.StoreManagementService.DAL.Entities;
@@ -29,7 +30,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundSchedule == null)
 			{
-				throw new Exception(ErrorMessages.SCHEDULE_NOT_FOUND);
+				throw new NotFoundException(ErrorMessages.SCHEDULE_NOT_FOUND);
 			}
 
 			return _mapper.Map<Schedule>(foundSchedule);
@@ -46,7 +47,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedSchedule == null)
 			{
-				throw new Exception(ErrorMessages.SCHEDULE_NOT_FOUND);
+				throw new NotFoundException(ErrorMessages.SCHEDULE_NOT_FOUND);
 			}
 
 			return _mapper.Map<Schedule>(updatedSchedule);
