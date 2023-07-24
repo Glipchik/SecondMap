@@ -39,10 +39,6 @@ namespace SecondMap.Services.StoreManagementService.BLL.Middleware
 					httpStatusCode = HttpStatusCode.Conflict;
 					break;
 
-				case ValidationFailException:
-					httpStatusCode = HttpStatusCode.BadRequest;
-					break;
-
 				default:
 					httpStatusCode = HttpStatusCode.InternalServerError;
 					break;
