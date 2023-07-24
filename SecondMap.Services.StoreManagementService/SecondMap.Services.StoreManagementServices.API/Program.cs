@@ -36,7 +36,10 @@ namespace SecondMap.Services.StoreManagementService.API
 			builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
 				.AddFluentValidationAutoValidation();
 
-			builder.Services.AddAutoMapper(typeof(ViewModelsToModelsProfile));
+			builder.Services.AddAutoMapper(
+				typeof(ViewModelsToModelsProfile).Assembly,
+				typeof(ModelToEntityProfile).Assembly
+			);
 
 			Log.Logger = new LoggerConfiguration()
 				.MinimumLevel.Information()
