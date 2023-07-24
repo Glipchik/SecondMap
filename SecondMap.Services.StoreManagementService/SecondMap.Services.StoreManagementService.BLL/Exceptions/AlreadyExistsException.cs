@@ -1,5 +1,6 @@
 ﻿namespace SecondMap.Services.StoreManagementService.BLL.Exceptions
 {
+	[Serializable]
 	public class AlreadyExistsException : Exception
 	{
 		public AlreadyExistsException()
