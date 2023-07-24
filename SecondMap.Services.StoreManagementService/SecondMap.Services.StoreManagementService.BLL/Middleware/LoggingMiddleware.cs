@@ -5,7 +5,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Middleware
 {
 	public class LoggingMiddleware
 	{
-		private RequestDelegate _next;
+		private readonly RequestDelegate _next;
 
 		public LoggingMiddleware(RequestDelegate next)
 		{
