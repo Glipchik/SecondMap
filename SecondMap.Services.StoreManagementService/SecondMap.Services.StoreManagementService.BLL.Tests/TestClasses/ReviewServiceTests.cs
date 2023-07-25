@@ -110,10 +110,6 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 		public async Task DeleteReviewAsync_WhenValidId_ShouldDeleteReview()
 		{
 			// Arrange
-			var entities = _fixture.Build<ReviewEntity>().CreateMany();
-			var entityIds = entities.Select(r => r.Id).ToList();
-			var validId = entityIds[new Random().Next(entityIds.Count)];
-
 			_reviewRepositoryMock.Setup(r => r.DeleteAsync(validId))
 				.ReturnsAsync(true);
 
