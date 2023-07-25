@@ -23,15 +23,14 @@ namespace SecondMap.Services.StoreManagementService.DAL.Repositories
 			return entity;
 		}
 
-		public virtual async Task<bool> DeleteAsync(int id)
+		public virtual async Task DeleteAsync(int id)
 		{
 			var entityToDelete = await _dbContext.Set<T>().FindAsync(id);
-			if (entityToDelete is null) return false;
+			if (entityToDelete is null) return;
 
 			_dbContext.Set<T>().Remove(entityToDelete);
 
 			await _dbContext.SaveChangesAsync();
-			return true;
 		}
 
 		public virtual async Task<IEnumerable<T>> GetAllAsync()
@@ -46,9 +45,6 @@ namespace SecondMap.Services.StoreManagementService.DAL.Repositories
 
 		public virtual async Task<T?> UpdateAsync(T entity)
 		{
-			if (!_dbContext.Set<T>().Contains(entity))
-				return null;
-
 			_dbContext.Entry(entity).State = EntityState.Modified;
 			await _dbContext.SaveChangesAsync();
 

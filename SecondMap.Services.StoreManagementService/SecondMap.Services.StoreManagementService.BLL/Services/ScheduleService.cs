@@ -31,7 +31,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundSchedule == null)
 			{
-        Log.Error("Schedule with id = {@id} not found", id);
+				Log.Error("Schedule with id = {@id} not found", id);
 				throw new NotFoundException(ErrorMessages.SCHEDULE_NOT_FOUND);
 			}
 
@@ -54,8 +54,8 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 			if (updatedSchedule == null)
 			{
 				Log.Error("Schedule with id = {@id} not found", scheduleToUpdate.Id);
-			  throw new NotFoundException(ErrorMessages.SCHEDULE_NOT_FOUND);
-      }
+				throw new NotFoundException(ErrorMessages.SCHEDULE_NOT_FOUND);
+			}
 
 			Log.Information("Updated schedule: {@updatedSchedule}", updatedSchedule);
 
@@ -64,8 +64,10 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task DeleteScheduleAsync(int scheduleToDeleteId)
 		{
-			var isDeleted = await _repository.DeleteAsync(scheduleToDeleteId);
-			if (!isDeleted) throw new Exception(ErrorMessages.SCHEDULE_NOT_FOUND);
+			if (await _repository.GetByIdAsync(scheduleToDeleteId) == null)
+				throw new NotFoundException(ErrorMessages.SCHEDULE_NOT_FOUND);
+
+			await _repository.DeleteAsync(scheduleToDeleteId);
 		}
 	}
 }

@@ -41,7 +41,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 		public async Task<Review> AddReviewAsync(Review reviewToAdd)
 		{
 			var addedReview = _mapper.Map<Review>(await _repository.AddAsync(_mapper.Map<ReviewEntity>(reviewToAdd)));
-			
+
 			Log.Information("Added review: {@addedReview}", addedReview);
 
 			return addedReview;
@@ -53,7 +53,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedReview == null)
 			{
-        Log.Error("Review with id = {@id} not found", reviewToUpdate.Id);
+				Log.Error("Review with id = {@id} not found", reviewToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
 			}
 
@@ -64,8 +64,10 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task DeleteReviewAsync(int reviewToDeleteId)
 		{
-			var isDeleted = await _repository.DeleteAsync(reviewToDeleteId);
-			if (!isDeleted) throw new Exception(ErrorMessages.REVIEW_NOT_FOUND);
+			if (await _repository.GetByIdAsync(reviewToDeleteId) == null)
+				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
+
+			await _repository.DeleteAsync(reviewToDeleteId);
 		}
 	}
 }

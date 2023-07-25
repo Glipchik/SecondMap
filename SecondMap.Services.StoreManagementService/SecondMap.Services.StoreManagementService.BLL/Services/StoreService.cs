@@ -31,7 +31,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundStore == null)
 			{
-        Log.Error("Store with id = {@id} not found", id);
+				Log.Error("Store with id = {@id} not found", id);
 				throw new NotFoundException(ErrorMessages.STORE_NOT_FOUND);
 			}
 
@@ -53,7 +53,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedStore == null)
 			{
-        Log.Error("Store with id = {@id} not found", storeToUpdate.Id);
+				Log.Error("Store with id = {@id} not found", storeToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.STORE_NOT_FOUND);
 			}
 
@@ -64,8 +64,10 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task DeleteStoreAsync(int storeToDeleteId)
 		{
-			var isDeleted = await _repository.DeleteAsync(storeToDeleteId);
-			if (!isDeleted) throw new Exception(ErrorMessages.STORE_NOT_FOUND);
+			if (await _repository.GetByIdAsync(storeToDeleteId) == null)
+				throw new NotFoundException(ErrorMessages.STORE_NOT_FOUND);
+
+			await _repository.DeleteAsync(storeToDeleteId);
 		}
 	}
 }

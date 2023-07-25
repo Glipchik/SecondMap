@@ -8,6 +8,7 @@ using SecondMap.Services.StoreManagementService.BLL.Extensions;
 using SecondMap.Services.StoreManagementService.BLL.Middleware;
 using SecondMap.Services.StoreManagementService.DAL.Context;
 using System.Reflection;
+using SecondMap.Services.StoreManagementService.BLL.MappingProfiles;
 using SecondMap.Services.StoreManagementService.BLL.Middleware;
 using Serilog.Core;
 using Serilog;
@@ -28,8 +29,11 @@ namespace SecondMap.Services.StoreManagementService.API
 			builder.Services.AddSwaggerGen();
 
 			builder.Services.AddDbContext<StoreManagementDbContext>(optionsBuilder =>
-				optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString(DbConnections.DEFAULT_CONNECTION)
-				));
+				{
+					optionsBuilder.UseNpgsql(
+						builder.Configuration.GetConnectionString(DbConnections.DEFAULT_CONNECTION));
+					optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+				});
 
 			builder.Services.AddServices();
 

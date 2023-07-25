@@ -110,14 +110,14 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 		public async Task DeleteReviewAsync_WhenValidId_ShouldDeleteReview()
 		{
 			// Arrange
-			_reviewRepositoryMock.Setup(r => r.DeleteAsync(validId))
+			_reviewRepositoryMock.Setup(r => r.DeleteAsync(It.IsAny<int>()))
 				.ReturnsAsync(true);
 
 			// Act
-			await _reviewService.DeleteReviewAsync(validId);
+			await _reviewService.DeleteReviewAsync(It.IsAny<int>());
 
 			// Assert
-			_reviewRepositoryMock.Verify(r => r.DeleteAsync(validId), Times.Once);
+			_reviewRepositoryMock.Verify(r => r.DeleteAsync(It.IsAny<int>()), Times.Once);
 		}
 	}
 }

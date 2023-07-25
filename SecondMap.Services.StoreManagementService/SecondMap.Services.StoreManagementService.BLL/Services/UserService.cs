@@ -31,7 +31,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundUser == null)
 			{
-        Log.Error("User with id = {@id} not found", id);
+				Log.Error("User with id = {@id} not found", id);
 				throw new NotFoundException(ErrorMessages.USER_NOT_FOUND);
 			}
 
@@ -53,7 +53,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedUser == null)
 			{
-        Log.Error("User with id = {@id} not found", userToUpdate.Id);
+				Log.Error("User with id = {@id} not found", userToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.USER_NOT_FOUND);
 			}
 
@@ -64,8 +64,10 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task DeleteUserAsync(int userToDeleteId)
 		{
-			var isDeleted = await _repository.DeleteAsync(userToDeleteId);
-			if (!isDeleted) throw new Exception(ErrorMessages.USER_NOT_FOUND);
+			if (await _repository.GetByIdAsync(userToDeleteId) == null)
+				throw new NotFoundException(ErrorMessages.USER_NOT_FOUND);
+
+			await _repository.DeleteAsync(userToDeleteId);
 		}
 	}
 }
