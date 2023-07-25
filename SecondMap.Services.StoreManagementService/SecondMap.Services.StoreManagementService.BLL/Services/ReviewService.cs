@@ -5,6 +5,7 @@ using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 using SecondMap.Services.StoreManagementService.DAL.Entities;
 using SecondMap.Services.StoreManagementService.DAL.Interfaces;
+using Serilog;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Services
 {
@@ -30,7 +31,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundReview == null)
 			{
-				throw new Exception(ErrorMessages.REVIEW_NOT_FOUND);
+				Log.Error("Review with id = {@id} not found", id);
 				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
 			}
 
@@ -39,7 +40,11 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<Review> AddReviewAsync(Review reviewToAdd)
 		{
-			return _mapper.Map<Review>(await _repository.AddAsync(_mapper.Map<ReviewEntity>(reviewToAdd)));
+			var addedReview = _mapper.Map<Review>(await _repository.AddAsync(_mapper.Map<ReviewEntity>(reviewToAdd)));
+			
+			Log.Information("Added review: {@addedReview}", addedReview);
+
+			return addedReview;
 		}
 
 		public async Task<Review> UpdateReviewAsync(Review reviewToUpdate)
@@ -48,8 +53,11 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedReview == null)
 			{
+        Log.Error("Review with id = {@id} not found", reviewToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
 			}
+
+			Log.Information("Updated review: {@updatedReview}", updatedReview);
 
 			return _mapper.Map<Review>(updatedReview);
 		}

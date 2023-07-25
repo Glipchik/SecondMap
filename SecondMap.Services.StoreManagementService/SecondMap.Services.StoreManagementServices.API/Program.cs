@@ -8,6 +8,9 @@ using SecondMap.Services.StoreManagementService.BLL.Extensions;
 using SecondMap.Services.StoreManagementService.BLL.Middleware;
 using SecondMap.Services.StoreManagementService.DAL.Context;
 using System.Reflection;
+using SecondMap.Services.StoreManagementService.BLL.Middleware;
+using Serilog.Core;
+using Serilog;
 
 namespace SecondMap.Services.StoreManagementService.API
 {
@@ -35,6 +38,12 @@ namespace SecondMap.Services.StoreManagementService.API
 
 			builder.Services.AddAutoMapper(typeof(ViewModelsToModelsProfile));
 
+			Log.Logger = new LoggerConfiguration()
+				.MinimumLevel.Information()
+				.WriteTo.Console()
+				.WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+				.CreateLogger();
+
 			var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
@@ -49,6 +58,8 @@ namespace SecondMap.Services.StoreManagementService.API
 			app.UseHttpsRedirection();
 
 			app.UseAuthorization();
+
+			app.UseMiddleware<LoggingMiddleware>();
 
 			app.MapControllers();
 

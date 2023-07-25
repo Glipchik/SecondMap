@@ -5,6 +5,7 @@ using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 using SecondMap.Services.StoreManagementService.DAL.Entities;
 using SecondMap.Services.StoreManagementService.DAL.Interfaces;
+using Serilog;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Services
 {
@@ -30,6 +31,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundUser == null)
 			{
+        Log.Error("User with id = {@id} not found", id);
 				throw new NotFoundException(ErrorMessages.USER_NOT_FOUND);
 			}
 
@@ -38,7 +40,11 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<User> AddUserAsync(User userToAdd)
 		{
-			return _mapper.Map<User>(await _repository.AddAsync(_mapper.Map<UserEntity>(userToAdd)));
+			var addedUser = _mapper.Map<User>(await _repository.AddAsync(_mapper.Map<UserEntity>(userToAdd)));
+
+			Log.Information("Added user: {@addedUser}", addedUser);
+
+			return addedUser;
 		}
 
 		public async Task<User> UpdateUserAsync(User userToUpdate)
@@ -47,8 +53,11 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedUser == null)
 			{
+        Log.Error("User with id = {@id} not found", userToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.USER_NOT_FOUND);
 			}
+
+			Log.Information("Updated user: {@addedUser}", updatedUser);
 
 			return _mapper.Map<User>(updatedUser);
 		}
