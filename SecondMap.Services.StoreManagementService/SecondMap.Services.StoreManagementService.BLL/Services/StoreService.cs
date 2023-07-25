@@ -49,7 +49,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<Store> UpdateStoreAsync(Store storeToUpdate)
 		{
-			if (await _repository.GetByIdAsync(storeToUpdate.Id) == null)
+			if (await _repository.ExistsWithId(storeToUpdate.Id))
 			{
 				Log.Error("Store with id = {@id} not found", storeToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.STORE_NOT_FOUND);

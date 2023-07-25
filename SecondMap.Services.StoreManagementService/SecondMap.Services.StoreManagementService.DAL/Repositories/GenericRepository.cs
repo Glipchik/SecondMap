@@ -47,5 +47,10 @@ namespace SecondMap.Services.StoreManagementService.DAL.Repositories
 
 			return entity;
 		}
+
+		public virtual async Task<bool> ExistsWithId(int id)
+		{
+			return await _dbContext.Set<T>().AnyAsync(e => e.Id == id);
+		}
 	}
 }

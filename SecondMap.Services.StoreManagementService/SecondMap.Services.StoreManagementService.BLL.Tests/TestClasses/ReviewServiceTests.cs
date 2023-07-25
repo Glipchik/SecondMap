@@ -3,16 +3,14 @@
 	public class ReviewServiceTests
 	{
 		private readonly Mock<IReviewRepository> _repositoryMock;
-		private readonly IMapper _mapper;
+		private readonly Mock<IMapper> _mapperMock;
 		private readonly IReviewService _service;
 		private readonly Fixture _fixture;
 		public ReviewServiceTests()
 		{
 			_repositoryMock = new Mock<IReviewRepository>();
-			_mapper = new Mapper(new MapperConfiguration(configuration =>
-				configuration.AddProfile<ModelToEntityProfile>()
-				));
-			_service = new ReviewService(_repositoryMock.Object, _mapper);
+			_mapperMock = new Mock<IMapper>();
+			_service = new ReviewService(_repositoryMock.Object, _mapperMock.Object);
 			_fixture = new Fixture();
 		}
 
@@ -21,10 +19,11 @@
 		{
 			// Arrange
 			var arrangedModels = _fixture.Build<Review>().CreateMany().ToList();
-			var arrangedEntities = _mapper.Map<IEnumerable<ReviewEntity>>(arrangedModels).ToList();
+			var arrangedEntities = _mapperMock.Object.Map<IEnumerable<ReviewEntity>>(arrangedModels).ToList();
 
 			_repositoryMock.Setup(r => r.GetAllAsync())
 				.ReturnsAsync(arrangedEntities);
+			_mapper
 
 			// Act 
 			var foundModels = (await _service.GetAllAsync()).ToList();
@@ -39,7 +38,7 @@
 		{
 			// Arrange
 			var arrangedModel = _fixture.Build<Review>().Create();
-			var arrangedEntity = _mapper.Map<ReviewEntity>(arrangedModel);
+			var arrangedEntity = _mapperMock.Map<ReviewEntity>(arrangedModel);
 
 			_repositoryMock.Setup(r => r.GetByIdAsync(arrangedModel.Id))
 				.ReturnsAsync(arrangedEntity);
@@ -71,7 +70,7 @@
 		{
 			// Arrange
 			var arrangedModel = _fixture.Build<Review>().Create();
-			var arrangedEntity = _mapper.Map<ReviewEntity>(arrangedModel);
+			var arrangedEntity = _mapperMock.Map<ReviewEntity>(arrangedModel);
 
 			_repositoryMock.Setup(r => r.AddAsync(It.IsAny<ReviewEntity>()))
 				.ReturnsAsync(arrangedEntity);
@@ -90,7 +89,7 @@
 		{
 			// Arrange
 			var arrangedModel = _fixture.Build<Review>().Create();
-			var arrangedEntity = _mapper.Map<ReviewEntity>(arrangedModel);
+			var arrangedEntity = _mapperMock.Map<ReviewEntity>(arrangedModel);
 
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
 				.ReturnsAsync(arrangedEntity);
@@ -116,7 +115,7 @@
 				.ReturnsAsync(value: null);
 
 			// Act
-			var act = async () => await _service.UpdateReviewAsync(arrangedModel);
+			var act = () => _service.UpdateReviewAsync(arrangedModel);
 
 			// Assert
 			await act.Should().ThrowAsync<NotFoundException>().WithMessage(ErrorMessages.REVIEW_NOT_FOUND);

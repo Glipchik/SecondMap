@@ -49,7 +49,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<Review> UpdateReviewAsync(Review reviewToUpdate)
 		{
-			if (await _repository.GetByIdAsync(reviewToUpdate.Id) == null)
+			if (await _repository.ExistsWithId(reviewToUpdate.Id))
 			{
 				Log.Error("Review with id = {@id} not found", reviewToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);

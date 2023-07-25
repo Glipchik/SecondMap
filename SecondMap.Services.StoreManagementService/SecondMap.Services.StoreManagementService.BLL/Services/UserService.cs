@@ -49,7 +49,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<User> UpdateUserAsync(User userToUpdate)
 		{
-			if (await _repository.GetByIdAsync(userToUpdate.Id) == null)
+			if (await _repository.ExistsWithId(userToUpdate.Id))
 			{
 				Log.Error("User with id = {@id} not found", userToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.USER_NOT_FOUND);
