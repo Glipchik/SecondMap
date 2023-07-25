@@ -62,9 +62,10 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 			return _mapper.Map<User>(updatedUser);
 		}
 
-		public async Task DeleteUserAsync(User userToDelete)
+		public async Task DeleteUserAsync(int userToDeleteId)
 		{
-			await _repository.DeleteAsync(_mapper.Map<UserEntity>(userToDelete));
+			var isDeleted = await _repository.DeleteAsync(userToDeleteId);
+			if (!isDeleted) throw new Exception(ErrorMessages.USER_NOT_FOUND);
 		}
 	}
 }

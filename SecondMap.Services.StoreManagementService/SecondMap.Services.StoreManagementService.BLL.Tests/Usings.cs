@@ -1,3 +1,12 @@
 global using Xunit;
 global using Moq;
-global using SecondMap.Services.StoreManagementService.BLL;
+global using AutoFixture;
+global using AutoMapper;
+global using SecondMap.Services.StoreManagementService.BLL.Interfaces;
+global using SecondMap.Services.StoreManagementService.BLL.Models;
+global using SecondMap.Services.StoreManagementService.BLL.Services;
+global using SecondMap.Services.StoreManagementService.DAL.Entities;
+global using SecondMap.Services.StoreManagementService.DAL.Interfaces;
+global using FluentAssertions;
+global using SecondMap.Services.StoreManagementService.BLL.Constants;
+global using SecondMap.Services.StoreManagementService.BLL.MappingProfiles;

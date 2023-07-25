@@ -62,9 +62,10 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 			return _mapper.Map<Review>(updatedReview);
 		}
 
-		public async Task DeleteReviewAsync(Review reviewToDelete)
+		public async Task DeleteReviewAsync(int reviewToDeleteId)
 		{
-			await _repository.DeleteAsync(_mapper.Map<ReviewEntity>(reviewToDelete));
+			var isDeleted = await _repository.DeleteAsync(reviewToDeleteId);
+			if (!isDeleted) throw new Exception(ErrorMessages.REVIEW_NOT_FOUND);
 		}
 	}
 }

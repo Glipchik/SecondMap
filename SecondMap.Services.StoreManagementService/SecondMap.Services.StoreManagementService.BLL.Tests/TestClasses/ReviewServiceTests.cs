@@ -1,14 +1,4 @@
-﻿using AutoFixture;
-using AutoMapper;
-using SecondMap.Services.StoreManagementService.BLL.Interfaces;
-using SecondMap.Services.StoreManagementService.BLL.Models;
-using SecondMap.Services.StoreManagementService.BLL.Services;
-using SecondMap.Services.StoreManagementService.DAL.Entities;
-using SecondMap.Services.StoreManagementService.DAL.Interfaces;
-using System.Collections;
-using FluentAssertions;
-using SecondMap.Services.StoreManagementService.BLL.Constants;
-using SecondMap.Services.StoreManagementService.BLL.MappingProfiles;
+﻿using SecondMap.Services.StoreManagementService.DAL.Entities;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 {
@@ -28,7 +18,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 		}
 
 		[Fact]
-		public async void GetAll_ShouldReturnListOfReviews()
+		public async void GetAllAsync_ShouldReturnListOfReviews()
 		{
 			// Arrange
 			var fixture = new Fixture();
@@ -36,7 +26,8 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 			var reviewModels = fixture.Build<Review>().CreateMany().ToList();
 			var reviewEntities = _mapper.Map<IEnumerable<ReviewEntity>>(reviewModels).ToList();
 
-			_reviewRepositoryMock.Setup(r => r.GetAllAsync()).ReturnsAsync(reviewEntities);
+			_reviewRepositoryMock.Setup(r => r.GetAllAsync())
+				.ReturnsAsync(reviewEntities);
 
 			// Act 
 			var reviewsFromTestMethod = (await _reviewService.GetAllAsync()).ToList();
@@ -47,7 +38,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 		}
 
 		[Fact]
-		public async void GetById_WhenIdIsValid_ShouldReturnReview()
+		public async void GetByIdAsync_WhenValidId_ShouldReturnReview()
 		{
 			// Arrange
 			var fixture = new Fixture();
@@ -55,8 +46,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 			var reviewModel = fixture.Build<Review>().Create();
 			var reviewEntity = _mapper.Map<ReviewEntity>(reviewModel);
 
-			_reviewRepositoryMock
-				.Setup(r => r.GetByIdAsync(reviewModel.Id))
+			_reviewRepositoryMock.Setup(r => r.GetByIdAsync(reviewModel.Id))
 				.ReturnsAsync(reviewEntity);
 
 			// Act 
@@ -68,11 +58,10 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 		}
 
 		[Fact]
-		public async void GetById_WhenIdIsInvalid_ShouldThrowNotFoundException()
+		public async void GetByIdAsync_WhenInvalidId_ShouldThrowNotFoundException()
 		{
 			// Arrange
-			_reviewRepositoryMock
-				.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
+			_reviewRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
 				.ReturnsAsync(value: null);
 
 			// Act and Assert
@@ -84,39 +73,67 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 		}
 
 		[Fact]
-		public async void Add_WhenModelIsValid_ShouldReturnAddedModel()
+		public async void AddReviewAsync_WhenValidModel_ShouldReturnAddedModel()
 		{
+			// Arrange
+			var fixture = new Fixture();
+			var reviewModel = fixture.Build<Review>().Create();
+			var reviewEntity = _mapper.Map<ReviewEntity>(reviewModel);
 
+			_reviewRepositoryMock.Setup(r => r.AddAsync(It.IsAny<ReviewEntity>()))
+				.ReturnsAsync(reviewEntity);
+
+			// Act
+			var reviewFromTestMethod = await _reviewService.AddReviewAsync(reviewModel);
+
+			// Assert
+			reviewFromTestMethod.Should().NotBeNull();
+			reviewFromTestMethod.Should().BeOfType<Review>();
+			reviewFromTestMethod.Should().BeEquivalentTo(reviewModel);
 		}
 
 		[Fact]
-		public async void Add_WhenModelIsInvalid_ShouldThrownValidationFailException()
+		public async Task UpdateReviewAsync_WhenValidReview_ShouldReturnUpdatedReview()
 		{
+			// Arrange
+			var fixture = new Fixture();
+			var reviewModel = fixture.Build<Review>().Create();
+			var reviewEntity = _mapper.Map<ReviewEntity>(reviewModel);
 
+			_reviewRepositoryMock.Setup(r => r.UpdateAsync(It.IsAny<ReviewEntity>()))
+				.ReturnsAsync(reviewEntity);
+
+			_mapperMock.Setup(m => m.Map<ReviewEntity>(It.IsAny<Review>()))
+				.Returns(reviewEntity);
+
+			_mapperMock.Setup(m => m.Map<Review>(It.IsAny<ReviewEntity>()))
+				.Returns(reviewModel);
+
+			// Act
+			var updatedReview = await _reviewService.UpdateReviewAsync(reviewModel);
+
+			// Assert
+			updatedReview.Should().NotBeNull();
+			updatedReview.Should().BeEquivalentTo(reviewModel);
 		}
 
 		[Fact]
-		public async void Update_WhenModelIsValid_ShouldReturnUpdatedModel()
+		public async Task DeleteReviewAsync_WhenValidReview_ShouldDeleteReview()
 		{
+			// Arrange
+			var reviewModel = new Review { Id = 1, Title = "Review Title", Rating = 4.5 };
+			var reviewEntity = new ReviewEntity { Id = 1, Title = "Review Title", Rating = 4.5 };
 
-		}
+			_repositoryMock.Setup(r => r.DeleteAsync(It.IsAny<ReviewEntity>()));
 
-		[Fact]
-		public async void Update_WhenModelIsInvalid_ShouldThrowValidationFailException()
-		{
+			_mapperMock.Setup(m => m.Map<ReviewEntity>(It.IsAny<Review>()))
+				.Returns(reviewEntity);
 
-		}
+			// Act
+			await _reviewService.DeleteReviewAsync(reviewModel);
 
-		[Fact]
-		public async void Delete_WhenIdIsValid_ShouldDeleteAndReturnOk()
-		{
-
-		}
-
-		[Fact]
-		public async void Delete_WhenIdIsInvalid_ShouldThrowNotValidException()
-		{
-
+			// Assert
+			_repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<ReviewEntity>()), Times.Once);
 		}
 	}
 }

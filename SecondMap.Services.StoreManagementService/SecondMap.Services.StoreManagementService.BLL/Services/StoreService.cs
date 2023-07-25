@@ -62,9 +62,10 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 			return _mapper.Map<Store>(updatedStore);
 		}
 
-		public async Task DeleteStoreAsync(Store storeToDelete)
+		public async Task DeleteStoreAsync(int storeToDeleteId)
 		{
-			await _repository.DeleteAsync(_mapper.Map<StoreEntity>(storeToDelete));
+			var isDeleted = await _repository.DeleteAsync(storeToDeleteId);
+			if (!isDeleted) throw new Exception(ErrorMessages.STORE_NOT_FOUND);
 		}
 	}
 }

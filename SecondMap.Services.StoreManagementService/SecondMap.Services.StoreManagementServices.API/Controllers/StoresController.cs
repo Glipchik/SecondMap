@@ -57,9 +57,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpDelete(ApiEndpoints.ID)]
 		public async Task<IActionResult> DeleteAsync(int id)
 		{
-			var foundStore = await _storeService.GetByIdAsync(id);
-
-			await _storeService.DeleteStoreAsync(foundStore);
+			await _storeService.DeleteStoreAsync(id);
 
 			return NoContent();
 		}

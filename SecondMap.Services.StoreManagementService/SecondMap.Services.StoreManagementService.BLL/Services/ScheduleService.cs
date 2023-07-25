@@ -62,9 +62,10 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 			return _mapper.Map<Schedule>(updatedSchedule);
 		}
 
-		public async Task DeleteScheduleAsync(Schedule scheduleToDelete)
+		public async Task DeleteScheduleAsync(int scheduleToDeleteId)
 		{
-			await _repository.DeleteAsync(_mapper.Map<ScheduleEntity>(scheduleToDelete));
+			var isDeleted = await _repository.DeleteAsync(scheduleToDeleteId);
+			if (!isDeleted) throw new Exception(ErrorMessages.SCHEDULE_NOT_FOUND);
 		}
 	}
 }

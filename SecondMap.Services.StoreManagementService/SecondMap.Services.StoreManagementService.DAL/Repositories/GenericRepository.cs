@@ -23,11 +23,15 @@ namespace SecondMap.Services.StoreManagementService.DAL.Repositories
 			return entity;
 		}
 
-		public virtual async Task DeleteAsync(T entity)
+		public virtual async Task<bool> DeleteAsync(int id)
 		{
-			_dbContext.Set<T>().Remove(entity);
+			var entityToDelete = await _dbContext.Set<T>().FindAsync(id);
+			if (entityToDelete is null) return false;
+
+			_dbContext.Set<T>().Remove(entityToDelete);
 
 			await _dbContext.SaveChangesAsync();
+			return true;
 		}
 
 		public virtual async Task<IEnumerable<T>> GetAllAsync()
