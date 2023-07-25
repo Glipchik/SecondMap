@@ -4,6 +4,7 @@ using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 using SecondMap.Services.StoreManagementService.DAL.Entities;
 using SecondMap.Services.StoreManagementService.DAL.Interfaces;
+using Serilog;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Services
 {
@@ -29,6 +30,8 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundStore == null)
 			{
+				Log.Error("Store with id = {@id} not found", id);
+
 				throw new Exception(ErrorMessages.STORE_NOT_FOUND);
 			}
 
@@ -37,7 +40,11 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<Store> AddStoreAsync(Store storeToAdd)
 		{
-			return _mapper.Map<Store>(await _repository.AddAsync(_mapper.Map<StoreEntity>(storeToAdd)));
+			var addedStore = _mapper.Map<Store>(await _repository.AddAsync(_mapper.Map<StoreEntity>(storeToAdd)));
+
+			Log.Information("Added store: {@addedStore}", addedStore);
+
+			return addedStore;
 		}
 
 		public async Task<Store> UpdateStoreAsync(Store storeToUpdate)
@@ -46,8 +53,12 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedStore == null)
 			{
+				Log.Error("Store with id = {@id} not found", storeToUpdate.Id);
+
 				throw new Exception(ErrorMessages.STORE_NOT_FOUND);
 			}
+
+			Log.Information("Updated store: {@updatedStore}", updatedStore);
 
 			return _mapper.Map<Store>(updatedStore);
 		}

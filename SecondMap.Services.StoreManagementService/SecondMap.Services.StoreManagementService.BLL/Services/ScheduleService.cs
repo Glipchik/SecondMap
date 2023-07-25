@@ -4,6 +4,7 @@ using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 using SecondMap.Services.StoreManagementService.DAL.Entities;
 using SecondMap.Services.StoreManagementService.DAL.Interfaces;
+using Serilog;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Services
 {
@@ -29,6 +30,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundSchedule == null)
 			{
+				Log.Error("Schedule with id = {@id} not found", id);
 				throw new Exception(ErrorMessages.SCHEDULE_NOT_FOUND);
 			}
 
@@ -37,7 +39,11 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<Schedule> AddScheduleAsync(Schedule scheduleToAdd)
 		{
-			return _mapper.Map<Schedule>(await _repository.AddAsync(_mapper.Map<ScheduleEntity>(scheduleToAdd)));
+			var addedSchedule = _mapper.Map<Schedule>(await _repository.AddAsync(_mapper.Map<ScheduleEntity>(scheduleToAdd)));
+
+			Log.Information("Added schedule: {@addedSchedule}", addedSchedule);
+
+			return addedSchedule;
 		}
 
 		public async Task<Schedule> UpdateScheduleAsync(Schedule scheduleToUpdate)
@@ -46,8 +52,11 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedSchedule == null)
 			{
+				Log.Error("Schedule with id = {@id} not found", scheduleToUpdate.Id);
 				throw new Exception(ErrorMessages.SCHEDULE_NOT_FOUND);
 			}
+
+			Log.Information("Updated schedule: {@updatedSchedule}", updatedSchedule);
 
 			return _mapper.Map<Schedule>(updatedSchedule);
 		}
