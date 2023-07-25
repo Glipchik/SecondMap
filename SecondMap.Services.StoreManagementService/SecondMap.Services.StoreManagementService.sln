@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecondMap.Services.StoreMan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecondMap.Services.StoreManagementService.API", "SecondMap.Services.StoreManagementServices.API\SecondMap.Services.StoreManagementService.API.csproj", "{D38BA4FE-B279-40F1-BE3F-45E9A3CC8439}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondMap.Services.StoreManagementService.BLL.Tests", "SecondMap.Services.StoreManagementService.BLL.Tests\SecondMap.Services.StoreManagementService.BLL.Tests.csproj", "{98157056-7AB4-400E-880B-B4697AAFF4F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondMap.Services.StoreManagementService.BLL.Tests", "SecondMap.Services.StoreManagementService.BLL.Tests\SecondMap.Services.StoreManagementService.BLL.Tests.csproj", "{FC47B3C8-9D1A-49DF-8F39-608AD00ACA22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{D38BA4FE-B279-40F1-BE3F-45E9A3CC8439}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D38BA4FE-B279-40F1-BE3F-45E9A3CC8439}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D38BA4FE-B279-40F1-BE3F-45E9A3CC8439}.Release|Any CPU.Build.0 = Release|Any CPU
-		{98157056-7AB4-400E-880B-B4697AAFF4F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{98157056-7AB4-400E-880B-B4697AAFF4F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{98157056-7AB4-400E-880B-B4697AAFF4F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{98157056-7AB4-400E-880B-B4697AAFF4F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC47B3C8-9D1A-49DF-8F39-608AD00ACA22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC47B3C8-9D1A-49DF-8F39-608AD00ACA22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC47B3C8-9D1A-49DF-8F39-608AD00ACA22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC47B3C8-9D1A-49DF-8F39-608AD00ACA22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
