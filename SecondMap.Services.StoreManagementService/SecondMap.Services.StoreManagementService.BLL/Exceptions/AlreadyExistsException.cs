@@ -7,7 +7,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Exceptions
 	{
 		public AlreadyExistsException()
 		{
-			
+
 		}
 
 		public AlreadyExistsException(string? message) : base(message)

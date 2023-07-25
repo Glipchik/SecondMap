@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using SecondMap.Services.StoreManagementService.API.ViewModels;
-using SecondMap.Services.StoreManagementService.BLL.Constants;
 
 namespace SecondMap.Services.StoreManagementService.API.Helpers.Validators
 {

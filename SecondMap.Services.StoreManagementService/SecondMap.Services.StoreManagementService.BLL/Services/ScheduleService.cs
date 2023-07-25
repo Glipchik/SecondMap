@@ -49,13 +49,13 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<Schedule> UpdateScheduleAsync(Schedule scheduleToUpdate)
 		{
-			var updatedSchedule = await _repository.UpdateAsync(_mapper.Map<ScheduleEntity>(scheduleToUpdate));
-
-			if (updatedSchedule == null)
+			if (await _repository.GetByIdAsync(scheduleToUpdate.Id) == null)
 			{
 				Log.Error("Schedule with id = {@id} not found", scheduleToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.SCHEDULE_NOT_FOUND);
 			}
+
+			var updatedSchedule = await _repository.UpdateAsync(_mapper.Map<ScheduleEntity>(scheduleToUpdate));
 
 			Log.Information("Updated schedule: {@updatedSchedule}", updatedSchedule);
 
@@ -64,10 +64,14 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task DeleteScheduleAsync(int scheduleToDeleteId)
 		{
-			if (await _repository.GetByIdAsync(scheduleToDeleteId) == null)
+			var entityToDelete = await _repository.GetByIdAsync(scheduleToDeleteId);
+			if (entityToDelete == null)
+			{
+				Log.Error("Schedule with id = {@id} not found", scheduleToDeleteId);
 				throw new NotFoundException(ErrorMessages.SCHEDULE_NOT_FOUND);
+			}
 
-			await _repository.DeleteAsync(scheduleToDeleteId);
+			await _repository.DeleteAsync(entityToDelete);
 		}
 	}
 }

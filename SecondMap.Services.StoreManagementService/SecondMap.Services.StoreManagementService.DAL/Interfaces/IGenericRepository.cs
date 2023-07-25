@@ -8,7 +8,7 @@ namespace SecondMap.Services.StoreManagementService.DAL.Interfaces
 
 		public Task<T?> UpdateAsync(T entity);
 
-		public Task DeleteAsync(int id);
+		public Task DeleteAsync(T entity);
 
 		public Task<T?> GetByIdAsync(int id);
 

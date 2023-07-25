@@ -49,13 +49,13 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<User> UpdateUserAsync(User userToUpdate)
 		{
-			var updatedUser = await _repository.UpdateAsync(_mapper.Map<UserEntity>(userToUpdate));
-
-			if (updatedUser == null)
+			if (await _repository.GetByIdAsync(userToUpdate.Id) == null)
 			{
 				Log.Error("User with id = {@id} not found", userToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.USER_NOT_FOUND);
 			}
+
+			var updatedUser = await _repository.UpdateAsync(_mapper.Map<UserEntity>(userToUpdate));
 
 			Log.Information("Updated user: {@addedUser}", updatedUser);
 
@@ -64,10 +64,13 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task DeleteUserAsync(int userToDeleteId)
 		{
-			if (await _repository.GetByIdAsync(userToDeleteId) == null)
+			var entityToDelete = await _repository.GetByIdAsync(userToDeleteId);
+			if (entityToDelete == null)
+			{
+				Log.Error("User with id = {@id} not found", userToDeleteId);
 				throw new NotFoundException(ErrorMessages.USER_NOT_FOUND);
-
-			await _repository.DeleteAsync(userToDeleteId);
+			}
+			await _repository.DeleteAsync(entityToDelete);
 		}
 	}
 }

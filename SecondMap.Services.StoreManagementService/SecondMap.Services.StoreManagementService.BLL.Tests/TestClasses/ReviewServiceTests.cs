@@ -1,20 +1,18 @@
-﻿using SecondMap.Services.StoreManagementService.DAL.Entities;
-
-namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
+﻿namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 {
 	public class ReviewServiceTests
 	{
-		private readonly Mock<IReviewRepository> _reviewRepositoryMock;
+		private readonly Mock<IReviewRepository> _repositoryMock;
 		private readonly IMapper _mapper;
-		private readonly IReviewService _reviewService;
+		private readonly IReviewService _service;
 		private readonly Fixture _fixture;
 		public ReviewServiceTests()
 		{
-			_reviewRepositoryMock = new Mock<IReviewRepository>();
+			_repositoryMock = new Mock<IReviewRepository>();
 			_mapper = new Mapper(new MapperConfiguration(configuration =>
 				configuration.AddProfile<ModelToEntityProfile>()
 				));
-			_reviewService = new ReviewService(_reviewRepositoryMock.Object, _mapper);
+			_service = new ReviewService(_repositoryMock.Object, _mapper);
 			_fixture = new Fixture();
 		}
 
@@ -22,50 +20,48 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 		public async void GetAllAsync_ShouldReturnListOfReviews()
 		{
 			// Arrange
-			var reviewModels = _fixture.Build<Review>().CreateMany().ToList();
-			var reviewEntities = _mapper.Map<IEnumerable<ReviewEntity>>(reviewModels).ToList();
+			var arrangedModels = _fixture.Build<Review>().CreateMany().ToList();
+			var arrangedEntities = _mapper.Map<IEnumerable<ReviewEntity>>(arrangedModels).ToList();
 
-			_reviewRepositoryMock.Setup(r => r.GetAllAsync())
-				.ReturnsAsync(reviewEntities);
+			_repositoryMock.Setup(r => r.GetAllAsync())
+				.ReturnsAsync(arrangedEntities);
 
 			// Act 
-			var reviewsFromTestMethod = (await _reviewService.GetAllAsync()).ToList();
+			var foundModels = (await _service.GetAllAsync()).ToList();
 
 			// Assert
-			reviewsFromTestMethod.Should().AllBeOfType<Review>();
-			reviewsFromTestMethod.Should().HaveCount(reviewModels.Count);
+			foundModels.Should().AllBeOfType<Review>();
+			foundModels.Should().HaveCount(arrangedModels.Count);
 		}
 
 		[Fact]
 		public async void GetByIdAsync_WhenValidId_ShouldReturnReview()
 		{
 			// Arrange
-			var reviewModel = _fixture.Build<Review>().Create();
-			var reviewEntity = _mapper.Map<ReviewEntity>(reviewModel);
+			var arrangedModel = _fixture.Build<Review>().Create();
+			var arrangedEntity = _mapper.Map<ReviewEntity>(arrangedModel);
 
-			_reviewRepositoryMock.Setup(r => r.GetByIdAsync(reviewModel.Id))
-				.ReturnsAsync(reviewEntity);
+			_repositoryMock.Setup(r => r.GetByIdAsync(arrangedModel.Id))
+				.ReturnsAsync(arrangedEntity);
 
 			// Act 
-			var foundReview = await _reviewService.GetByIdAsync(reviewModel.Id);
+			var foundModel = await _service.GetByIdAsync(arrangedModel.Id);
 
 			// Assert
-			foundReview.Should().NotBeNull();
-			foundReview.Should().BeEquivalentTo(reviewModel);
+			foundModel.Should().NotBeNull();
+			foundModel.Should().BeEquivalentTo(arrangedModel);
 		}
 
 		[Fact]
 		public async void GetByIdAsync_WhenInvalidId_ShouldThrowNotFoundException()
 		{
 			// Arrange
-			_reviewRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
+			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
 				.ReturnsAsync(value: null);
 
 			// Act and Assert
-
-			var exception = await Assert.ThrowsAsync<Exception>(
-				async () => await _reviewService.GetByIdAsync(It.IsAny<int>()));
-
+			var exception = await Assert.ThrowsAsync<NotFoundException>(
+				async () => await _service.GetByIdAsync(It.IsAny<int>()));
 			exception.Message.Should().BeEquivalentTo(ErrorMessages.REVIEW_NOT_FOUND);
 		}
 
@@ -73,51 +69,87 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 		public async void AddReviewAsync_WhenValidModel_ShouldReturnAddedModel()
 		{
 			// Arrange
-			var reviewModel = _fixture.Build<Review>().Create();
-			var reviewEntity = _mapper.Map<ReviewEntity>(reviewModel);
+			var arrangedModel = _fixture.Build<Review>().Create();
+			var arrangedEntity = _mapper.Map<ReviewEntity>(arrangedModel);
 
-			_reviewRepositoryMock.Setup(r => r.AddAsync(It.IsAny<ReviewEntity>()))
-				.ReturnsAsync(reviewEntity);
+			_repositoryMock.Setup(r => r.AddAsync(It.IsAny<ReviewEntity>()))
+				.ReturnsAsync(arrangedEntity);
 
 			// Act
-			var addedReview = await _reviewService.AddReviewAsync(reviewModel);
+			var addedModel = await _service.AddReviewAsync(arrangedModel);
 
 			// Assert
-			addedReview.Should().NotBeNull();
-			addedReview.Should().BeOfType<Review>();
-			addedReview.Should().BeEquivalentTo(reviewModel);
+			addedModel.Should().NotBeNull();
+			addedModel.Should().BeOfType<Review>();
+			addedModel.Should().BeEquivalentTo(arrangedModel);
 		}
 
 		[Fact]
 		public async Task UpdateReviewAsync_WhenValidReview_ShouldReturnUpdatedReview()
 		{
 			// Arrange
-			var reviewModel = _fixture.Build<Review>().Create();
-			var reviewEntity = _mapper.Map<ReviewEntity>(reviewModel);
+			var arrangedModel = _fixture.Build<Review>().Create();
+			var arrangedEntity = _mapper.Map<ReviewEntity>(arrangedModel);
 
-			_reviewRepositoryMock.Setup(r => r.UpdateAsync(It.IsAny<ReviewEntity>()))
-				.ReturnsAsync(reviewEntity);
+			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
+				.ReturnsAsync(arrangedEntity);
+
+			_repositoryMock.Setup(r => r.UpdateAsync(It.IsAny<ReviewEntity>()))
+				.ReturnsAsync(arrangedEntity);
 
 			// Act
-			var updatedReview = await _reviewService.UpdateReviewAsync(reviewModel);
+			var updatedModel = await _service.UpdateReviewAsync(arrangedModel);
 
 			// Assert
-			updatedReview.Should().NotBeNull();
-			updatedReview.Should().BeEquivalentTo(reviewModel);
+			updatedModel.Should().NotBeNull();
+			updatedModel.Should().BeEquivalentTo(arrangedModel);
+		}
+
+		[Fact]
+		public async Task UpdateReviewAsync_WhenInvalidReview_ShouldThrowNotFoundException()
+		{
+			// Arrange
+			var arrangedModel = _fixture.Build<Review>().Create();
+
+			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
+				.ReturnsAsync(value: null);
+
+			// Act and Assert
+			var exception = await Assert.ThrowsAsync<NotFoundException>(
+				() => _service.UpdateReviewAsync(arrangedModel));
+
+			exception.Message.Should().BeEquivalentTo(ErrorMessages.REVIEW_NOT_FOUND);
 		}
 
 		[Fact]
 		public async Task DeleteReviewAsync_WhenValidId_ShouldDeleteReview()
 		{
 			// Arrange
-			_reviewRepositoryMock.Setup(r => r.DeleteAsync(It.IsAny<int>()))
-				.ReturnsAsync(true);
+			var arrangedEntity = _fixture.Build<ReviewEntity>().Create();
+			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
+				.ReturnsAsync(arrangedEntity);
+
+			_repositoryMock.Setup(r => r.DeleteAsync(It.IsAny<ReviewEntity>()))
+				.Returns(Task.CompletedTask);
 
 			// Act
-			await _reviewService.DeleteReviewAsync(It.IsAny<int>());
+			await _service.DeleteReviewAsync(It.IsAny<int>());
 
 			// Assert
-			_reviewRepositoryMock.Verify(r => r.DeleteAsync(It.IsAny<int>()), Times.Once);
+			_repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<ReviewEntity>()), Times.Once);
+		}
+
+		[Fact]
+		public async Task DeleteReviewAsync_WhenInvalidId_ShouldThrowNotFoundException()
+		{
+			// Arrange
+			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
+				.ReturnsAsync(value: null);
+
+			// Act and Assert
+			var exception = await Assert.ThrowsAsync<NotFoundException>(
+				() => _service.DeleteReviewAsync(It.IsAny<int>()));
+			exception.Message.Should().BeEquivalentTo(ErrorMessages.REVIEW_NOT_FOUND);
 		}
 	}
 }

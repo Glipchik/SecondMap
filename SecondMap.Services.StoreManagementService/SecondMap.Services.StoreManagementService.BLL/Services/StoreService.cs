@@ -49,13 +49,13 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<Store> UpdateStoreAsync(Store storeToUpdate)
 		{
-			var updatedStore = await _repository.UpdateAsync(_mapper.Map<StoreEntity>(storeToUpdate));
-
-			if (updatedStore == null)
+			if (await _repository.GetByIdAsync(storeToUpdate.Id) == null)
 			{
 				Log.Error("Store with id = {@id} not found", storeToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.STORE_NOT_FOUND);
 			}
+
+			var updatedStore = await _repository.UpdateAsync(_mapper.Map<StoreEntity>(storeToUpdate));
 
 			Log.Information("Updated store: {@updatedStore}", updatedStore);
 
@@ -64,10 +64,14 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task DeleteStoreAsync(int storeToDeleteId)
 		{
-			if (await _repository.GetByIdAsync(storeToDeleteId) == null)
+			var entityToDelete = await _repository.GetByIdAsync(storeToDeleteId);
+			if (entityToDelete == null)
+			{
+				Log.Error("Store with id = {@id} not found", storeToDeleteId);
 				throw new NotFoundException(ErrorMessages.STORE_NOT_FOUND);
+			}
 
-			await _repository.DeleteAsync(storeToDeleteId);
+			await _repository.DeleteAsync(entityToDelete);
 		}
 	}
 }
