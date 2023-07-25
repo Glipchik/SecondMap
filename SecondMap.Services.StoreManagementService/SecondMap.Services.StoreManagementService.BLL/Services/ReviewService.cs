@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SecondMap.Services.StoreManagementService.BLL.Constants;
+using SecondMap.Services.StoreManagementService.BLL.Exceptions;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 using SecondMap.Services.StoreManagementService.DAL.Entities;
@@ -31,7 +32,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 			if (foundReview == null)
 			{
 				Log.Error("Review with id = {@id} not found", id);
-				throw new Exception(ErrorMessages.REVIEW_NOT_FOUND);
+				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
 			}
 
 			return _mapper.Map<Review>(foundReview);
@@ -52,8 +53,8 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (updatedReview == null)
 			{
-				Log.Error("Review with id = {@id} not found", reviewToUpdate.Id);
-				throw new Exception(ErrorMessages.REVIEW_NOT_FOUND);
+        Log.Error("Review with id = {@id} not found", reviewToUpdate.Id);
+				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
 			}
 
 			Log.Information("Updated review: {@updatedReview}", updatedReview);
