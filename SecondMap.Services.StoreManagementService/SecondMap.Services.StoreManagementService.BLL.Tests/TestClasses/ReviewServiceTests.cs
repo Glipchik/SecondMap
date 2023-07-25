@@ -59,10 +59,11 @@
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
 				.ReturnsAsync(value: null);
 
-			// Act and Assert
-			var exception = await Assert.ThrowsAsync<NotFoundException>(
-				async () => await _service.GetByIdAsync(It.IsAny<int>()));
-			exception.Message.Should().BeEquivalentTo(ErrorMessages.REVIEW_NOT_FOUND);
+			// Act
+			var act = async () => await _service.GetByIdAsync(It.IsAny<int>());
+
+			// Assert
+			await act.Should().ThrowAsync<NotFoundException>().WithMessage(ErrorMessages.REVIEW_NOT_FOUND);
 		}
 
 		[Fact]
@@ -114,11 +115,11 @@
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
 				.ReturnsAsync(value: null);
 
-			// Act and Assert
-			var exception = await Assert.ThrowsAsync<NotFoundException>(
-				() => _service.UpdateReviewAsync(arrangedModel));
+			// Act
+			var act = async () => await _service.UpdateReviewAsync(arrangedModel);
 
-			exception.Message.Should().BeEquivalentTo(ErrorMessages.REVIEW_NOT_FOUND);
+			// Assert
+			await act.Should().ThrowAsync<NotFoundException>().WithMessage(ErrorMessages.REVIEW_NOT_FOUND);
 		}
 
 		[Fact]
@@ -146,10 +147,11 @@
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
 				.ReturnsAsync(value: null);
 
-			// Act and Assert
-			var exception = await Assert.ThrowsAsync<NotFoundException>(
-				() => _service.DeleteReviewAsync(It.IsAny<int>()));
-			exception.Message.Should().BeEquivalentTo(ErrorMessages.REVIEW_NOT_FOUND);
+			// Act
+			var act = async () => await _service.DeleteReviewAsync(It.IsAny<int>());
+
+			// Assert
+			await act.Should().ThrowAsync<NotFoundException>().WithMessage(ErrorMessages.REVIEW_NOT_FOUND);
 		}
 	}
 }
