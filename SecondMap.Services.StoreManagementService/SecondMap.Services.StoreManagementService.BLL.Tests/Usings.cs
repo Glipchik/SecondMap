@@ -11,4 +11,3 @@ global using SecondMap.Services.StoreManagementService.DAL.Interfaces;
 global using Xunit;
 global using AutoFixture.Xunit2;
 
-;
