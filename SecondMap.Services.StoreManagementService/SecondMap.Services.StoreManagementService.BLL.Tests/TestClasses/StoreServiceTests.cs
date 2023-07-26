@@ -1,80 +1,91 @@
-﻿namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
+﻿using AutoFixture.Xunit2;
+using Xunit.Abstractions;
+using Xunit.Sdk;
+
+namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 {
 	public class StoreServiceTests
 	{
 		private readonly Mock<IStoreRepository> _repositoryMock;
-		private readonly IMapper _mapper;
-		private readonly IStoreService _service;
-		private readonly Fixture _fixture;
+		private readonly Mock<IMapper> _mapperMock;
+		private readonly StoreService _service;
 		public StoreServiceTests()
 		{
 			_repositoryMock = new Mock<IStoreRepository>();
-			_mapper = new Mapper(new MapperConfiguration(configuration =>
-				configuration.AddProfile<ModelToEntityProfile>()
-				));
-			_service = new StoreService(_repositoryMock.Object, _mapper);
-			_fixture = new Fixture();
+			_mapperMock = new Mock<IMapper>();
+			_service = new StoreService(_repositoryMock.Object, _mapperMock.Object);
 		}
 
-		[Fact]
-		public async void GetAllAsync_ShouldReturnListOfStores()
+		[Theory]
+		[AutoMoqData]
+		public async Task GetAllAsync_ShouldReturnListOfStores(
+			List<StoreEntity> arrangedEntities,
+			[Frozen] List<Store> arrangedModels)
 		{
 			// Arrange
-			var arrangedModels = _fixture.Build<Store>().CreateMany().ToList();
-			var arrangedEntities = _mapper.Map<IEnumerable<StoreEntity>>(arrangedModels).ToList();
-
 			_repositoryMock.Setup(r => r.GetAllAsync())
 				.ReturnsAsync(arrangedEntities);
+
+			_mapperMock.Setup(m => m.Map<IEnumerable<Store>>(It.IsAny<IEnumerable<StoreEntity>>()))
+				.Returns(arrangedModels);
 
 			// Act 
 			var foundModels = (await _service.GetAllAsync()).ToList();
 
 			// Assert
+			foundModels.Should().BeOfType<List<Store>>();
 			foundModels.Should().AllBeOfType<Store>();
-			foundModels.Should().HaveCount(arrangedModels.Count);
+			foundModels.Should().BeEquivalentTo(arrangedModels);
 		}
 
-		[Fact]
-		public async void GetByIdAsync_WhenValidId_ShouldReturnStore()
+		[Theory]
+		[AutoMoqData]
+		public async Task GetByIdAsync_WhenValidId_ShouldReturnStore(
+			StoreEntity StoreEntity,
+			[Frozen] Store arrangedModel)
 		{
 			// Arrange
-			var arrangedModel = _fixture.Build<Store>().Create();
-			var arrangedEntity = _mapper.Map<StoreEntity>(arrangedModel);
+			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
+				.ReturnsAsync(StoreEntity);
 
-			_repositoryMock.Setup(r => r.GetByIdAsync(arrangedModel.Id))
-				.ReturnsAsync(arrangedEntity);
+			_mapperMock.Setup(m => m.Map<Store>(StoreEntity))
+				.Returns(arrangedModel);
 
 			// Act 
-			var foundModel = await _service.GetByIdAsync(arrangedModel.Id);
+			var foundModel = await _service.GetByIdAsync(It.IsAny<int>());
 
 			// Assert
 			foundModel.Should().NotBeNull();
+			foundModel.Should().BeOfType<Store>();
 			foundModel.Should().BeEquivalentTo(arrangedModel);
 		}
 
 		[Fact]
-		public async void GetByIdAsync_WhenInvalidId_ShouldThrowNotFoundException()
+		public async Task GetByIdAsync_WhenInvalidId_ShouldThrowNotFoundException()
 		{
 			// Arrange
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
 				.ReturnsAsync(value: null);
 
 			// Act
-			var act = async () => await _service.GetByIdAsync(It.IsAny<int>());
+			var act = () => _service.GetByIdAsync(It.IsAny<int>());
 
-			// Assert
-			await act.Should().ThrowAsync<NotFoundException>().WithMessage(ErrorMessages.STORE_NOT_FOUND);
+			await act.Should().ThrowAsync<NotFoundException>()
+				.WithMessage(ErrorMessages.STORE_NOT_FOUND);
 		}
 
-		[Fact]
-		public async void AddStoreAsync_WhenValidModel_ShouldReturnAddedModel()
+		[Theory]
+		[AutoMoqData]
+		public async Task AddStoreAsync_WhenValidModel_ShouldReturnAddedModel(
+			StoreEntity arrangedEntity,
+			[Frozen] Store arrangedModel)
 		{
 			// Arrange
-			var arrangedModel = _fixture.Build<Store>().Create();
-			var arrangedEntity = _mapper.Map<StoreEntity>(arrangedModel);
-
 			_repositoryMock.Setup(r => r.AddAsync(It.IsAny<StoreEntity>()))
 				.ReturnsAsync(arrangedEntity);
+
+			_mapperMock.Setup(m => m.Map<Store>(It.IsAny<StoreEntity>()))
+				.Returns(arrangedModel);
 
 			// Act
 			var addedModel = await _service.AddStoreAsync(arrangedModel);
@@ -85,48 +96,53 @@
 			addedModel.Should().BeEquivalentTo(arrangedModel);
 		}
 
-		[Fact]
-		public async Task UpdateStoreAsync_WhenValidStore_ShouldReturnUpdatedStore()
+		[Theory]
+		[AutoMoqData]
+		public async Task UpdateStoreAsync_WhenValidStore_ShouldReturnUpdatedStore(
+			StoreEntity arrangedEntity,
+			[Frozen] Store arrangedModel)
 		{
 			// Arrange
-			var arrangedModel = _fixture.Build<Store>().Create();
-			var arrangedEntity = _mapper.Map<StoreEntity>(arrangedModel);
-
-			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
-				.ReturnsAsync(arrangedEntity);
+			_repositoryMock.Setup(r => r.ExistsWithId(It.IsAny<int>()))
+				.ReturnsAsync(true);
 
 			_repositoryMock.Setup(r => r.UpdateAsync(It.IsAny<StoreEntity>()))
 				.ReturnsAsync(arrangedEntity);
+
+			_mapperMock.Setup(m => m.Map<Store>(It.IsAny<StoreEntity>()))
+				.Returns(arrangedModel);
 
 			// Act
 			var updatedModel = await _service.UpdateStoreAsync(arrangedModel);
 
 			// Assert
 			updatedModel.Should().NotBeNull();
+			updatedModel.Should().BeOfType<Store>();
 			updatedModel.Should().BeEquivalentTo(arrangedModel);
 		}
 
-		[Fact]
-		public async Task UpdateStoreAsync_WhenInvalidStore_ShouldThrowNotFoundException()
+		[Theory]
+		[AutoMoqData]
+		public async Task UpdateStoreAsync_WhenInvalidStore_ShouldThrowNotFoundException(
+			Store arrangedStore)
 		{
 			// Arrange
-			var arrangedModel = _fixture.Build<Store>().Create();
-
-			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
-				.ReturnsAsync(value: null);
+			_repositoryMock.Setup(r => r.ExistsWithId(It.IsAny<int>()))
+				.ReturnsAsync(false);
 
 			// Act
-			var act = async () => await _service.UpdateStoreAsync(arrangedModel);
+			var act = () => _service.UpdateStoreAsync(arrangedStore);
 
 			// Assert
 			await act.Should().ThrowAsync<NotFoundException>().WithMessage(ErrorMessages.STORE_NOT_FOUND);
 		}
 
-		[Fact]
-		public async Task DeleteStoreAsync_WhenValidId_ShouldDeleteStore()
+		[Theory]
+		[AutoMoqData]
+		public async Task DeleteStoreAsync_WhenValidId_ShouldDeleteStore(
+			StoreEntity arrangedEntity)
 		{
 			// Arrange
-			var arrangedEntity = _fixture.Build<StoreEntity>().Create();
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
 				.ReturnsAsync(arrangedEntity);
 

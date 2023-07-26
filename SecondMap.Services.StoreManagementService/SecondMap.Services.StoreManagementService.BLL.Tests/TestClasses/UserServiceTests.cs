@@ -1,80 +1,91 @@
-﻿namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
+﻿using AutoFixture.Xunit2;
+using Xunit.Abstractions;
+using Xunit.Sdk;
+
+namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 {
 	public class UserServiceTests
 	{
 		private readonly Mock<IUserRepository> _repositoryMock;
-		private readonly IMapper _mapper;
-		private readonly IUserService _service;
-		private readonly Fixture _fixture;
+		private readonly Mock<IMapper> _mapperMock;
+		private readonly UserService _service;
 		public UserServiceTests()
 		{
 			_repositoryMock = new Mock<IUserRepository>();
-			_mapper = new Mapper(new MapperConfiguration(configuration =>
-				configuration.AddProfile<ModelToEntityProfile>()
-				));
-			_service = new UserService(_repositoryMock.Object, _mapper);
-			_fixture = new Fixture();
+			_mapperMock = new Mock<IMapper>();
+			_service = new UserService(_repositoryMock.Object, _mapperMock.Object);
 		}
 
-		[Fact]
-		public async void GetAllAsync_ShouldReturnListOfUsers()
+		[Theory]
+		[AutoMoqData]
+		public async Task GetAllAsync_ShouldReturnListOfUsers(
+			List<UserEntity> arrangedEntities,
+			[Frozen] List<User> arrangedModels)
 		{
 			// Arrange
-			var arrangedModels = _fixture.Build<User>().CreateMany().ToList();
-			var arrangedEntities = _mapper.Map<IEnumerable<UserEntity>>(arrangedModels).ToList();
-
 			_repositoryMock.Setup(r => r.GetAllAsync())
 				.ReturnsAsync(arrangedEntities);
+
+			_mapperMock.Setup(m => m.Map<IEnumerable<User>>(It.IsAny<IEnumerable<UserEntity>>()))
+				.Returns(arrangedModels);
 
 			// Act 
 			var foundModels = (await _service.GetAllAsync()).ToList();
 
 			// Assert
+			foundModels.Should().BeOfType<List<User>>();
 			foundModels.Should().AllBeOfType<User>();
-			foundModels.Should().HaveCount(arrangedModels.Count);
+			foundModels.Should().BeEquivalentTo(arrangedModels);
 		}
 
-		[Fact]
-		public async void GetByIdAsync_WhenValidId_ShouldReturnUser()
+		[Theory]
+		[AutoMoqData]
+		public async Task GetByIdAsync_WhenValidId_ShouldReturnUser(
+			UserEntity UserEntity,
+			[Frozen] User arrangedModel)
 		{
 			// Arrange
-			var arrangedModel = _fixture.Build<User>().Create();
-			var arrangedEntity = _mapper.Map<UserEntity>(arrangedModel);
+			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
+				.ReturnsAsync(UserEntity);
 
-			_repositoryMock.Setup(r => r.GetByIdAsync(arrangedModel.Id))
-				.ReturnsAsync(arrangedEntity);
+			_mapperMock.Setup(m => m.Map<User>(UserEntity))
+				.Returns(arrangedModel);
 
 			// Act 
-			var foundModel = await _service.GetByIdAsync(arrangedModel.Id);
+			var foundModel = await _service.GetByIdAsync(It.IsAny<int>());
 
 			// Assert
 			foundModel.Should().NotBeNull();
+			foundModel.Should().BeOfType<User>();
 			foundModel.Should().BeEquivalentTo(arrangedModel);
 		}
 
 		[Fact]
-		public async void GetByIdAsync_WhenInvalidId_ShouldThrowNotFoundException()
+		public async Task GetByIdAsync_WhenInvalidId_ShouldThrowNotFoundException()
 		{
 			// Arrange
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
 				.ReturnsAsync(value: null);
 
 			// Act
-			var act = async () => await _service.GetByIdAsync(It.IsAny<int>());
+			var act = () => _service.GetByIdAsync(It.IsAny<int>());
 
-			// Assert
-			await act.Should().ThrowAsync<NotFoundException>().WithMessage(ErrorMessages.USER_NOT_FOUND);
+			await act.Should().ThrowAsync<NotFoundException>()
+				.WithMessage(ErrorMessages.USER_NOT_FOUND);
 		}
 
-		[Fact]
-		public async void AddUserAsync_WhenValidModel_ShouldReturnAddedModel()
+		[Theory]
+		[AutoMoqData]
+		public async Task AddUserAsync_WhenValidModel_ShouldReturnAddedModel(
+			UserEntity arrangedEntity,
+			[Frozen] User arrangedModel)
 		{
 			// Arrange
-			var arrangedModel = _fixture.Build<User>().Create();
-			var arrangedEntity = _mapper.Map<UserEntity>(arrangedModel);
-
 			_repositoryMock.Setup(r => r.AddAsync(It.IsAny<UserEntity>()))
 				.ReturnsAsync(arrangedEntity);
+
+			_mapperMock.Setup(m => m.Map<User>(It.IsAny<UserEntity>()))
+				.Returns(arrangedModel);
 
 			// Act
 			var addedModel = await _service.AddUserAsync(arrangedModel);
@@ -85,48 +96,53 @@
 			addedModel.Should().BeEquivalentTo(arrangedModel);
 		}
 
-		[Fact]
-		public async Task UpdateUserAsync_WhenValidUser_ShouldReturnUpdatedUser()
+		[Theory]
+		[AutoMoqData]
+		public async Task UpdateUserAsync_WhenValidUser_ShouldReturnUpdatedUser(
+			UserEntity arrangedEntity,
+			[Frozen] User arrangedModel)
 		{
 			// Arrange
-			var arrangedModel = _fixture.Build<User>().Create();
-			var arrangedEntity = _mapper.Map<UserEntity>(arrangedModel);
-
-			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
-				.ReturnsAsync(arrangedEntity);
+			_repositoryMock.Setup(r => r.ExistsWithId(It.IsAny<int>()))
+				.ReturnsAsync(true);
 
 			_repositoryMock.Setup(r => r.UpdateAsync(It.IsAny<UserEntity>()))
 				.ReturnsAsync(arrangedEntity);
+
+			_mapperMock.Setup(m => m.Map<User>(It.IsAny<UserEntity>()))
+				.Returns(arrangedModel);
 
 			// Act
 			var updatedModel = await _service.UpdateUserAsync(arrangedModel);
 
 			// Assert
 			updatedModel.Should().NotBeNull();
+			updatedModel.Should().BeOfType<User>();
 			updatedModel.Should().BeEquivalentTo(arrangedModel);
 		}
 
-		[Fact]
-		public async Task UpdateUserAsync_WhenInvalidUser_ShouldThrowNotFoundException()
+		[Theory]
+		[AutoMoqData]
+		public async Task UpdateUserAsync_WhenInvalidUser_ShouldThrowNotFoundException(
+			User arrangedUser)
 		{
 			// Arrange
-			var arrangedModel = _fixture.Build<User>().Create();
-
-			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
-				.ReturnsAsync(value: null);
+			_repositoryMock.Setup(r => r.ExistsWithId(It.IsAny<int>()))
+				.ReturnsAsync(false);
 
 			// Act
-			var act = async () => await _service.UpdateUserAsync(arrangedModel);
+			var act = () => _service.UpdateUserAsync(arrangedUser);
 
 			// Assert
 			await act.Should().ThrowAsync<NotFoundException>().WithMessage(ErrorMessages.USER_NOT_FOUND);
 		}
 
-		[Fact]
-		public async Task DeleteUserAsync_WhenValidId_ShouldDeleteUser()
+		[Theory]
+		[AutoMoqData]
+		public async Task DeleteUserAsync_WhenValidId_ShouldDeleteUser(
+			UserEntity arrangedEntity)
 		{
 			// Arrange
-			var arrangedEntity = _fixture.Build<UserEntity>().Create();
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
 				.ReturnsAsync(arrangedEntity);
 

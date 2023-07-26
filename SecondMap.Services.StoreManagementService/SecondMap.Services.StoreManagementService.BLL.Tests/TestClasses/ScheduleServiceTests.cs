@@ -1,80 +1,91 @@
-﻿namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
+﻿using AutoFixture.Xunit2;
+using Xunit.Abstractions;
+using Xunit.Sdk;
+
+namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 {
 	public class ScheduleServiceTests
 	{
 		private readonly Mock<IScheduleRepository> _repositoryMock;
-		private readonly IMapper _mapper;
-		private readonly IScheduleService _service;
-		private readonly Fixture _fixture;
+		private readonly Mock<IMapper> _mapperMock;
+		private readonly ScheduleService _service;
 		public ScheduleServiceTests()
 		{
 			_repositoryMock = new Mock<IScheduleRepository>();
-			_mapper = new Mapper(new MapperConfiguration(configuration =>
-				configuration.AddProfile<ModelToEntityProfile>()
-				));
-			_service = new ScheduleService(_repositoryMock.Object, _mapper);
-			_fixture = new Fixture();
+			_mapperMock = new Mock<IMapper>();
+			_service = new ScheduleService(_repositoryMock.Object, _mapperMock.Object);
 		}
 
-		[Fact]
-		public async void GetAllAsync_ShouldReturnListOfSchedules()
+		[Theory]
+		[AutoMoqData]
+		public async Task GetAllAsync_ShouldReturnListOfSchedules(
+			List<ScheduleEntity> arrangedEntities,
+			[Frozen] List<Schedule> arrangedModels)
 		{
 			// Arrange
-			var arrangedModels = _fixture.Build<Schedule>().CreateMany().ToList();
-			var arrangedEntities = _mapper.Map<IEnumerable<ScheduleEntity>>(arrangedModels).ToList();
-
 			_repositoryMock.Setup(r => r.GetAllAsync())
 				.ReturnsAsync(arrangedEntities);
 
+			_mapperMock.Setup(m => m.Map<IEnumerable<Schedule>>(It.IsAny<IEnumerable<ScheduleEntity>>()))
+				.Returns(arrangedModels);
+
 			// Act 
 			var foundModels = (await _service.GetAllAsync()).ToList();
-			
+
 			// Assert
+			foundModels.Should().BeOfType<List<Schedule>>();
 			foundModels.Should().AllBeOfType<Schedule>();
-			foundModels.Should().HaveCount(arrangedModels.Count);
+			foundModels.Should().BeEquivalentTo(arrangedModels);
 		}
 
-		[Fact]
-		public async void GetByIdAsync_WhenValidId_ShouldReturnSchedule()
+		[Theory]
+		[AutoMoqData]
+		public async Task GetByIdAsync_WhenValidId_ShouldReturnSchedule(
+			ScheduleEntity ScheduleEntity,
+			[Frozen] Schedule arrangedModel)
 		{
 			// Arrange
-			var arrangedModel = _fixture.Build<Schedule>().Create();
-			var arrangedEntity = _mapper.Map<ScheduleEntity>(arrangedModel);
+			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
+				.ReturnsAsync(ScheduleEntity);
 
-			_repositoryMock.Setup(r => r.GetByIdAsync(arrangedModel.Id))
-				.ReturnsAsync(arrangedEntity);
+			_mapperMock.Setup(m => m.Map<Schedule>(ScheduleEntity))
+				.Returns(arrangedModel);
 
 			// Act 
-			var foundModel = await _service.GetByIdAsync(arrangedModel.Id);
+			var foundModel = await _service.GetByIdAsync(It.IsAny<int>());
 
 			// Assert
 			foundModel.Should().NotBeNull();
+			foundModel.Should().BeOfType<Schedule>();
 			foundModel.Should().BeEquivalentTo(arrangedModel);
 		}
 
 		[Fact]
-		public async void GetByIdAsync_WhenInvalidId_ShouldThrowNotFoundException()
+		public async Task GetByIdAsync_WhenInvalidId_ShouldThrowNotFoundException()
 		{
 			// Arrange
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
 				.ReturnsAsync(value: null);
 
 			// Act
-			var act = async () => await _service.GetByIdAsync(It.IsAny<int>());
+			var act = () => _service.GetByIdAsync(It.IsAny<int>());
 
-			// Assert
-			await act.Should().ThrowAsync<NotFoundException>().WithMessage(ErrorMessages.SCHEDULE_NOT_FOUND);
+			await act.Should().ThrowAsync<NotFoundException>()
+				.WithMessage(ErrorMessages.SCHEDULE_NOT_FOUND);
 		}
 
-		[Fact]
-		public async void AddScheduleAsync_WhenValidModel_ShouldReturnAddedModel()
+		[Theory]
+		[AutoMoqData]
+		public async Task AddScheduleAsync_WhenValidModel_ShouldReturnAddedModel(
+			ScheduleEntity arrangedEntity,
+			[Frozen] Schedule arrangedModel)
 		{
 			// Arrange
-			var arrangedModel = _fixture.Build<Schedule>().Create();
-			var arrangedEntity = _mapper.Map<ScheduleEntity>(arrangedModel);
-
 			_repositoryMock.Setup(r => r.AddAsync(It.IsAny<ScheduleEntity>()))
 				.ReturnsAsync(arrangedEntity);
+
+			_mapperMock.Setup(m => m.Map<Schedule>(It.IsAny<ScheduleEntity>()))
+				.Returns(arrangedModel);
 
 			// Act
 			var addedModel = await _service.AddScheduleAsync(arrangedModel);
@@ -85,48 +96,53 @@
 			addedModel.Should().BeEquivalentTo(arrangedModel);
 		}
 
-		[Fact]
-		public async Task UpdateScheduleAsync_WhenValidSchedule_ShouldReturnUpdatedSchedule()
+		[Theory]
+		[AutoMoqData]
+		public async Task UpdateScheduleAsync_WhenValidSchedule_ShouldReturnUpdatedSchedule(
+			ScheduleEntity arrangedEntity,
+			[Frozen] Schedule arrangedModel)
 		{
 			// Arrange
-			var arrangedModel = _fixture.Build<Schedule>().Create();
-			var arrangedEntity = _mapper.Map<ScheduleEntity>(arrangedModel);
-
-			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
-				.ReturnsAsync(arrangedEntity);
+			_repositoryMock.Setup(r => r.ExistsWithId(It.IsAny<int>()))
+				.ReturnsAsync(true);
 
 			_repositoryMock.Setup(r => r.UpdateAsync(It.IsAny<ScheduleEntity>()))
 				.ReturnsAsync(arrangedEntity);
+
+			_mapperMock.Setup(m => m.Map<Schedule>(It.IsAny<ScheduleEntity>()))
+				.Returns(arrangedModel);
 
 			// Act
 			var updatedModel = await _service.UpdateScheduleAsync(arrangedModel);
 
 			// Assert
 			updatedModel.Should().NotBeNull();
+			updatedModel.Should().BeOfType<Schedule>();
 			updatedModel.Should().BeEquivalentTo(arrangedModel);
 		}
 
-		[Fact]
-		public async Task UpdateScheduleAsync_WhenInvalidSchedule_ShouldThrowNotFoundException()
+		[Theory]
+		[AutoMoqData]
+		public async Task UpdateScheduleAsync_WhenInvalidSchedule_ShouldThrowNotFoundException(
+			Schedule arrangedSchedule)
 		{
 			// Arrange
-			var arrangedModel = _fixture.Build<Schedule>().Create();
-
-			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
-				.ReturnsAsync(value: null);
+			_repositoryMock.Setup(r => r.ExistsWithId(It.IsAny<int>()))
+				.ReturnsAsync(false);
 
 			// Act
-			var act = async () => await _service.UpdateScheduleAsync(arrangedModel);
+			var act = () => _service.UpdateScheduleAsync(arrangedSchedule);
 
 			// Assert
 			await act.Should().ThrowAsync<NotFoundException>().WithMessage(ErrorMessages.SCHEDULE_NOT_FOUND);
 		}
 
-		[Fact]
-		public async Task DeleteScheduleAsync_WhenValidId_ShouldDeleteSchedule()
+		[Theory]
+		[AutoMoqData]
+		public async Task DeleteScheduleAsync_WhenValidId_ShouldDeleteSchedule(
+			ScheduleEntity arrangedEntity)
 		{
 			// Arrange
-			var arrangedEntity = _fixture.Build<ScheduleEntity>().Create();
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
 				.ReturnsAsync(arrangedEntity);
 

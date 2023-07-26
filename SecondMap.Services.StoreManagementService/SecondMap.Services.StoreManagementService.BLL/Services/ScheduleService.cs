@@ -49,7 +49,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<Schedule> UpdateScheduleAsync(Schedule scheduleToUpdate)
 		{
-			if (await _repository.ExistsWithId(scheduleToUpdate.Id))
+			if (!await _repository.ExistsWithId(scheduleToUpdate.Id))
 			{
 				Log.Error("Schedule with id = {@id} not found", scheduleToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.SCHEDULE_NOT_FOUND);
