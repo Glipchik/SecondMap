@@ -1,4 +1,4 @@
-﻿namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
+﻿namespace SecondMap.Services.StoreManagementService.UnitTests.TestClasses.Services
 {
 	public class ScheduleServiceTests
 	{

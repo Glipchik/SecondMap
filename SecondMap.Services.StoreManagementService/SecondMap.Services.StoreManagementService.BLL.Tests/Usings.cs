@@ -10,4 +10,7 @@ global using SecondMap.Services.StoreManagementService.DAL.Entities;
 global using SecondMap.Services.StoreManagementService.DAL.Interfaces;
 global using Xunit;
 global using AutoFixture.Xunit2;
-
+global using AutoFixture.AutoMoq;
+global using SecondMap.Services.StoreManagementService.UnitTests.Utilities;
+global using SecondMap.Services.StoreManagementService.DAL.Context;
+global using SecondMap.Services.StoreManagementService.DAL.Repositories;

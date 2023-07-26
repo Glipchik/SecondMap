@@ -1,7 +1,4 @@
-﻿using AutoFixture.AutoMoq;
-using AutoFixture.Xunit2;
-
-namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
+﻿namespace SecondMap.Services.StoreManagementService.UnitTests.Utilities
 {
 	public class AutoMoqDataAttribute : AutoDataAttribute
 	{
