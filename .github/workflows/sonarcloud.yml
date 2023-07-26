@@ -41,7 +41,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          EXCLUDE_FROM_COVERAGE: " **/Program.cs, **/Helpers/**/*, **/ViewModels/*, **/Constants/*, **/Exceptions/*, **/Middleware/*, **Controllers/*, **/Services/*"
+          EXCLUDE_FROM_COVERAGE: " **/Program.cs, **/Helpers/**/*, **/ViewModels/*, **/Constants/*, **/Exceptions/*, **/Middleware/*, **Controllers/*, **/Services/*, **/Repositories/*, **/Extensions/*"
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"Glipchik_SecondMap" /o:"glebgang" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverage.exclusions="${{ env.EXCLUDE_FROM_COVERAGE }}"
