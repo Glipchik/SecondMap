@@ -5,6 +5,7 @@
 		private readonly Mock<IUserRepository> _repositoryMock;
 		private readonly Mock<IMapper> _mapperMock;
 		private readonly UserService _service;
+
 		public UserServiceTests()
 		{
 			_repositoryMock = new Mock<IUserRepository>();

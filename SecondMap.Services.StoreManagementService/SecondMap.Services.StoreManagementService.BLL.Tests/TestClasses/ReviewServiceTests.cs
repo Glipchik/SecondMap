@@ -5,6 +5,7 @@
 		private readonly Mock<IReviewRepository> _repositoryMock;
 		private readonly Mock<IMapper> _mapperMock;
 		private readonly ReviewService _service;
+
 		public ReviewServiceTests()
 		{
 			_repositoryMock = new Mock<IReviewRepository>();

@@ -5,6 +5,7 @@
 		private readonly Mock<IStoreRepository> _repositoryMock;
 		private readonly Mock<IMapper> _mapperMock;
 		private readonly StoreService _service;
+
 		public StoreServiceTests()
 		{
 			_repositoryMock = new Mock<IStoreRepository>();

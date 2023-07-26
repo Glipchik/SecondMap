@@ -5,6 +5,7 @@
 		private readonly Mock<IScheduleRepository> _repositoryMock;
 		private readonly Mock<IMapper> _mapperMock;
 		private readonly ScheduleService _service;
+
 		public ScheduleServiceTests()
 		{
 			_repositoryMock = new Mock<IScheduleRepository>();
