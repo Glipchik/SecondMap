@@ -1,8 +1,4 @@
-﻿using AutoFixture.Xunit2;
-using Xunit.Abstractions;
-using Xunit.Sdk;
-
-namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
+﻿namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 {
 	public class ScheduleServiceTests
 	{

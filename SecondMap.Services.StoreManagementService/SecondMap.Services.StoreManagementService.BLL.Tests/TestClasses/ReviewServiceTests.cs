@@ -1,8 +1,4 @@
-﻿using AutoFixture.Xunit2;
-using Xunit.Abstractions;
-using Xunit.Sdk;
-
-namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
+﻿namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 {
 	public class ReviewServiceTests
 	{
@@ -20,7 +16,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 		[AutoMoqData]
 		public async Task GetAllAsync_ShouldReturnListOfReviews(
 			List<ReviewEntity> arrangedEntities,
-			[Frozen]List<Review> arrangedModels)
+			[Frozen] List<Review> arrangedModels)
 		{
 			// Arrange
 			_repositoryMock.Setup(r => r.GetAllAsync())
@@ -42,7 +38,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 		[AutoMoqData]
 		public async Task GetByIdAsync_WhenValidId_ShouldReturnReview(
 			ReviewEntity reviewEntity,
-			[Frozen]Review arrangedModel)
+			[Frozen] Review arrangedModel)
 		{
 			// Arrange
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
@@ -100,7 +96,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Tests.TestClasses
 		[AutoMoqData]
 		public async Task UpdateReviewAsync_WhenValidReview_ShouldReturnUpdatedReview(
 			ReviewEntity arrangedEntity,
-			[Frozen]Review arrangedModel)
+			[Frozen] Review arrangedModel)
 		{
 			// Arrange
 			_repositoryMock.Setup(r => r.ExistsWithId(It.IsAny<int>()))
