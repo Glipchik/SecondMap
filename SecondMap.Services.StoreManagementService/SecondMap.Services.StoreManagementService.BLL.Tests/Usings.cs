@@ -12,5 +12,6 @@ global using Xunit;
 global using AutoFixture.Xunit2;
 global using AutoFixture.AutoMoq;
 global using SecondMap.Services.StoreManagementService.UnitTests.Utilities;
-global using SecondMap.Services.StoreManagementService.DAL.Context;
-global using SecondMap.Services.StoreManagementService.DAL.Repositories;
+global using SecondMap.Services.StoreManagementService.API.Helpers.Validators;
+global using SecondMap.Services.StoreManagementService.API.ViewModels;
+global using SecondMap.Services.StoreManagementService.API.Constants;

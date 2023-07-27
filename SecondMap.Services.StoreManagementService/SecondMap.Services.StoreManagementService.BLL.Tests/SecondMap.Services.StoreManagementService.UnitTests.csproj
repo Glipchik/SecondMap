@@ -33,8 +33,4 @@
     <ProjectReference Include="..\SecondMap.Services.StoreManagementServices.API\SecondMap.Services.StoreManagementService.API.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="TestClasses\Validators\" />
-  </ItemGroup>
-
 </Project>
