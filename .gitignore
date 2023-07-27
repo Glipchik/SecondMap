@@ -3,6 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# editor config
+.editorconfig
 # User-specific files
 *.rsuser
 *.suo
@@ -396,3 +398,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/SecondMap.Services.StoreManagementService/dotCover.Output
+/SecondMap.Services.StoreManagementService/dotCover.Output.html

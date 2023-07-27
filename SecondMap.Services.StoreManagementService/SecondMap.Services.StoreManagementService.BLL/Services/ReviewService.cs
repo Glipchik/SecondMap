@@ -41,7 +41,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 		public async Task<Review> AddReviewAsync(Review reviewToAdd)
 		{
 			var addedReview = _mapper.Map<Review>(await _repository.AddAsync(_mapper.Map<ReviewEntity>(reviewToAdd)));
-			
+
 			Log.Information("Added review: {@addedReview}", addedReview);
 
 			return addedReview;
@@ -49,22 +49,29 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<Review> UpdateReviewAsync(Review reviewToUpdate)
 		{
-			var updatedReview = await _repository.UpdateAsync(_mapper.Map<ReviewEntity>(reviewToUpdate));
-
-			if (updatedReview == null)
+			if (!await _repository.ExistsWithId(reviewToUpdate.Id))
 			{
-        Log.Error("Review with id = {@id} not found", reviewToUpdate.Id);
+				Log.Error("Review with id = {@id} not found", reviewToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
 			}
+
+			var updatedReview = await _repository.UpdateAsync(_mapper.Map<ReviewEntity>(reviewToUpdate));
 
 			Log.Information("Updated review: {@updatedReview}", updatedReview);
 
 			return _mapper.Map<Review>(updatedReview);
 		}
 
-		public async Task DeleteReviewAsync(Review reviewToDelete)
+		public async Task DeleteReviewAsync(int reviewToDeleteId)
 		{
-			await _repository.DeleteAsync(_mapper.Map<ReviewEntity>(reviewToDelete));
+			var reviewToDelete = await _repository.GetByIdAsync(reviewToDeleteId);
+			if (reviewToDelete == null)
+			{
+				Log.Error("Review with id = {@id} not found", reviewToDeleteId);
+				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
+			}
+
+			await _repository.DeleteAsync(reviewToDelete);
 		}
 	}
 }

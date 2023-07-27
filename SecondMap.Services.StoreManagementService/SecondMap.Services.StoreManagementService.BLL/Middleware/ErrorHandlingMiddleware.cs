@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Net;
 using SecondMap.Services.StoreManagementService.BLL.Exceptions;
+using System.Net;
 
 namespace SecondMap.Services.StoreManagementService.BLL.Middleware
 {

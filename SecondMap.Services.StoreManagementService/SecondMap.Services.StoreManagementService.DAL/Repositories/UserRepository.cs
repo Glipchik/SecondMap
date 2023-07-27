@@ -5,7 +5,7 @@ using SecondMap.Services.StoreManagementService.DAL.Interfaces;
 
 namespace SecondMap.Services.StoreManagementService.DAL.Repositories
 {
-	internal class UserRepository : GenericRepository<UserEntity>, IUserRepository
+	public class UserRepository : GenericRepository<UserEntity>, IUserRepository
 	{
 		public UserRepository(StoreManagementDbContext dbContext) : base(dbContext)
 		{

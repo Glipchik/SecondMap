@@ -1,16 +1,13 @@
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.EntityFrameworkCore;
 using SecondMap.Services.StoreManagementService.API.MappingProfiles;
-using SecondMap.Services.StoreManagementService.BLL.Constants;
 using SecondMap.Services.StoreManagementService.BLL.Extensions;
+using SecondMap.Services.StoreManagementService.BLL.MappingProfiles;
 using SecondMap.Services.StoreManagementService.BLL.Middleware;
-using SecondMap.Services.StoreManagementService.DAL.Context;
-using System.Reflection;
-using SecondMap.Services.StoreManagementService.BLL.Middleware;
-using Serilog.Core;
+using SecondMap.Services.StoreManagementService.DAL.Extensions;
 using Serilog;
+using System.Reflection;
 
 namespace SecondMap.Services.StoreManagementService.API
 {
@@ -27,16 +24,17 @@ namespace SecondMap.Services.StoreManagementService.API
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 
-			builder.Services.AddDbContext<StoreManagementDbContext>(optionsBuilder =>
-				optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString(DbConnections.DEFAULT_CONNECTION)
-				));
+			builder.Services.AddDbConfig(builder.Configuration);
 
 			builder.Services.AddServices();
 
 			builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
 				.AddFluentValidationAutoValidation();
 
-			builder.Services.AddAutoMapper(typeof(ViewModelsToModelsProfile));
+			builder.Services.AddAutoMapper(
+				typeof(ViewModelsToModelsProfile).Assembly,
+				typeof(ModelToEntityProfile).Assembly
+			);
 
 			Log.Logger = new LoggerConfiguration()
 				.MinimumLevel.Information()

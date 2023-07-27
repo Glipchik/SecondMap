@@ -1,4 +1,4 @@
-﻿namespace SecondMap.Services.StoreManagementService.BLL.Constants
+﻿namespace SecondMap.Services.StoreManagementService.DAL.Constants
 {
 	public static class DbConnections
 	{

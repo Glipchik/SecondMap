@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SecondMap.Services.StoreManagementService.API.Dto;
 using SecondMap.Services.StoreManagementService.API.ViewModels;
 using SecondMap.Services.StoreManagementService.BLL.Constants;
-using SecondMap.Services.StoreManagementService.BLL.Exceptions;
 using SecondMap.Services.StoreManagementService.BLL.Interfaces;
 using SecondMap.Services.StoreManagementService.BLL.Models;
 
@@ -58,9 +57,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpDelete(ApiEndpoints.ID)]
 		public async Task<IActionResult> DeleteAsync(int id)
 		{
-			var foundReview = await _reviewService.GetByIdAsync(id);
-
-			await _reviewService.DeleteReviewAsync(foundReview);
+			await _reviewService.DeleteReviewAsync(id);
 
 			return NoContent();
 		}

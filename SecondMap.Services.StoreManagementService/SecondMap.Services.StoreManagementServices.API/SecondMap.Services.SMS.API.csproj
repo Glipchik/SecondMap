@@ -16,12 +16,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Npgsql" Version="7.0.4" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SecondMap.Services.StoreManagementService.BLL\SecondMap.Services.StoreManagementService.BLL.csproj" />
+    <ProjectReference Include="..\SecondMap.Services.StoreManagementService.BLL\SecondMap.Services.SMS.BLL.csproj" />
     <ProjectReference Include="..\SecondMap.Services.StoreManagementService.DAL\SecondMap.Services.StoreManagementService.DAL.csproj" />
   </ItemGroup>
 

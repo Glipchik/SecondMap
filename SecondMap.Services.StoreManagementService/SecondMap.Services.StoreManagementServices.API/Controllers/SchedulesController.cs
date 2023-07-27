@@ -58,9 +58,7 @@ namespace SecondMap.Services.StoreManagementService.API.Controllers
 		[HttpDelete(ApiEndpoints.ID)]
 		public async Task<IActionResult> DeleteAsync(int id)
 		{
-			var foundSchedule = await _scheduleService.GetByIdAsync(id);
-
-			await _scheduleService.DeleteScheduleAsync(foundSchedule);
+			await _scheduleService.DeleteScheduleAsync(id);
 
 			return NoContent();
 		}

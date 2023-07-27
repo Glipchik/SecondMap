@@ -31,7 +31,7 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 			if (foundStore == null)
 			{
-        Log.Error("Store with id = {@id} not found", id);
+				Log.Error("Store with id = {@id} not found", id);
 				throw new NotFoundException(ErrorMessages.STORE_NOT_FOUND);
 			}
 
@@ -49,22 +49,29 @@ namespace SecondMap.Services.StoreManagementService.BLL.Services
 
 		public async Task<Store> UpdateStoreAsync(Store storeToUpdate)
 		{
-			var updatedStore = await _repository.UpdateAsync(_mapper.Map<StoreEntity>(storeToUpdate));
-
-			if (updatedStore == null)
+			if (!await _repository.ExistsWithId(storeToUpdate.Id))
 			{
-        Log.Error("Store with id = {@id} not found", storeToUpdate.Id);
+				Log.Error("Store with id = {@id} not found", storeToUpdate.Id);
 				throw new NotFoundException(ErrorMessages.STORE_NOT_FOUND);
 			}
+
+			var updatedStore = await _repository.UpdateAsync(_mapper.Map<StoreEntity>(storeToUpdate));
 
 			Log.Information("Updated store: {@updatedStore}", updatedStore);
 
 			return _mapper.Map<Store>(updatedStore);
 		}
 
-		public async Task DeleteStoreAsync(Store storeToDelete)
+		public async Task DeleteStoreAsync(int storeToDeleteId)
 		{
-			await _repository.DeleteAsync(_mapper.Map<StoreEntity>(storeToDelete));
+			var entityToDelete = await _repository.GetByIdAsync(storeToDeleteId);
+			if (entityToDelete == null)
+			{
+				Log.Error("Store with id = {@id} not found", storeToDeleteId);
+				throw new NotFoundException(ErrorMessages.STORE_NOT_FOUND);
+			}
+
+			await _repository.DeleteAsync(entityToDelete);
 		}
 	}
 }

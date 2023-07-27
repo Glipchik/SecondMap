@@ -13,5 +13,7 @@ namespace SecondMap.Services.StoreManagementService.DAL.Interfaces
 		public Task<T?> GetByIdAsync(int id);
 
 		public Task<IEnumerable<T>> GetAllAsync();
+
+		public Task<bool> ExistsWithId(int id);
 	}
 }
