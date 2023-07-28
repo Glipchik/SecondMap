@@ -11,7 +11,7 @@ on:
     
 defaults:
   run: 
-    working-directory: SecondMap.Services.StoreManagementService
+    working-directory: SecondMap.Services.SMS
 
 jobs:
   build:
