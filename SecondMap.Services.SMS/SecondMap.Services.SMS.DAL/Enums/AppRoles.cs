@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.DAL.Enums
 {
-	public enum RoleEnum
+	public enum AppRoles
 	{
 		Admin = 1,
 		StoreOwner = 2,
