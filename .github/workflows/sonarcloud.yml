@@ -44,11 +44,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          EXCLUDE_FROM_COVERAGE: " **/Program.cs, **/Constants/*, **/Exceptions/*, **/Middleware/*, **/Controllers/*, **/Extensions/*, **/Repositories/*"
+          EXCLUDE_FROM_COVERAGE: " **/Program.cs, **/Constants/*, **/Exceptions/*, **/Middleware/*, **/Controllers/*, **/Extensions/*, **/Repositories/*, **/Dto/*, **/MappingProfiles/*, **/ViewModels/*, **/Interfaces/*, **/Models/*, **/Abstractions/*, **/Configurations/*, **/Entities/*, **/Enums/*, **/Migrations/*, **/Context/*"
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"Glipchik_SecondMap" /o:"glebgang" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverage.exclusions="${{ env.EXCLUDE_FROM_COVERAGE }}"  /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html
-          dotnet restore ./SecondMap.Services.StoreManagementService/SecondMap.Services.StoreManagementService.sln
-          dotnet build --no-restore ./SecondMap.Services.StoreManagementService/SecondMap.Services.StoreManagementService.sln
-          dotnet dotcover test --dcReportType=HTML ./SecondMap.Services.StoreManagementService/SecondMap.Services.StoreManagementService.sln
+          dotnet restore ./SecondMap.Services.SMS/SecondMap.Services.SMS.sln
+          dotnet build --no-restore ./SecondMap.Services.SMS/SecondMap.Services.SMS.sln
+          dotnet dotcover test --dcReportType=HTML ./SecondMap.Services.SMS/SecondMap.Services.SMS.sln
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
