@@ -5,6 +5,10 @@
 
 # editor config
 .editorconfig
+
+#app settings
+appsettings.json
+
 # User-specific files
 *.rsuser
 *.suo
