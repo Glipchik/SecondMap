@@ -15,3 +15,4 @@ global using SecondMap.Services.SMS.DAL.Interfaces;
 global using SecondMap.Services.SMS.API.Helpers.Validators;
 global using SecondMap.Services.SMS.API.ViewModels;
 global using SecondMap.Services.SMS.DAL.Enums;
+global using SecondMap.Services.SMS.API.Constants;
