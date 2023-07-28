@@ -1,12 +1,4 @@
-﻿using SecondMap.Services.SMS.BLL.Constants;
-using SecondMap.Services.SMS.BLL.Exceptions;
-using SecondMap.Services.SMS.BLL.Models;
-using SecondMap.Services.SMS.BLL.Services;
-using SecondMap.Services.SMS.DAL.Entities;
-using SecondMap.Services.SMS.DAL.Interfaces;
-using SecondMap.Services.SMS.UnitTests.Utilities;
-
-namespace SecondMap.Services.SMS.UnitTests.TestClasses.Services
+﻿namespace SecondMap.Services.SMS.UnitTests.TestClasses.Services
 {
 	public class UserServiceTests
 	{

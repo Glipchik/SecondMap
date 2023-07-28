@@ -1,8 +1,4 @@
-﻿using SecondMap.Services.SMS.API.Constants;
-using SecondMap.Services.SMS.API.Helpers.Validators;
-using SecondMap.Services.SMS.API.ViewModels;
-
-namespace SecondMap.Services.SMS.UnitTests.TestClasses.Validators
+﻿namespace SecondMap.Services.SMS.UnitTests.TestClasses.Validators
 {
 	public class UsersValidatorTests
 	{

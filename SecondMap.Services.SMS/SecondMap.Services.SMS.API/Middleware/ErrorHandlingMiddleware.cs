@@ -1,5 +1,5 @@
-﻿using System.Net;
-using SecondMap.Services.SMS.BLL.Exceptions;
+﻿using SecondMap.Services.SMS.BLL.Exceptions;
+using System.Net;
 
 namespace SecondMap.Services.SMS.API.Middleware
 {

@@ -1,8 +1,4 @@
-﻿using SecondMap.Services.SMS.API.Helpers.Validators;
-using SecondMap.Services.SMS.API.ViewModels;
-using SecondMap.Services.SMS.DAL.Enums;
-
-namespace SecondMap.Services.SMS.UnitTests.TestClasses.Validators
+﻿namespace SecondMap.Services.SMS.UnitTests.TestClasses.Validators
 {
 	public class SchedulesValidatorTests
 	{

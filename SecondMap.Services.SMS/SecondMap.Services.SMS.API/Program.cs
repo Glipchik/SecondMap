@@ -1,12 +1,12 @@
-using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Serilog;
 using SecondMap.Services.SMS.API.MappingProfiles;
 using SecondMap.Services.SMS.API.Middleware;
 using SecondMap.Services.SMS.BLL.Extensions;
 using SecondMap.Services.SMS.BLL.MappingProfiles;
 using SecondMap.Services.SMS.DAL.Extensions;
+using Serilog;
+using System.Reflection;
 
 namespace SecondMap.Services.SMS.API
 {
