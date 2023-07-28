@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace SecondMap.Services.SMS.API
 {
-	public static class Program
+	public class Program
 	{
 		public static void Main(string[] args)
 		{
