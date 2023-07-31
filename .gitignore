@@ -404,3 +404,5 @@ FodyWeavers.xsd
 *.sln.iml
 /SecondMap.Services.StoreManagementService/dotCover.Output
 /SecondMap.Services.StoreManagementService/dotCover.Output.html
+/dotCover.Output
+/dotCover.Output.html
