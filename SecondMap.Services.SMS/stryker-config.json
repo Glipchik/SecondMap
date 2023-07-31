@@ -1,9 +1,0 @@
-{
-    "stryker-config":
-    {
-        "solution": "./SecondMap.Services.SMS.sln",
-        "reporters": ["cleartexttree", "html"],
-        "ignore-methods": ["Log.Error", "Log.Information", ".ctor", "builder.Services.Add*", "app*"],
-        "ignore-mutations": ["string"]
-    }
-}
