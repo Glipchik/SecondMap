@@ -30,7 +30,7 @@
 			// Arrange
 			var invalidViewModel = _fixture.Build<ReviewViewModel>()
 				.Create();
-			invalidViewModel.UserId = -1;
+			invalidViewModel.UserId = ValidationConstants.INVALID_ID;
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
@@ -45,7 +45,7 @@
 			// Arrange
 			var invalidViewModel = _fixture.Build<ReviewViewModel>()
 				.Create();
-			invalidViewModel.StoreId = -1;
+			invalidViewModel.StoreId = ValidationConstants.INVALID_ID;
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);

@@ -53,7 +53,7 @@
 		public async Task GetById_WhenInvalidEntity_ShouldReturnNotFound()
 		{
 			// Arrange
-			var invalidId = TestConstants.INVALID_ID;
+			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
 			var response = await _client.GetAsync(TestConstants.STORES_URL + $"/{invalidId}");
@@ -129,7 +129,7 @@
 			StoreViewModel validViewModel)
 		{
 			// Arrange
-			var invalidId = TestConstants.INVALID_ID;
+			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
 			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{invalidId}", SerializeRequestBody(validViewModel));
@@ -189,7 +189,7 @@
 		public async Task DeleteAsync_WhenInvalidId_ShouldReturnNoContent()
 		{
 			// Arrange
-			var invalidId = TestConstants.INVALID_ID;
+			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
 			var response = await _client.DeleteAsync(TestConstants.STORES_URL + $"/{invalidId}");

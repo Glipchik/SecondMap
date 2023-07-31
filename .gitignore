@@ -406,3 +406,4 @@ FodyWeavers.xsd
 /SecondMap.Services.StoreManagementService/dotCover.Output.html
 /dotCover.Output
 /dotCover.Output.html
+/SecondMap.Services.SMS/stryker-config.json
