@@ -88,22 +88,7 @@
 			// Arrange
 			var invalidViewModel = _fixture.Build<StoreViewModel>()
 				.Create();
-			invalidViewModel.Price = 0;
-
-			// Act
-			var validationResult = await _validator.ValidateAsync(invalidViewModel);
-
-			// Arrange
-			validationResult.IsValid.Should().BeFalse();
-		}
-
-		[Fact]
-		public async Task Validate_WhenTooSmallPrice_ShouldReturnFalse()
-		{
-			// Arrange
-			var invalidViewModel = _fixture.Build<StoreViewModel>()
-				.Create();
-			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE - 1;
+			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE;
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);

@@ -30,7 +30,7 @@
 			// Arrange
 			var invalidViewModel = _fixture.Build<ScheduleViewModel>()
 				.Create();
-			invalidViewModel.StoreId = -1;
+			invalidViewModel.StoreId = ValidationConstants.INVALID_ID;
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
