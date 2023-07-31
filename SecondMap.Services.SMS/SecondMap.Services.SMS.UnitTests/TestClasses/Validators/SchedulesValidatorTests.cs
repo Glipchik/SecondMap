@@ -3,19 +3,18 @@
 	public class SchedulesValidatorTests
 	{
 		private readonly ScheduleValidator _validator;
-		private readonly IFixture _fixture;
 
 		public SchedulesValidatorTests()
 		{
 			_validator = new ScheduleValidator();
-			_fixture = new Fixture();
 		}
 
-		[Fact]
-		public async Task Validate_WhenEveryFieldValid_ShouldReturnTrue()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenEveryFieldValid_ShouldReturnTrue(
+			ScheduleViewModel validViewModel)
 		{
 			// Arrange
-			var validViewModel = _fixture.Build<ScheduleViewModel>().Create();
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(validViewModel);
@@ -24,12 +23,12 @@
 			validationResult.IsValid.Should().BeTrue();
 		}
 
-		[Fact]
-		public async Task Validate_WhenInvalidStoreId_ShouldReturnFalse()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenInvalidStoreId_ShouldReturnFalse(
+			ScheduleViewModel invalidViewModel)
 		{
 			// Arrange
-			var invalidViewModel = _fixture.Build<ScheduleViewModel>()
-				.Create();
 			invalidViewModel.StoreId = ValidationConstants.INVALID_ID;
 
 			// Act
@@ -39,12 +38,12 @@
 			validationResult.IsValid.Should().BeFalse();
 		}
 
-		[Fact]
-		public async Task Validate_WhenInvalidDay_ShouldReturnFalse()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenInvalidDay_ShouldReturnFalse(
+			ScheduleViewModel invalidViewModel)
 		{
 			// Arrange
-			var invalidViewModel = _fixture.Build<ScheduleViewModel>()
-				.Create();
 			invalidViewModel.Day = (DayOfWeekEu)(-1);
 
 			// Act

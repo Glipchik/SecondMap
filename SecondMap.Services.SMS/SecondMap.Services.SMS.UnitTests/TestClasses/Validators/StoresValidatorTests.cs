@@ -3,19 +3,18 @@
 	public class StoresValidatorTests
 	{
 		private readonly StoreValidator _validator;
-		private readonly IFixture _fixture;
 
 		public StoresValidatorTests()
 		{
 			_validator = new StoreValidator();
-			_fixture = new Fixture();
 		}
 
-		[Fact]
-		public async Task Validate_WhenEveryFieldValid_ShouldReturnTrue()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenEveryFieldValid_ShouldReturnTrue(
+			StoreViewModel validViewModel)
 		{
 			// Arrange
-			var validViewModel = _fixture.Build<StoreViewModel>().Create();
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(validViewModel);
@@ -24,12 +23,12 @@
 			validationResult.IsValid.Should().BeTrue();
 		}
 
-		[Fact]
-		public async Task Validate_WhenEmptyName_ShouldReturnFalse()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenEmptyName_ShouldReturnFalse(
+			StoreViewModel invalidViewModel)
 		{
 			// Arrange
-			var invalidViewModel = _fixture.Build<StoreViewModel>()
-				.Create();
 			invalidViewModel.Name = string.Empty;
 
 			// Act
@@ -39,12 +38,12 @@
 			validationResult.IsValid.Should().BeFalse();
 		}
 
-		[Fact]
-		public async Task Validate_WhenTooLongName_ShouldReturnFalse()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenTooLongName_ShouldReturnFalse(
+			StoreViewModel invalidViewModel)
 		{
 			// Arrange
-			var invalidViewModel = _fixture.Build<StoreViewModel>()
-				.Create();
 			invalidViewModel.Name = string.Empty.PadRight(ValidationConstants.STORE_MAX_NAME_LENGTH + 1, 'a');
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
@@ -53,11 +52,12 @@
 			validationResult.IsValid.Should().BeFalse();
 		}
 
-		[Fact]
-		public async Task Validate_WhenEmptyAddress_ShouldReturnFalse()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenEmptyAddress_ShouldReturnFalse(
+			StoreViewModel invalidViewModel)
 		{
 			// Arrange
-			var invalidViewModel = _fixture.Build<StoreViewModel>().Create();
 			invalidViewModel.Address = string.Empty;
 
 			// Act
@@ -67,12 +67,12 @@
 			validationResult.IsValid.Should().BeFalse();
 		}
 
-		[Fact]
-		public async Task Validate_WhenTooLongAddress_ShouldReturnFalse()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenTooLongAddress_ShouldReturnFalse(
+			StoreViewModel invalidViewModel)
 		{
 			// Arrange
-			var invalidViewModel = _fixture.Build<StoreViewModel>()
-				.Create();
 			invalidViewModel.Address = string.Empty.PadRight(ValidationConstants.STORE_MAX_ADDRESS_LENGTH + 1, 'a');
 
 			// Act
@@ -82,12 +82,12 @@
 			validationResult.IsValid.Should().BeFalse();
 		}
 
-		[Fact]
-		public async Task Validate_WhenEmptyPrice_ShouldReturnFalse()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenTooSmallPrice_ShouldReturnFalse(
+			StoreViewModel invalidViewModel)
 		{
 			// Arrange
-			var invalidViewModel = _fixture.Build<StoreViewModel>()
-				.Create();
 			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE;
 
 			// Act

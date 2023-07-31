@@ -11,15 +11,12 @@
 			_fixture = new Fixture();
 		}
 
-		[Fact]
-		public async Task Validate_WhenEveryFieldValid_ShouldReturnTrue()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenEveryFieldValid_ShouldReturnTrue(
+			UserViewModel validViewModel)
 		{
 			// Arrange
-			var validViewModel = _fixture.Build<UserViewModel>()
-				.OmitAutoProperties()
-				.Do(u => u.Username = string.Empty.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH - 1, 'a'))
-				.Do(u => u.Password = string.Empty.PadRight(ValidationConstants.USER_PASSWORD_MIN_LENGTH + 1, 'a'))
-				.Create();
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(validViewModel);
@@ -28,12 +25,12 @@
 			validationResult.IsValid.Should().BeTrue();
 		}
 
-		[Fact]
-		public async Task Validate_WhenEmptyName_ShouldReturnFalse()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenEmptyName_ShouldReturnFalse(
+			UserViewModel invalidViewModel)
 		{
 			// Arrange
-			var invalidViewModel = _fixture.Build<UserViewModel>()
-				.Create();
 			invalidViewModel.Username = string.Empty;
 
 			// Act
@@ -43,12 +40,12 @@
 			validationResult.IsValid.Should().BeFalse();
 		}
 
-		[Fact]
-		public async Task Validate_WhenTooLongName_ShouldReturnFalse()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenTooLongName_ShouldReturnFalse(
+			UserViewModel invalidViewModel)
 		{
 			// Arrange
-			var invalidViewModel = _fixture.Build<UserViewModel>()
-				.Create();
 			invalidViewModel.Username = string.Empty.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
@@ -57,11 +54,12 @@
 			validationResult.IsValid.Should().BeFalse();
 		}
 
-		[Fact]
-		public async Task Validate_WhenEmptyPassword_ShouldReturnFalse()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenEmptyPassword_ShouldReturnFalse(
+			UserViewModel invalidViewModel)
 		{
 			// Arrange
-			var invalidViewModel = _fixture.Build<UserViewModel>().Create();
 			invalidViewModel.Password = string.Empty;
 
 			// Act
@@ -71,12 +69,12 @@
 			validationResult.IsValid.Should().BeFalse();
 		}
 
-		[Fact]
-		public async Task Validate_WhenTooShortPassword_ShouldReturnFalse()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenTooShortPassword_ShouldReturnFalse(
+			UserViewModel invalidViewModel)
 		{
 			// Arrange
-			var invalidViewModel = _fixture.Build<UserViewModel>()
-				.Create();
 			invalidViewModel.Password = string.Empty.PadRight(ValidationConstants.USER_PASSWORD_MIN_LENGTH - 1, 'a');
 
 			// Act
@@ -86,12 +84,12 @@
 			validationResult.IsValid.Should().BeFalse();
 		}
 
-		[Fact]
-		public async Task Validate_WhenTooLongPassword_ShouldReturnFalse()
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenTooLongPassword_ShouldReturnFalse(
+			UserViewModel invalidViewModel)
 		{
 			// Arrange
-			var invalidViewModel = _fixture.Build<UserViewModel>()
-				.Create();
 			invalidViewModel.Password = string.Empty.PadRight(ValidationConstants.USER_PASSWORD_MAX_LENGTH + 1, 'a');
 
 			// Act

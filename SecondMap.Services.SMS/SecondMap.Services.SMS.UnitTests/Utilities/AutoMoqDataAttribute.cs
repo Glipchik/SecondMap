@@ -10,7 +10,7 @@
 		private static IFixture CreateFixture()
 		{
 			var fixture = new Fixture();
-			fixture.Customize(new AutoMoqCustomization { ConfigureMembers = true });
+			fixture.Customize(new ValidModelCustomization());
 			return fixture;
 		}
 	}
