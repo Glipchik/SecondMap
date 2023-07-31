@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecondMap.Services.SMS.DAL"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecondMap.Services.SMS.UnitTests", "SecondMap.Services.SMS.UnitTests\SecondMap.Services.SMS.UnitTests.csproj", "{BE3F1D14-84DE-48D0-B535-61DBEB295979}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondMap.Services.SMS.IntegrationTests", "SecondMap.Services.SMS.IntegrationTests\SecondMap.Services.SMS.IntegrationTests.csproj", "{F2B6FB33-1752-4EC4-BE5A-FF237D22AB5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{BE3F1D14-84DE-48D0-B535-61DBEB295979}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE3F1D14-84DE-48D0-B535-61DBEB295979}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE3F1D14-84DE-48D0-B535-61DBEB295979}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2B6FB33-1752-4EC4-BE5A-FF237D22AB5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2B6FB33-1752-4EC4-BE5A-FF237D22AB5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2B6FB33-1752-4EC4-BE5A-FF237D22AB5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2B6FB33-1752-4EC4-BE5A-FF237D22AB5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

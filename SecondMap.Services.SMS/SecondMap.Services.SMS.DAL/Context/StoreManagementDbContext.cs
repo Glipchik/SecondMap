@@ -7,7 +7,10 @@ namespace SecondMap.Services.SMS.DAL.Context
 	{
 		public StoreManagementDbContext(DbContextOptions<StoreManagementDbContext> options) : base(options)
 		{
-
+			if (Database.IsRelational())
+			{
+				Database.Migrate();
+			}
 		}
 
 		public DbSet<StoreEntity> Stores { get; set; }
