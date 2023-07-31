@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using SecondMap.Services.SMS.DAL.Context;
-using SecondMap.Services.SMS.IntegrationTests.Constants;
-
-namespace SecondMap.Services.SMS.IntegrationTests.Utilities
+﻿namespace SecondMap.Services.SMS.IntegrationTests.Utilities
 {
 	public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 	{
@@ -28,10 +21,6 @@ namespace SecondMap.Services.SMS.IntegrationTests.Utilities
 				{
 					var scopedServices = scope.ServiceProvider;
 					var db = scopedServices.GetRequiredService<StoreManagementDbContext>();
-
-					db.Database.EnsureCreated(); // Call EnsureCreated() here
-
-					// You can add more setup steps here if needed
 				}
 			});
 		}

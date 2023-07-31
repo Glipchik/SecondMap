@@ -36,10 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SecondMap.Services.SMS.API\SecondMap.Services.SMS.API.csproj" />
     <ProjectReference Include="..\SecondMap.Services.SMS.DAL\SecondMap.Services.SMS.DAL.csproj" />
   </ItemGroup>

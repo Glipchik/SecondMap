@@ -1,94 +1,76 @@
-﻿using AutoFixture;
-using Microsoft.EntityFrameworkCore;
-using SecondMap.Services.SMS.DAL.Context;
-using SecondMap.Services.SMS.DAL.Entities;
-using SecondMap.Services.SMS.IntegrationTests.Constants;
-
-namespace SecondMap.Services.SMS.IntegrationTests.Utilities
+﻿namespace SecondMap.Services.SMS.IntegrationTests.Utilities
 {
 	public class DataSeeder
 	{
-		private StoreManagementDbContext _testStoreManagementDbContext;
-		private IFixture _fixture;
-
-		public List<ReviewEntity> ReviewEntities
-		{
-			get => _testStoreManagementDbContext.Reviews.ToList();
-			set { }
-		}
-		public List<ScheduleEntity> ScheduleEntities
-		{
-			get => _testStoreManagementDbContext.Schedules.ToList();
-			set { }
-		}
-		public List<StoreEntity> StoreEntities
-		{
-			get => _testStoreManagementDbContext.Stores.ToList();
-			set { }
-		}
-		public List<UserEntity> UserEntities
-		{
-			get => _testStoreManagementDbContext.Users.ToList();
-			set { }
-		}
-
+		private readonly StoreManagementDbContext _testStoreManagementDbContext;
+		private readonly IFixture _fixture;
 		public DataSeeder(StoreManagementDbContext testStoreManagementDbContext)
 		{
 			_testStoreManagementDbContext = testStoreManagementDbContext;
-			_fixture = new Fixture();
+			_fixture = new Fixture().Customize(new IntegrationTestCustomization());
 		}
 
-		public async Task SeedTestDataAsync()
+		public async Task<ReviewEntity> CreateReviewAsync()
 		{
-			// Add test data to different tables here
-			ReviewEntities = await AddReviewsAsync();
-			ScheduleEntities = await AddSchedulesAsync();
-			StoreEntities = await AddStoresAsync();
-			UserEntities = await AddUsersAsync();
-		}
+			var addedUser = (await _testStoreManagementDbContext.Users.AddAsync(
+				_fixture.Create<UserEntity>()))
+				.Entity;
+			var addedStore = (await _testStoreManagementDbContext.Stores.AddAsync(
+				_fixture.Create<StoreEntity>()))
+				.Entity;
 
-		private async Task<List<ReviewEntity>> AddReviewsAsync()
-		{
-			await _testStoreManagementDbContext.Reviews.AddRangeAsync(
-					_fixture.Build<ReviewEntity>().Without(x => x.Id).CreateMany(TestConstants.ENTITIES_TO_CREATE_COUNT)
-			);
+			var reviewToAdd = _fixture.Create<ReviewEntity>();
+			reviewToAdd.UserId = addedUser.Id;
+			reviewToAdd.StoreId = addedStore.Id;
+
+			var addedReview = (await _testStoreManagementDbContext.AddAsync(reviewToAdd)).Entity;
 
 			await _testStoreManagementDbContext.SaveChangesAsync();
 
-			return await _testStoreManagementDbContext.Reviews.ToListAsync();
+			return addedReview;
 		}
 
-		private async Task<List<ScheduleEntity>> AddSchedulesAsync()
+		public async Task<ScheduleEntity> CreateScheduleAsync()
 		{
-			await _testStoreManagementDbContext.Schedules.AddRangeAsync(
-				_fixture.Build<ScheduleEntity>().Without(x => x.Id).CreateMany(TestConstants.ENTITIES_TO_CREATE_COUNT)
-			);
+			var addedStore = await CreateStoreAsync();
+
+			var scheduleToAdd = _fixture.Create<ScheduleEntity>();
+			scheduleToAdd.StoreId = addedStore.Id;
+
+			var addedSchedule = (await _testStoreManagementDbContext.AddAsync(scheduleToAdd)).Entity;
 
 			await _testStoreManagementDbContext.SaveChangesAsync();
 
-			return await _testStoreManagementDbContext.Schedules.ToListAsync();
+			return addedSchedule;
 		}
 
-		private async Task<List<StoreEntity>> AddStoresAsync()
+		public async Task<StoreEntity> CreateStoreAsync()
 		{
-			await _testStoreManagementDbContext.Stores.AddRangeAsync(
-				_fixture.Build<StoreEntity>().Without(x => x.Id).CreateMany(TestConstants.ENTITIES_TO_CREATE_COUNT)
-			);
+			var addedStore = (await _testStoreManagementDbContext.Stores.AddAsync(
+				_fixture.Create<StoreEntity>()))
+					.Entity;
 
 			await _testStoreManagementDbContext.SaveChangesAsync();
 
-			return await _testStoreManagementDbContext.Stores.ToListAsync();
+			return addedStore;
 		}
 
-		private async Task<List<UserEntity>> AddUsersAsync()
+		public async Task<UserEntity> CreateUserAsync()
 		{
-			await _testStoreManagementDbContext.Users.AddRangeAsync(
-				_fixture.Build<UserEntity>().Without(x => x.Id).CreateMany(TestConstants.ENTITIES_TO_CREATE_COUNT)
-			);
+			var addedRole = (await _testStoreManagementDbContext.Roles.AddAsync(
+				new RoleEntity
+				{
+					RoleName = nameof(AppRoles.Customer)
+				}
+			));
+
+			var addedUser = (await _testStoreManagementDbContext.Users.AddAsync(
+				_fixture.Create<UserEntity>()))
+				.Entity;
 
 			await _testStoreManagementDbContext.SaveChangesAsync();
 
-			return await _testStoreManagementDbContext.Users.ToListAsync();
+			return addedUser;
 		}
 
 	}
