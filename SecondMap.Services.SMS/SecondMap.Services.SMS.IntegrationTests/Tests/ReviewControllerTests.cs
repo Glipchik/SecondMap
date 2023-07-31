@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-	public class ReviewsControllerTests : IClassFixture<TestWebApplicationFactory<Program>>
+	public class ReviewsControllerTests : BaseControllerTests<ReviewViewModel>, IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;
@@ -72,7 +72,7 @@
 			validViewModel.UserId = (await _dataSeeder.CreateUserAsync()).Id;
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.REVIEWS_URL, new StringContent(JsonConvert.SerializeObject(validViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PostAsync(TestConstants.REVIEWS_URL, SerializeRequestBody(validViewModel));
 
 			var dto = JsonConvert.DeserializeObject<ReviewDto>(await response.Content.ReadAsStringAsync());
 
@@ -96,7 +96,7 @@
 			invalidViewModel.Rating = -1;
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.REVIEWS_URL, new StringContent(JsonConvert.SerializeObject(invalidViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PostAsync(TestConstants.REVIEWS_URL, SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -113,7 +113,7 @@
 			viewModelToUpdate.UserId = entityToUpdate.UserId;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{entityToUpdate.Id}", new StringContent(JsonConvert.SerializeObject(viewModelToUpdate), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{entityToUpdate.Id}", SerializeRequestBody(viewModelToUpdate));
 
 			var updatedDto = JsonConvert.DeserializeObject<ReviewDto>(await response.Content.ReadAsStringAsync());
 
@@ -139,7 +139,7 @@
 			validViewModel.UserId = (await _dataSeeder.CreateUserAsync()).Id;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{invalidId}", new StringContent(JsonConvert.SerializeObject(validViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{invalidId}", SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -156,7 +156,7 @@
 			invalidViewModel.Rating = -1;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{validId}", new StringContent(JsonConvert.SerializeObject(invalidViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -173,7 +173,7 @@
 			invalidViewModel.Rating = -1;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{validId}", new StringContent(JsonConvert.SerializeObject(invalidViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);

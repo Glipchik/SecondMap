@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-	public class SchedulesControllerTests : IClassFixture<TestWebApplicationFactory<Program>>
+	public class SchedulesControllerTests : BaseControllerTests<ScheduleViewModel>, IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;
@@ -76,8 +76,7 @@
 			// Using custom TimeOnlyJsonConverter (from Utilities) to parse TimeOnly as hh:mm:ss
 			// since default converter parses it as hh:mm (which won't pass validation for TimeOnly)
 			var response = await _client.PostAsync(TestConstants.SCHEDULES_URL,
-				new StringContent(JsonConvert.SerializeObject(validViewModel, converters: new TimeOnlyJsonConverter()),
-					new MediaTypeHeaderValue(TestConstants.MEDIA_TYPE_APP_JSON)));
+				SerializeRequestBody(validViewModel));
 
 			var dto = JsonConvert.DeserializeObject<ScheduleDto>(await response.Content.ReadAsStringAsync());
 
@@ -102,7 +101,7 @@
 			invalidViewModel.Day = (DAL.Enums.DayOfWeekEu)(-1);
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.SCHEDULES_URL, new StringContent(JsonConvert.SerializeObject(invalidViewModel, converters: new TimeOnlyJsonConverter()), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PostAsync(TestConstants.SCHEDULES_URL, SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -118,7 +117,7 @@
 			validViewModelToUpdate.StoreId = entityToUpdate.StoreId;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{entityToUpdate.Id}", new StringContent(JsonConvert.SerializeObject(validViewModelToUpdate, converters: new TimeOnlyJsonConverter()), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{entityToUpdate.Id}", SerializeRequestBody(validViewModelToUpdate));
 
 			var updatedDto = JsonConvert.DeserializeObject<ScheduleDto>(await response.Content.ReadAsStringAsync());
 
@@ -144,7 +143,7 @@
 			var invalidId = TestConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}", new StringContent(JsonConvert.SerializeObject(validViewModel, converters: new TimeOnlyJsonConverter()), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}", SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -161,7 +160,7 @@
 			invalidViewModel.Day = (DAL.Enums.DayOfWeekEu)(-1);
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{validId}", new StringContent(JsonConvert.SerializeObject(invalidViewModel, converters: new TimeOnlyJsonConverter()), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -178,7 +177,7 @@
 			invalidViewModel.Day = (DAL.Enums.DayOfWeekEu)(-1);
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{validId}", new StringContent(JsonConvert.SerializeObject(invalidViewModel, converters: new TimeOnlyJsonConverter()), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);

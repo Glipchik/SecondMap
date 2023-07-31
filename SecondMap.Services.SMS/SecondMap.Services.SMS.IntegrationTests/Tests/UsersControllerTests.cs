@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-	public class UsersControllerTests : IClassFixture<TestWebApplicationFactory<Program>>
+	public class UsersControllerTests : BaseControllerTests<UserViewModel>, IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;
@@ -71,7 +71,7 @@
 				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.USERS_URL, new StringContent(JsonConvert.SerializeObject(invalidViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PostAsync(TestConstants.USERS_URL, SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -86,7 +86,7 @@
 			var entityToUpdate = await _dataSeeder.CreateUserAsync();
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{entityToUpdate.Id}", new StringContent(JsonConvert.SerializeObject(validViewModelToUpdate), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{entityToUpdate.Id}", SerializeRequestBody(validViewModelToUpdate));
 
 			var updatedDto = JsonConvert.DeserializeObject<UserDto>(await response.Content.ReadAsStringAsync());
 
@@ -107,7 +107,7 @@
 			var invalidId = TestConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{invalidId}", new StringContent(JsonConvert.SerializeObject(validViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{invalidId}", SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -125,7 +125,7 @@
 				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{validId}", new StringContent(JsonConvert.SerializeObject(invalidViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -143,7 +143,7 @@
 				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{validId}", new StringContent(JsonConvert.SerializeObject(invalidViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);

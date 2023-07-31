@@ -11,7 +11,7 @@
 
 		public const int USER_ROLE_ID = 1;
 		public const int INVALID_ID = -1;
-
-		public const string MEDIA_TYPE_APP_JSON = "application/json";
+		
+		public static readonly MediaTypeHeaderValue MEDIA_TYPE_APP_JSON = new("application/json");
 	}
 }

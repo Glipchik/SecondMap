@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-	public class StoresControllerTests : IClassFixture<TestWebApplicationFactory<Program>>
+	public class StoresControllerTests : BaseControllerTests<StoreViewModel>, IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;
@@ -71,8 +71,7 @@
 
 			// Act
 			var response = await _client.PostAsync(TestConstants.STORES_URL,
-				new StringContent(JsonConvert.SerializeObject(validViewModel),
-					new MediaTypeHeaderValue(TestConstants.MEDIA_TYPE_APP_JSON)));
+				SerializeRequestBody(validViewModel));
 
 			var dto = JsonConvert.DeserializeObject<StoreDto>(await response.Content.ReadAsStringAsync());
 
@@ -95,7 +94,7 @@
 			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE - 1;
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.STORES_URL, new StringContent(JsonConvert.SerializeObject(invalidViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PostAsync(TestConstants.STORES_URL, SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -110,7 +109,7 @@
 			var entityToUpdate = await _dataSeeder.CreateStoreAsync();
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{entityToUpdate.Id}", new StringContent(JsonConvert.SerializeObject(validViewModelToUpdate), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{entityToUpdate.Id}", SerializeRequestBody(validViewModelToUpdate));
 
 			var updatedDto = JsonConvert.DeserializeObject<StoreDto>(await response.Content.ReadAsStringAsync());
 
@@ -133,7 +132,7 @@
 			var invalidId = TestConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{invalidId}", new StringContent(JsonConvert.SerializeObject(validViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{invalidId}", SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -150,7 +149,7 @@
 			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE - 1;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{validId}", new StringContent(JsonConvert.SerializeObject(invalidViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -167,7 +166,7 @@
 			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE - 1;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{validId}", new StringContent(JsonConvert.SerializeObject(invalidViewModel), encoding: Encoding.UTF8, TestConstants.MEDIA_TYPE_APP_JSON));
+			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
