@@ -3,6 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# dotnet stryker
+*stryker*
 # editor config
 .editorconfig
 
@@ -406,3 +408,6 @@ FodyWeavers.xsd
 /SecondMap.Services.StoreManagementService/dotCover.Output.html
 /dotCover.Output
 /dotCover.Output.html
+/SecondMap.Services.SMS/stryker-config.json
+/SecondMap.Services.SMS/stryker-config.json
+/SecondMap.Services.SMS/stryker.bat

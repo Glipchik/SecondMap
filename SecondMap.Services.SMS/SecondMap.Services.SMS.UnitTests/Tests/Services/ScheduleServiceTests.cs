@@ -1,4 +1,4 @@
-﻿namespace SecondMap.Services.SMS.UnitTests.TestClasses.Services
+﻿namespace SecondMap.Services.SMS.UnitTests.Tests.Services
 {
 	public class ScheduleServiceTests
 	{
@@ -38,14 +38,14 @@
 		[Theory]
 		[AutoMoqData]
 		public async Task GetByIdAsync_WhenValidId_ShouldReturnSchedule(
-			ScheduleEntity ScheduleEntity,
+			ScheduleEntity scheduleEntity,
 			[Frozen] Schedule arrangedModel)
 		{
 			// Arrange
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
-				.ReturnsAsync(ScheduleEntity);
+				.ReturnsAsync(scheduleEntity);
 
-			_mapperMock.Setup(m => m.Map<Schedule>(ScheduleEntity))
+			_mapperMock.Setup(m => m.Map<Schedule>(scheduleEntity))
 				.Returns(arrangedModel);
 
 			// Act 

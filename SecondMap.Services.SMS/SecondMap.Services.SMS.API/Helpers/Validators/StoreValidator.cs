@@ -10,8 +10,7 @@ namespace SecondMap.Services.SMS.API.Helpers.Validators
 		{
 			RuleFor(s => s.Name).NotEmpty().MaximumLength(ValidationConstants.STORE_MAX_NAME_LENGTH);
 			RuleFor(s => s.Address).NotEmpty().MaximumLength(ValidationConstants.STORE_MAX_ADDRESS_LENGTH);
-			RuleFor(s => s.Price).NotEmpty();
-			RuleFor(s => s.Price).GreaterThanOrEqualTo(ValidationConstants.STORE_MIN_PRICE);
+			RuleFor(s => s.Price).Must(p => p > ValidationConstants.STORE_MIN_PRICE);
 		}
 	}
 }

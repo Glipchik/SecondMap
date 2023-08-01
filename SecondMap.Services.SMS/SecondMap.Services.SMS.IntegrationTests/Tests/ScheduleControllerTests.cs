@@ -54,7 +54,7 @@
 		public async Task GetById_WhenInvalidEntity_ShouldReturnNotFound()
 		{
 			// Arrange
-			var invalidId = TestConstants.INVALID_ID;
+			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
 			var response = await _client.GetAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}");
@@ -140,7 +140,7 @@
 		{
 			// Arrange
 			validViewModel.StoreId = (await _dataSeeder.CreateStoreAsync()).Id;
-			var invalidId = TestConstants.INVALID_ID;
+			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
 			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}", SerializeRequestBody(validViewModel));
@@ -200,7 +200,7 @@
 		public async Task DeleteAsync_WhenInvalidId_ShouldReturnNoContent()
 		{
 			// Arrange
-			var invalidId = TestConstants.INVALID_ID;
+			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
 			var response = await _client.DeleteAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}");
