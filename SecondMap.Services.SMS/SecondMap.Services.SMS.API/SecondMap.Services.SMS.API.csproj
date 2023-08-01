@@ -34,4 +34,9 @@
     <ProjectReference Include="..\SecondMap.Services.SMS.DAL\SecondMap.Services.SMS.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\Validators\Users\" />
+    <Folder Include="Helpers\Validators\Stores\" />
+  </ItemGroup>
+
 </Project>

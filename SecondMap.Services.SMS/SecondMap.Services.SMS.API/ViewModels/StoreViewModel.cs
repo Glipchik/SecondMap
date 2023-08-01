@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.API.ViewModels
 {
-	public class StoreViewModel
+	public class StoreViewModel : BaseViewModel
 	{
 		public string? Name { get; set; }
 		public string? Address { get; set; }

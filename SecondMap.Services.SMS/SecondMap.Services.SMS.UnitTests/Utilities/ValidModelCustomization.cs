@@ -1,17 +1,25 @@
-﻿namespace SecondMap.Services.SMS.UnitTests.Utilities
+﻿using SecondMap.Services.SMS.API.ViewModels.AddModels;
+using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
+
+namespace SecondMap.Services.SMS.UnitTests.Utilities
 {
-	public class ValidModelCustomization : ICustomization
+    public class ValidModelCustomization : ICustomization
 	{
 		public void Customize(IFixture fixture)
 		{
-			fixture.Customize<ReviewViewModel>(f =>
+			fixture.Customize<ReviewAddViewModel>(f =>
 				f.OmitAutoProperties()
 					.Do(r => r.UserId = ValidationConstants.INVALID_ID + 1)
 					.Do(r => r.StoreId = ValidationConstants.INVALID_ID + 1)
 					.Do(r => r.Rating = ValidationConstants.REVIEW_MIN_RATING + 1)
 					.Do(r => r.Description = string.Empty.PadRight(ValidationConstants.REVIEW_MAX_DESCRIPTION_LENGTH, 'a')));
 
-			fixture.Customize<ScheduleViewModel>(f =>
+			fixture.Customize<ReviewUpdateViewModel>(f =>
+				f.OmitAutoProperties()
+					.Do(r => r.Rating = ValidationConstants.REVIEW_MIN_RATING + 1)
+					.Do(r => r.Description = string.Empty.PadRight(ValidationConstants.REVIEW_MAX_DESCRIPTION_LENGTH, 'a')));
+
+			fixture.Customize<ScheduleAddViewModel>(f =>
 				f.OmitAutoProperties()
 					.Do(s => s.StoreId = ValidationConstants.INVALID_ID + 1)
 					.Do(s => s.IsClosed = false)

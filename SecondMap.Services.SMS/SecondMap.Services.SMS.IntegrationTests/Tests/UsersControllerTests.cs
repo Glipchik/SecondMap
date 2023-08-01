@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-	public class UsersControllerTests : BaseControllerTests<UserViewModel>, IClassFixture<TestWebApplicationFactory<Program>>
+	public class UsersControllerTests : BaseControllerTests, IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;

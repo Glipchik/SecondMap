@@ -1,6 +1,9 @@
-﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
+﻿using SecondMap.Services.SMS.API.ViewModels.AddModels;
+using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
+
+namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-	public class SchedulesControllerTests : BaseControllerTests<ScheduleViewModel>, IClassFixture<TestWebApplicationFactory<Program>>
+    public class SchedulesControllerTests : BaseControllerTests, IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;
@@ -54,7 +57,7 @@
 		public async Task GetById_WhenInvalidEntity_ShouldReturnNotFound()
 		{
 			// Arrange
-			var invalidId = ValidationConstants.INVALID_ID;
+			var invalidId = TestConstants.INVALID_ID;
 
 			// Act
 			var response = await _client.GetAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}");
@@ -66,7 +69,7 @@
 		[Theory]
 		[IntegrationTestsAutoData]
 		public async Task AddAsync_WhenValidViewModel_ShouldReturnSuccessAndAddedDto(
-			ScheduleViewModel validViewModel)
+			ScheduleAddViewModel validViewModel)
 		{
 			// Arrange
 			validViewModel.StoreId = (await _dataSeeder.CreateStoreAsync()).Id;
@@ -95,7 +98,7 @@
 		[Theory]
 		[IntegrationTestsAutoData]
 		public async Task AddAsync_WhenInvalidViewModel_ShouldReturnBadRequest(
-			ScheduleViewModel invalidViewModel)
+			ScheduleAddViewModel invalidViewModel)
 		{
 			// Arrange
 			invalidViewModel.Day = (DAL.Enums.DayOfWeekEu)(-1);
@@ -110,11 +113,10 @@
 		[Theory]
 		[IntegrationTestsAutoData]
 		public async Task UpdateAsync_WhenValidViewModel_ShouldReturnSuccessAndUpdatedDto(
-			ScheduleViewModel validViewModelToUpdate)
+			ScheduleUpdateViewModel validViewModelToUpdate)
 		{
 			// Arrange
 			var entityToUpdate = await _dataSeeder.CreateScheduleAsync();
-			validViewModelToUpdate.StoreId = entityToUpdate.StoreId;
 
 			// Act
 			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{entityToUpdate.Id}", SerializeRequestBody(validViewModelToUpdate));
@@ -126,61 +128,24 @@
 
 			updatedDto.ShouldNotBeNull();
 			updatedDto.Id.ShouldBe(entityToUpdate.Id);
-			updatedDto.Day.ShouldBe(validViewModelToUpdate.Day);
 			updatedDto.OpeningTime.ShouldBe(validViewModelToUpdate.OpeningTime);
 			updatedDto.ClosingTime.ShouldBe(validViewModelToUpdate.ClosingTime);
 			updatedDto.IsClosed.ShouldBe(validViewModelToUpdate.IsClosed);
-			updatedDto.StoreId.ShouldBe(validViewModelToUpdate.StoreId);
 		}
 
 		[Theory]
 		[IntegrationTestsAutoData]
 		public async Task UpdateAsync_WhenValidModelButInvalidId_ShouldReturnNotFound(
-			ScheduleViewModel validViewModel)
+			ScheduleUpdateViewModel validViewModel)
 		{
 			// Arrange
-			validViewModel.StoreId = (await _dataSeeder.CreateStoreAsync()).Id;
-			var invalidId = ValidationConstants.INVALID_ID;
+			var invalidId = TestConstants.INVALID_ID;
 
 			// Act
 			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}", SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-		}
-
-		[Theory]
-		[IntegrationTestsAutoData]
-		public async Task UpdateAsync_WhenValidIdButInvalidModel_ShouldReturnBadRequest(
-			ScheduleViewModel invalidViewModel)
-		{
-			// Arrange
-			var validId = (await _dataSeeder.CreateScheduleAsync()).Id;
-
-			invalidViewModel.Day = (DAL.Enums.DayOfWeekEu)(-1);
-
-			// Act
-			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
-
-			// Assert
-			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-		}
-
-		[Theory]
-		[IntegrationTestsAutoData]
-		public async Task UpdateAsync_WhenInvalidIdAndInvalidModel_ShouldReturnBadRequest(
-			ScheduleViewModel invalidViewModel)
-		{
-			// Arrange
-			var validId = (await _dataSeeder.CreateScheduleAsync()).Id;
-
-			invalidViewModel.Day = (DAL.Enums.DayOfWeekEu)(-1);
-
-			// Act
-			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
-
-			// Assert
-			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 		}
 
 		[Fact]
@@ -200,7 +165,7 @@
 		public async Task DeleteAsync_WhenInvalidId_ShouldReturnNoContent()
 		{
 			// Arrange
-			var invalidId = ValidationConstants.INVALID_ID;
+			var invalidId = TestConstants.INVALID_ID;
 
 			// Act
 			var response = await _client.DeleteAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}");
@@ -208,10 +173,5 @@
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 		}
-
-		private static readonly JsonSerializerSettings JsonSerializerSettings = new()
-		{
-			DateFormatString = "HH:mm:ss",
-		};
 	}
 }

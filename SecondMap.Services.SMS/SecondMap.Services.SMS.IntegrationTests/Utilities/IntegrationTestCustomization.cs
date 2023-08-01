@@ -1,6 +1,9 @@
-﻿namespace SecondMap.Services.SMS.IntegrationTests.Utilities
+﻿using SecondMap.Services.SMS.API.ViewModels.AddModels;
+using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
+
+namespace SecondMap.Services.SMS.IntegrationTests.Utilities
 {
-	public class IntegrationTestCustomization : ICustomization
+    public class IntegrationTestCustomization : ICustomization
 	{
 		public void Customize(IFixture fixture)
 		{
@@ -41,18 +44,29 @@
 					.Do(u => u.Username = string.Empty.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH - 1, 'a'))
 					.Do(u => u.RoleId = 1));
 
-			fixture.Customize<ReviewViewModel>(f =>
+			fixture.Customize<ReviewAddViewModel>(f =>
 					f.OmitAutoProperties()
 					.Without(r => r.UserId)
 					.Without(r => r.StoreId)
 					.With(r => r.Rating)
 					.Do(r => r.Description = string.Empty.PadRight(ValidationConstants.REVIEW_MAX_DESCRIPTION_LENGTH, 'a')));
 
-			fixture.Customize<ScheduleViewModel>(f =>
+			fixture.Customize<ReviewUpdateViewModel>(f =>
+				f.OmitAutoProperties()
+					.With(r => r.Rating)
+					.Do(r => r.Description = string.Empty.PadRight(ValidationConstants.REVIEW_MAX_DESCRIPTION_LENGTH, 'a')));
+
+			fixture.Customize<ScheduleAddViewModel>(f =>
 					f.OmitAutoProperties()
 					.Without(s => s.StoreId)
 					.Do(s => s.IsClosed = false)
 					.Do(s => s.Day = DayOfWeekEu.Monday)
+					.Do(s => s.OpeningTime = new TimeOnly(9, 30, 0))
+					.Do(s => s.ClosingTime = new TimeOnly(21, 30, 0)));
+
+			fixture.Customize<ScheduleUpdateViewModel>(f => 
+				f.OmitAutoProperties()
+					.Do(s => s.IsClosed = false)
 					.Do(s => s.OpeningTime = new TimeOnly(9, 30, 0))
 					.Do(s => s.ClosingTime = new TimeOnly(21, 30, 0)));
 
