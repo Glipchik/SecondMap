@@ -73,5 +73,18 @@ namespace SecondMap.Services.SMS.BLL.Services
 
 			await _repository.DeleteAsync(reviewToDelete);
 		}
+
+		public async Task<IEnumerable<Review>> GetAllByStoreIdAsync(int storeId)
+		{
+			var foundReviews = await _repository.GetAllByPredicateAsync(r => r.StoreId == storeId);
+
+			if (!foundReviews.Any())
+			{
+				Log.Error("Reviews for store with id = {@id} not found", storeId);
+				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
+			}
+
+			return _mapper.Map<IEnumerable<Review>>(foundReviews);
+		}
 	}
 }

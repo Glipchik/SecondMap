@@ -73,5 +73,18 @@ namespace SecondMap.Services.SMS.BLL.Services
 
 			await _repository.DeleteAsync(entityToDelete);
 		}
+
+		public async Task<IEnumerable<Schedule>> GetAllByStoreIdAsync(int storeId)
+		{
+			var foundSchedules = await _repository.GetAllByPredicateAsync(sch => sch.StoreId == storeId);
+
+			if (!foundSchedules.Any())
+			{
+				Log.Error("Schedules for store with id = {@id} not found", storeId);
+				throw new NotFoundException(ErrorMessages.SCHEDULE_NOT_FOUND);
+			}
+
+			return _mapper.Map<IEnumerable<Schedule>>(foundSchedules);
+		}
 	}
 }

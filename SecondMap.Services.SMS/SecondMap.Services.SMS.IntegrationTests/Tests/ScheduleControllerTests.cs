@@ -3,7 +3,7 @@ using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
 
 namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-    public class SchedulesControllerTests : BaseControllerTests, IClassFixture<TestWebApplicationFactory<Program>>
+	public class SchedulesControllerTests : BaseControllerTests, IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;

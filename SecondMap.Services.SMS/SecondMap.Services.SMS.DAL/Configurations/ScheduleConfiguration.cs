@@ -20,7 +20,7 @@ namespace SecondMap.Services.SMS.DAL.Configurations
 			builder.Property(s => s.IsClosed).IsRequired();
 
 			builder.HasOne(s => s.Store)
-				.WithMany()
+				.WithMany(s => s.Schedules)
 				.HasForeignKey(s => s.StoreId);
 		}
 	}

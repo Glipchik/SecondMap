@@ -8,6 +8,7 @@
 		public int? Rating { get; set; }
 		public decimal Price { get; set; }
 
-		public List<ScheduleDto>? Schedules { get; set; }
+		public IEnumerable<ScheduleDto>? Schedules { get; set; }
+		public IEnumerable<ReviewDto>? Reviews { get; set; }
 	}
 }

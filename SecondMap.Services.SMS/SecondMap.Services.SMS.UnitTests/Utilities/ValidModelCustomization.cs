@@ -3,10 +3,14 @@ using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
 
 namespace SecondMap.Services.SMS.UnitTests.Utilities
 {
-    public class ValidModelCustomization : ICustomization
+	public class ValidModelCustomization : ICustomization
 	{
 		public void Customize(IFixture fixture)
 		{
+			fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+				.ForEach(b => fixture.Behaviors.Remove(b));
+			fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+
 			fixture.Customize<ReviewAddViewModel>(f =>
 				f.OmitAutoProperties()
 					.Do(r => r.UserId = ValidationConstants.INVALID_ID + 1)

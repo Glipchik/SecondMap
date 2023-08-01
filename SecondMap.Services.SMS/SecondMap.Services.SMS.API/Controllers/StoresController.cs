@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SecondMap.Services.SMS.API.Constants;
 using SecondMap.Services.SMS.API.Dto;
 using SecondMap.Services.SMS.API.ViewModels;
-using SecondMap.Services.SMS.BLL.Constants;
 using SecondMap.Services.SMS.BLL.Interfaces;
 using SecondMap.Services.SMS.BLL.Models;
 
@@ -60,6 +60,14 @@ namespace SecondMap.Services.SMS.API.Controllers
 			await _storeService.DeleteStoreAsync(id);
 
 			return NoContent();
+		}
+
+		[HttpGet(ApiEndpoints.DETAILS_ROUTE + ApiEndpoints.ID)]
+		public async Task<IActionResult> GetByIdWithDetailsAsync(int id)
+		{
+			var foundStore = _mapper.Map<StoreDto>(await _storeService.GetByIdWithDetailsAsync(id));
+
+			return Ok(foundStore);
 		}
 	}
 }

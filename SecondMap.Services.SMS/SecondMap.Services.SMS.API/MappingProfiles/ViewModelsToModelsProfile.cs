@@ -7,7 +7,7 @@ using SecondMap.Services.SMS.BLL.Models;
 
 namespace SecondMap.Services.SMS.API.MappingProfiles
 {
-    public class ViewModelsToModelsProfile : Profile
+	public class ViewModelsToModelsProfile : Profile
 	{
 		public ViewModelsToModelsProfile()
 		{

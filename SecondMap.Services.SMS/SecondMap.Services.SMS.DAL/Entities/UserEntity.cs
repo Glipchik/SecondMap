@@ -10,5 +10,7 @@ namespace SecondMap.Services.SMS.DAL.Entities
 		public int RoleId { get; set; }
 
 		public RoleEntity? Role { get; set; }
+		public IEnumerable<ReviewEntity> Reviews { get; set; }
+
 	}
 }

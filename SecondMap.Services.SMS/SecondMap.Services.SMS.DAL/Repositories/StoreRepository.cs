@@ -1,4 +1,5 @@
-﻿using SecondMap.Services.SMS.DAL.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using SecondMap.Services.SMS.DAL.Context;
 using SecondMap.Services.SMS.DAL.Entities;
 using SecondMap.Services.SMS.DAL.Interfaces;
 
@@ -8,6 +9,15 @@ namespace SecondMap.Services.SMS.DAL.Repositories
 	{
 		public StoreRepository(StoreManagementDbContext dbContext) : base(dbContext)
 		{
+		}
+
+		public async Task<StoreEntity?> GetByIdWithDetailsAsync(int storeId)
+		{
+			return await _dbContext.Stores
+				.Where(s => s.Id == storeId)
+				.Include(s => s.Schedules)
+				.Include(s => s.Reviews)
+				.FirstOrDefaultAsync();
 		}
 	}
 }

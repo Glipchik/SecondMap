@@ -21,6 +21,10 @@ namespace SecondMap.Services.SMS.DAL.Configurations
 			builder.HasOne(u => u.Role)
 				.WithMany()
 				.HasForeignKey(u => u.RoleId);
+
+			builder.HasMany(u => u.Reviews)
+				.WithOne(r => r.User)
+				.HasForeignKey(r => r.UserId);
 		}
 	}
 }

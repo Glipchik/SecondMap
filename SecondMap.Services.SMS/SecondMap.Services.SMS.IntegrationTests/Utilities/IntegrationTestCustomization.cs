@@ -3,10 +3,14 @@ using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
 
 namespace SecondMap.Services.SMS.IntegrationTests.Utilities
 {
-    public class IntegrationTestCustomization : ICustomization
+	public class IntegrationTestCustomization : ICustomization
 	{
 		public void Customize(IFixture fixture)
 		{
+			fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+				.ForEach(b => fixture.Behaviors.Remove(b));
+			fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+
 			fixture.Customize<ReviewEntity>(f =>
 					f.OmitAutoProperties()
 					.Without(r => r.Id)
@@ -64,7 +68,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Utilities
 					.Do(s => s.OpeningTime = new TimeOnly(9, 30, 0))
 					.Do(s => s.ClosingTime = new TimeOnly(21, 30, 0)));
 
-			fixture.Customize<ScheduleUpdateViewModel>(f => 
+			fixture.Customize<ScheduleUpdateViewModel>(f =>
 				f.OmitAutoProperties()
 					.Do(s => s.IsClosed = false)
 					.Do(s => s.OpeningTime = new TimeOnly(9, 30, 0))

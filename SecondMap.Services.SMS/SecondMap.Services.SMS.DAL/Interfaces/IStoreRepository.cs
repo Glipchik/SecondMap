@@ -4,5 +4,6 @@ namespace SecondMap.Services.SMS.DAL.Interfaces
 {
 	public interface IStoreRepository : IGenericRepository<StoreEntity>
 	{
+		public Task<StoreEntity?> GetByIdWithDetailsAsync(int storeId);
 	}
 }

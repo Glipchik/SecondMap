@@ -1,5 +1,4 @@
-﻿using SecondMap.Services.SMS.DAL.Entities;
-using SecondMap.Services.SMS.DAL.Enums;
+﻿using SecondMap.Services.SMS.DAL.Enums;
 
 namespace SecondMap.Services.SMS.BLL.Models
 {
@@ -12,6 +11,6 @@ namespace SecondMap.Services.SMS.BLL.Models
 		public TimeOnly ClosingTime { get; set; }
 		public bool IsClosed { get; set; }
 
-		public StoreEntity? Store { get; set; }
+		public Store? Store { get; set; }
 	}
 }

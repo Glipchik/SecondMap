@@ -16,11 +16,11 @@ namespace SecondMap.Services.SMS.DAL.Configurations
 			builder.Property(r => r.Rating).IsRequired();
 
 			builder.HasOne(r => r.User)
-				.WithMany()
+				.WithMany(u => u.Reviews)
 				.HasForeignKey(r => r.UserId);
 
 			builder.HasOne(r => r.Store)
-				.WithMany()
+				.WithMany(s => s.Reviews)
 				.HasForeignKey(r => r.StoreId);
 		}
 	}

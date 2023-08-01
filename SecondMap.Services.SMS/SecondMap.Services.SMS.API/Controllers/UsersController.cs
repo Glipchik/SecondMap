@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SecondMap.Services.SMS.API.Constants;
 using SecondMap.Services.SMS.API.Dto;
 using SecondMap.Services.SMS.API.ViewModels;
-using SecondMap.Services.SMS.BLL.Constants;
 using SecondMap.Services.SMS.BLL.Interfaces;
 using SecondMap.Services.SMS.BLL.Models;
 

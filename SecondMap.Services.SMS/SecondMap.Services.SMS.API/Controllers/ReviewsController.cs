@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SecondMap.Services.SMS.API.Constants;
 using SecondMap.Services.SMS.API.Dto;
 using SecondMap.Services.SMS.API.ViewModels.AddModels;
 using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
-using SecondMap.Services.SMS.BLL.Constants;
 using SecondMap.Services.SMS.BLL.Interfaces;
 using SecondMap.Services.SMS.BLL.Models;
 
 namespace SecondMap.Services.SMS.API.Controllers
 {
-    [Route(ApiEndpoints.API_CONTROLLER_ROUTE)]
+	[Route(ApiEndpoints.API_CONTROLLER_ROUTE)]
 	[ApiController]
 	public class ReviewsController : ControllerBase
 	{
@@ -61,6 +61,14 @@ namespace SecondMap.Services.SMS.API.Controllers
 			await _reviewService.DeleteReviewAsync(id);
 
 			return NoContent();
+		}
+
+		[HttpGet(ApiEndpoints.STORE_ID_EQUALS + ApiEndpoints.ID)]
+		public async Task<IActionResult> GetAllByStoreIdAsync(int id)
+		{
+			var foundReviews = _mapper.Map<IEnumerable<ReviewDto>>(await _reviewService.GetAllByStoreIdAsync(id));
+
+			return Ok(foundReviews);
 		}
 	}
 }
