@@ -81,7 +81,7 @@ namespace SecondMap.Services.SMS.BLL.Services
 			if (!foundSchedules.Any())
 			{
 				Log.Error("Schedules for store with id = {@id} not found", storeId);
-				throw new NotFoundException(ErrorMessages.SCHEDULE_NOT_FOUND);
+				throw new NotFoundException(ErrorMessages.SCHEDULES_FOR_STORE_NOT_FOUND);
 			}
 
 			return _mapper.Map<IEnumerable<Schedule>>(foundSchedules);

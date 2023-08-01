@@ -10,6 +10,28 @@
 			_fixture = new Fixture().Customize(new IntegrationTestCustomization());
 		}
 
+		public async Task<(ReviewEntity, ScheduleEntity)> CreateReviewAndScheduleAsync()
+		{
+			var addedUser = (await _testStoreManagementDbContext.Users.AddAsync(
+					_fixture.Create<UserEntity>()))
+				.Entity;
+			var addedStore = (await _testStoreManagementDbContext.Stores.AddAsync(
+				_fixture.Create<StoreEntity>()
+			)).Entity;
+
+			var reviewToAdd = _fixture.Create<ReviewEntity>();
+			reviewToAdd.StoreId = addedStore.Id;
+			reviewToAdd.UserId = addedUser.Id;
+
+			var scheduleToAdd = _fixture.Create<ScheduleEntity>();
+			scheduleToAdd.StoreId = addedStore.Id;
+
+			var addedReview = (await _testStoreManagementDbContext.AddAsync(reviewToAdd)).Entity;
+			var addedSchedule = (await _testStoreManagementDbContext.AddAsync(scheduleToAdd)).Entity;
+
+			return (addedReview, addedSchedule);
+		}
+
 		public async Task<ReviewEntity> CreateReviewAsync()
 		{
 			var addedUser = (await _testStoreManagementDbContext.Users.AddAsync(

@@ -81,7 +81,7 @@ namespace SecondMap.Services.SMS.BLL.Services
 			if (!foundReviews.Any())
 			{
 				Log.Error("Reviews for store with id = {@id} not found", storeId);
-				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
+				throw new NotFoundException(ErrorMessages.REVIEWS_FOR_STORE_NOT_FOUND);
 			}
 
 			return _mapper.Map<IEnumerable<Review>>(foundReviews);

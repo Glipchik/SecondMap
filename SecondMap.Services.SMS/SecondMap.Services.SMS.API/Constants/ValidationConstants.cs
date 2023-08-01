@@ -13,6 +13,6 @@
 		public const int USER_PASSWORD_MIN_LENGTH = 8;
 		public const int USER_PASSWORD_MAX_LENGTH = 32;
 
-		public const int INVALID_ID = 0;
+		public const int INVALID_ID = -1;
 	}
 }

@@ -33,6 +33,40 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 		}
 
 		[Fact]
+		public async Task GetAllByStoreId_WhenValidStoreId_ShouldReturnSuccessAndDtoList()
+		{
+			// Arrange
+			var reviewEntity = await _dataSeeder.CreateReviewAsync();
+			var validId = reviewEntity.StoreId;
+			
+			// Act
+			var response =
+				await _client.GetAsync(TestConstants.REVIEWS_URL + "/" + ApiEndpoints.STORE_ID_EQUALS + $"{validId}");
+			var dto = JsonConvert.DeserializeObject<List<ReviewDto>>(await response.Content.ReadAsStringAsync());
+
+			// Assert
+			response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+			dto.ShouldNotBeEmpty();
+			dto.ShouldAllBe(r => r.StoreId == validId);
+		}
+
+		[Fact]
+		public async Task GetAllByStoreId_WhenInvalidStoreId_ShouldReturnNotFound()
+		{
+			// Arrange
+			await _dataSeeder.CreateReviewAsync();
+			var invalidId = ValidationConstants.INVALID_ID;
+
+			// Act
+			var response =
+				await _client.GetAsync(TestConstants.REVIEWS_URL + "/" + ApiEndpoints.STORE_ID_EQUALS + $"{invalidId}");
+			
+			// Assert
+			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+		}
+
+		[Fact]
 		public async Task GetById_WhenValidEntity_ShouldReturnSuccessAndFoundDto()
 		{
 			// Arrange
