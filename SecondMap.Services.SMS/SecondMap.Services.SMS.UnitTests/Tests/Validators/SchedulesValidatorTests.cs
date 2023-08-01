@@ -1,4 +1,4 @@
-﻿namespace SecondMap.Services.SMS.UnitTests.TestClasses.Validators
+﻿namespace SecondMap.Services.SMS.UnitTests.Tests.Validators
 {
 	public class SchedulesValidatorTests
 	{

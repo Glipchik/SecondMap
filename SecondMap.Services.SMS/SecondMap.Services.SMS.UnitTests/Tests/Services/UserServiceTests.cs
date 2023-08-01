@@ -1,4 +1,4 @@
-﻿namespace SecondMap.Services.SMS.UnitTests.TestClasses.Services
+﻿namespace SecondMap.Services.SMS.UnitTests.Tests.Services
 {
 	public class UserServiceTests
 	{

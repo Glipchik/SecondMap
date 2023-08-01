@@ -1,20 +1,18 @@
-﻿namespace SecondMap.Services.SMS.UnitTests.TestClasses.Validators
+﻿namespace SecondMap.Services.SMS.UnitTests.Tests.Validators
 {
-	public class UsersValidatorTests
+	public class StoresValidatorTests
 	{
-		private readonly UsersValidator _validator;
-		private readonly IFixture _fixture;
+		private readonly StoreValidator _validator;
 
-		public UsersValidatorTests()
+		public StoresValidatorTests()
 		{
-			_validator = new UsersValidator();
-			_fixture = new Fixture();
+			_validator = new StoreValidator();
 		}
 
 		[Theory]
 		[AutoMoqData]
 		public async Task Validate_WhenEveryFieldValid_ShouldReturnTrue(
-			UserViewModel validViewModel)
+			StoreViewModel validViewModel)
 		{
 			// Arrange
 
@@ -28,10 +26,10 @@
 		[Theory]
 		[AutoMoqData]
 		public async Task Validate_WhenEmptyName_ShouldReturnFalse(
-			UserViewModel invalidViewModel)
+			StoreViewModel invalidViewModel)
 		{
 			// Arrange
-			invalidViewModel.Username = string.Empty;
+			invalidViewModel.Name = string.Empty;
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
@@ -43,10 +41,10 @@
 		[Theory]
 		[AutoMoqData]
 		public async Task Validate_WhenTooLongName_ShouldReturnFalse(
-			UserViewModel invalidViewModel)
+			StoreViewModel invalidViewModel)
 		{
 			// Arrange
-			invalidViewModel.Username = string.Empty.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
+			invalidViewModel.Name = string.Empty.PadRight(ValidationConstants.STORE_MAX_NAME_LENGTH + 1, 'a');
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
@@ -56,26 +54,11 @@
 
 		[Theory]
 		[AutoMoqData]
-		public async Task Validate_WhenEmptyPassword_ShouldReturnFalse(
-			UserViewModel invalidViewModel)
+		public async Task Validate_WhenEmptyAddress_ShouldReturnFalse(
+			StoreViewModel invalidViewModel)
 		{
 			// Arrange
-			invalidViewModel.Password = string.Empty;
-
-			// Act
-			var validationResult = await _validator.ValidateAsync(invalidViewModel);
-
-			// Arrange
-			validationResult.IsValid.Should().BeFalse();
-		}
-
-		[Theory]
-		[AutoMoqData]
-		public async Task Validate_WhenTooShortPassword_ShouldReturnFalse(
-			UserViewModel invalidViewModel)
-		{
-			// Arrange
-			invalidViewModel.Password = string.Empty.PadRight(ValidationConstants.USER_PASSWORD_MIN_LENGTH - 1, 'a');
+			invalidViewModel.Address = string.Empty;
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
@@ -86,11 +69,26 @@
 
 		[Theory]
 		[AutoMoqData]
-		public async Task Validate_WhenTooLongPassword_ShouldReturnFalse(
-			UserViewModel invalidViewModel)
+		public async Task Validate_WhenTooLongAddress_ShouldReturnFalse(
+			StoreViewModel invalidViewModel)
 		{
 			// Arrange
-			invalidViewModel.Password = string.Empty.PadRight(ValidationConstants.USER_PASSWORD_MAX_LENGTH + 1, 'a');
+			invalidViewModel.Address = string.Empty.PadRight(ValidationConstants.STORE_MAX_ADDRESS_LENGTH + 1, 'a');
+
+			// Act
+			var validationResult = await _validator.ValidateAsync(invalidViewModel);
+
+			// Arrange
+			validationResult.IsValid.Should().BeFalse();
+		}
+
+		[Theory]
+		[AutoMoqData]
+		public async Task Validate_WhenTooSmallPrice_ShouldReturnFalse(
+			StoreViewModel invalidViewModel)
+		{
+			// Arrange
+			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE;
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
