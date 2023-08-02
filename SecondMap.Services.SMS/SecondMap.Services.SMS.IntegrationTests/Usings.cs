@@ -19,3 +19,6 @@ global using System.Globalization;
 global using System.Net;
 global using System.Net.Http.Headers;
 global using Xunit;
+global using SecondMap.Services.SMS.API.ViewModels.AddModels;
+global using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
+global using SecondMap.Services.SMS.IntegrationTests.DataSetups;
