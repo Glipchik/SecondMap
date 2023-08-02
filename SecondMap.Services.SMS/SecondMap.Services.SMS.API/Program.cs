@@ -8,6 +8,7 @@ using SecondMap.Services.SMS.DAL.Extensions;
 using Serilog;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace SecondMap.Services.SMS.API
 {
@@ -18,7 +19,10 @@ namespace SecondMap.Services.SMS.API
 			var builder = WebApplication.CreateBuilder(args);
 
 			builder.Services.AddControllers()
-				.AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+				.AddJsonOptions(options => 
+					options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
+				.AddNewtonsoftJson(options =>
+					options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
