@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.API.ViewModels.AddModels
 {
-	public class ReviewAddViewModel : BaseViewModel
+	public class ReviewAddViewModel : IViewModel
 	{
 		public int UserId { get; set; }
 		public int StoreId { get; set; }

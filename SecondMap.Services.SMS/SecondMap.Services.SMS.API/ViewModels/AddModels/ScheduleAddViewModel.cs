@@ -2,7 +2,7 @@
 
 namespace SecondMap.Services.SMS.API.ViewModels.AddModels
 {
-	public class ScheduleAddViewModel : BaseViewModel
+	public class ScheduleAddViewModel : IViewModel
 	{
 		public int StoreId { get; set; }
 		public DayOfWeekEu Day { get; set; }

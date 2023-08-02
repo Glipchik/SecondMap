@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.API.ViewModels
 {
-	public abstract class BaseViewModel
+	public interface IViewModel
 	{
 	}
 }
