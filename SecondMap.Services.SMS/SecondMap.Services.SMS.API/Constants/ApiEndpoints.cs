@@ -8,6 +8,6 @@
 
 		public const string DETAILS_ROUTE = "details/";
 
-		public const string STORE_ID_EQUALS = "storeId=";
+		public const string STORE_ID_EQUALS = "storeId=/";
 	}
 }

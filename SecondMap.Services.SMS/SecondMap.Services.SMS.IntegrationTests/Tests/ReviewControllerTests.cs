@@ -20,7 +20,7 @@
 			await _dataSeeder.CreateReviewAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.REVIEWS_URL);
+			var response = await _client.GetAsync(PathConstants.API_REVIEWS);
 			var dto = JsonConvert.DeserializeObject<List<ReviewDto>>(await response.Content.ReadAsStringAsync());
 
 			// Assert
@@ -38,7 +38,7 @@
 			
 			// Act
 			var response =
-				await _client.GetAsync(TestConstants.REVIEWS_URL + "/" + ApiEndpoints.STORE_ID_EQUALS + $"{validId}");
+				await _client.GetAsync(Path.Join(PathConstants.API_REVIEWS, PathConstants.STORE_ID_EQUALS, $"{validId}"));
 			
 			var dto = await RequestSerializer.DeserializeFromResponseAsync<List<ReviewDto>>(response);
 
@@ -58,7 +58,7 @@
 
 			// Act
 			var response =
-				await _client.GetAsync(TestConstants.REVIEWS_URL + "/" + ApiEndpoints.STORE_ID_EQUALS + $"{invalidId}");
+				await _client.GetAsync(Path.Join(PathConstants.API_REVIEWS, PathConstants.STORE_ID_EQUALS, $"{invalidId}"));
 			
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -71,7 +71,7 @@
 			var validEntity = await _dataSeeder.CreateReviewAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.REVIEWS_URL + $"/{validEntity.Id}");
+			var response = await _client.GetAsync(Path.Join(PathConstants.API_REVIEWS, $"{validEntity.Id}"));
 
 			var dto = await RequestSerializer.DeserializeFromResponseAsync<ReviewDto>(response);
 
@@ -92,7 +92,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.REVIEWS_URL + $"/{invalidId}");
+			var response = await _client.GetAsync(Path.Join(PathConstants.API_REVIEWS, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -108,7 +108,7 @@
 			validViewModel.UserId = (await _dataSeeder.CreateUserAsync()).Id;
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.REVIEWS_URL, RequestSerializer.SerializeRequestBody(validViewModel));
+			var response = await _client.PostAsync(PathConstants.API_REVIEWS, RequestSerializer.SerializeRequestBody(validViewModel));
 
 			var dto = await RequestSerializer.DeserializeFromResponseAsync<ReviewDto>(response);
 
@@ -132,7 +132,7 @@
 			invalidViewModel.Rating = -1;
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.REVIEWS_URL, RequestSerializer.SerializeRequestBody(invalidViewModel));
+			var response = await _client.PostAsync(PathConstants.API_REVIEWS, RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -147,7 +147,7 @@
 			var entityToUpdate = await _dataSeeder.CreateReviewAsync();
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{entityToUpdate.Id}", RequestSerializer.SerializeRequestBody(viewModelToUpdate));
+			var response = await _client.PutAsync(Path.Join(PathConstants.API_REVIEWS, $"{entityToUpdate.Id}"), RequestSerializer.SerializeRequestBody(viewModelToUpdate));
 
 			var updatedDto = await RequestSerializer.DeserializeFromResponseAsync<ReviewDto>(response);
 
@@ -169,7 +169,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{invalidId}", RequestSerializer.SerializeRequestBody(validViewModel));
+			var response = await _client.PutAsync(Path.Join(PathConstants.API_REVIEWS, $"{invalidId}"), RequestSerializer.SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -186,7 +186,7 @@
 			invalidViewModel.Rating = -1;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{validId}", RequestSerializer.SerializeRequestBody(invalidViewModel));
+			var response = await _client.PutAsync(Path.Join(PathConstants.API_REVIEWS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -203,7 +203,7 @@
 			invalidViewModel.Rating = -1;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{validId}", RequestSerializer.SerializeRequestBody(invalidViewModel));
+			var response = await _client.PutAsync(Path.Join(PathConstants.API_REVIEWS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -216,7 +216,7 @@
 			var validId = (await _dataSeeder.CreateReviewAsync()).Id;
 
 			// Act
-			var response = await _client.DeleteAsync(TestConstants.REVIEWS_URL + $"/{validId}");
+			var response = await _client.DeleteAsync(Path.Join(PathConstants.API_REVIEWS, $"{validId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -229,7 +229,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.DeleteAsync(TestConstants.REVIEWS_URL + $"/{invalidId}");
+			var response = await _client.DeleteAsync(Path.Join(PathConstants.API_REVIEWS, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);

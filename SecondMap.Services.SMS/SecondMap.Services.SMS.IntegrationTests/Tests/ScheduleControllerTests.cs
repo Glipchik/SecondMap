@@ -20,7 +20,7 @@
 			await _dataSeeder.CreateScheduleAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.SCHEDULES_URL);
+			var response = await _client.GetAsync(PathConstants.API_SCHEDULES);
 			var dto = await RequestSerializer.DeserializeFromResponseAsync<List<ScheduleDto>>(response);
 
 			// Assert
@@ -37,7 +37,7 @@
 
 			// Act
 			var response =
-				await _client.GetAsync(TestConstants.SCHEDULES_URL + "/" + ApiEndpoints.STORE_ID_EQUALS + $"{validId}");
+				await _client.GetAsync(Path.Join(PathConstants.API_SCHEDULES, PathConstants.STORE_ID_EQUALS, $"{validId}"));
 			var dto = await RequestSerializer.DeserializeFromResponseAsync<List<ScheduleDto>>(response);
 
 			// Assert
@@ -56,7 +56,7 @@
 
 			// Act
 			var response =
-				await _client.GetAsync(TestConstants.SCHEDULES_URL + "/" + ApiEndpoints.STORE_ID_EQUALS + $"{invalidId}");
+				await _client.GetAsync(Path.Join(PathConstants.API_SCHEDULES, PathConstants.STORE_ID_EQUALS, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -69,7 +69,7 @@
 			var validViewModel = await _dataSeeder.CreateScheduleAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.SCHEDULES_URL + $"/{validViewModel.Id}");
+			var response = await _client.GetAsync(Path.Join(PathConstants.API_SCHEDULES, $"{validViewModel.Id}"));
 			var dto = await RequestSerializer.DeserializeFromResponseAsync<ScheduleDto>(response);
 
 			// Assert
@@ -91,7 +91,7 @@
 			var invalidId = TestConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}");
+			var response = await _client.GetAsync(Path.Join(PathConstants.API_SCHEDULES, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -109,7 +109,7 @@
 
 			// Using custom TimeOnlyJsonConverter (from Utilities) to parse TimeOnly as hh:mm:ss
 			// since default converter parses it as hh:mm (which won't pass validation for TimeOnly)
-			var response = await _client.PostAsync(TestConstants.SCHEDULES_URL,
+			var response = await _client.PostAsync(PathConstants.API_SCHEDULES,
 				RequestSerializer.SerializeRequestBody(validViewModel));
 
 			var dto = await RequestSerializer.DeserializeFromResponseAsync<ScheduleDto>(response);
@@ -135,7 +135,7 @@
 			invalidViewModel.Day = (DayOfWeekEu)(-1);
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.SCHEDULES_URL, RequestSerializer.SerializeRequestBody(invalidViewModel));
+			var response = await _client.PostAsync(PathConstants.API_SCHEDULES, RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -150,7 +150,7 @@
 			var entityToUpdate = await _dataSeeder.CreateScheduleAsync();
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{entityToUpdate.Id}", RequestSerializer.SerializeRequestBody(validViewModelToUpdate));
+			var response = await _client.PutAsync(Path.Join(PathConstants.API_SCHEDULES, $"{entityToUpdate.Id}"), RequestSerializer.SerializeRequestBody(validViewModelToUpdate));
 
 			var updatedDto = await RequestSerializer.DeserializeFromResponseAsync<ScheduleDto>(response);
 
@@ -173,7 +173,7 @@
 			var invalidId = TestConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}", RequestSerializer.SerializeRequestBody(validViewModel));
+			var response = await _client.PutAsync(Path.Join(PathConstants.API_SCHEDULES, $"{invalidId}"), RequestSerializer.SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -186,7 +186,7 @@
 			var validId = (await _dataSeeder.CreateScheduleAsync()).Id;
 
 			// Act
-			var response = await _client.DeleteAsync(TestConstants.SCHEDULES_URL + $"/{validId}");
+			var response = await _client.DeleteAsync(Path.Join(PathConstants.API_SCHEDULES, $"{validId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -199,7 +199,7 @@
 			var invalidId = TestConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.DeleteAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}");
+			var response = await _client.DeleteAsync(Path.Join(PathConstants.API_SCHEDULES, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);

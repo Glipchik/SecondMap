@@ -20,7 +20,7 @@
 			await _dataSeeder.CreateUserAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.USERS_URL);
+			var response = await _client.GetAsync(PathConstants.API_USERS);
 			var dto = await RequestSerializer.DeserializeFromResponseAsync<List<UserDto>>(response);
 
 			// Assert
@@ -35,7 +35,7 @@
 			var validViewModel = await _dataSeeder.CreateUserAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.USERS_URL + $"/{validViewModel.Id}");
+			var response = await _client.GetAsync(Path.Join(PathConstants.API_USERS, $"{validViewModel.Id}"));
 			var dto = await RequestSerializer.DeserializeFromResponseAsync<UserDto>(response);
 
 			// Assert
@@ -55,7 +55,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.USERS_URL + $"/{invalidId}");
+			var response = await _client.GetAsync(Path.Join(PathConstants.API_USERS, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -71,7 +71,7 @@
 				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.USERS_URL, RequestSerializer.SerializeRequestBody(invalidViewModel));
+			var response = await _client.PostAsync(PathConstants.API_USERS, RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -86,7 +86,7 @@
 			var entityToUpdate = await _dataSeeder.CreateUserAsync();
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{entityToUpdate.Id}", RequestSerializer.SerializeRequestBody(validViewModelToUpdate));
+			var response = await _client.PutAsync(Path.Join(PathConstants.API_USERS, $"{entityToUpdate.Id}"), RequestSerializer.SerializeRequestBody(validViewModelToUpdate));
 
 			var updatedDto = await RequestSerializer.DeserializeFromResponseAsync<UserDto>(response);
 
@@ -107,7 +107,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{invalidId}", RequestSerializer.SerializeRequestBody(validViewModel));
+			var response = await _client.PutAsync(Path.Join(PathConstants.API_USERS, $"{invalidId}"), RequestSerializer.SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -125,7 +125,7 @@
 				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{validId}", RequestSerializer.SerializeRequestBody(invalidViewModel));
+			var response = await _client.PutAsync(Path.Join(PathConstants.API_USERS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -143,7 +143,7 @@
 				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{validId}", RequestSerializer.SerializeRequestBody(invalidViewModel));
+			var response = await _client.PutAsync(Path.Join(PathConstants.API_USERS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -156,7 +156,7 @@
 			var validId = (await _dataSeeder.CreateUserAsync()).Id;
 
 			// Act
-			var response = await _client.DeleteAsync(TestConstants.USERS_URL + $"/{validId}");
+			var response = await _client.DeleteAsync(Path.Join(PathConstants.API_USERS, $"{validId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -169,7 +169,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.DeleteAsync(TestConstants.USERS_URL + $"/{invalidId}");
+			var response = await _client.DeleteAsync(Path.Join(PathConstants.API_USERS, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
