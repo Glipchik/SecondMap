@@ -29,6 +29,8 @@
 			var addedReview = (await _testStoreManagementDbContext.AddAsync(reviewToAdd)).Entity;
 			var addedSchedule = (await _testStoreManagementDbContext.AddAsync(scheduleToAdd)).Entity;
 
+			await _testStoreManagementDbContext.SaveChangesAsync();
+
 			return (addedReview, addedSchedule);
 		}
 
