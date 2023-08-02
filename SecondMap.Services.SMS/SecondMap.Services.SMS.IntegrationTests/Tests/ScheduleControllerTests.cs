@@ -1,9 +1,6 @@
-﻿using SecondMap.Services.SMS.API.ViewModels.AddModels;
-using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
-
-namespace SecondMap.Services.SMS.IntegrationTests.Tests
+﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-	public class SchedulesControllerTests : BaseControllerTests, IClassFixture<TestWebApplicationFactory<Program>>
+    public class SchedulesControllerTests : IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;
@@ -24,7 +21,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 
 			// Act
 			var response = await _client.GetAsync(TestConstants.SCHEDULES_URL);
-			var dto = JsonConvert.DeserializeObject<List<ScheduleDto>>(await response.Content.ReadAsStringAsync());
+			var dto = await RequestSerializer.DeserializeFromResponseAsync<List<ScheduleDto>>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -41,7 +38,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			// Act
 			var response =
 				await _client.GetAsync(TestConstants.SCHEDULES_URL + "/" + ApiEndpoints.STORE_ID_EQUALS + $"{validId}");
-			var dto = JsonConvert.DeserializeObject<List<ScheduleDto>>(await response.Content.ReadAsStringAsync());
+			var dto = await RequestSerializer.DeserializeFromResponseAsync<List<ScheduleDto>>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -73,7 +70,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 
 			// Act
 			var response = await _client.GetAsync(TestConstants.SCHEDULES_URL + $"/{validViewModel.Id}");
-			var dto = JsonConvert.DeserializeObject<ScheduleDto>(await response.Content.ReadAsStringAsync());
+			var dto = await RequestSerializer.DeserializeFromResponseAsync<ScheduleDto>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -113,9 +110,9 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			// Using custom TimeOnlyJsonConverter (from Utilities) to parse TimeOnly as hh:mm:ss
 			// since default converter parses it as hh:mm (which won't pass validation for TimeOnly)
 			var response = await _client.PostAsync(TestConstants.SCHEDULES_URL,
-				SerializeRequestBody(validViewModel));
+				RequestSerializer.SerializeRequestBody(validViewModel));
 
-			var dto = JsonConvert.DeserializeObject<ScheduleDto>(await response.Content.ReadAsStringAsync());
+			var dto = await RequestSerializer.DeserializeFromResponseAsync<ScheduleDto>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -138,7 +135,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			invalidViewModel.Day = (DayOfWeekEu)(-1);
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.SCHEDULES_URL, SerializeRequestBody(invalidViewModel));
+			var response = await _client.PostAsync(TestConstants.SCHEDULES_URL, RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -153,9 +150,9 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			var entityToUpdate = await _dataSeeder.CreateScheduleAsync();
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{entityToUpdate.Id}", SerializeRequestBody(validViewModelToUpdate));
+			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{entityToUpdate.Id}", RequestSerializer.SerializeRequestBody(validViewModelToUpdate));
 
-			var updatedDto = JsonConvert.DeserializeObject<ScheduleDto>(await response.Content.ReadAsStringAsync());
+			var updatedDto = await RequestSerializer.DeserializeFromResponseAsync<ScheduleDto>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -176,7 +173,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			var invalidId = TestConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}", SerializeRequestBody(validViewModel));
+			var response = await _client.PutAsync(TestConstants.SCHEDULES_URL + $"/{invalidId}", RequestSerializer.SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
