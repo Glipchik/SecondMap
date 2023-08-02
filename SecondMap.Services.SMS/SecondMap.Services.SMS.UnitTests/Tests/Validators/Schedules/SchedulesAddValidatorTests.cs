@@ -17,8 +17,6 @@ namespace SecondMap.Services.SMS.UnitTests.Tests.Validators.Schedules
 		public async Task Validate_WhenEveryFieldValid_ShouldReturnTrue(
 			ScheduleAddViewModel validViewModel)
 		{
-			// Arrange
-
 			// Act
 			var validationResult = await _validator.ValidateAsync(validViewModel);
 

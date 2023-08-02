@@ -17,8 +17,6 @@ namespace SecondMap.Services.SMS.UnitTests.Tests.Validators.Reviews
 		public async Task Validate_WhenEveryFieldValid_ShouldReturnTrue(
 			ReviewUpdateViewModel validViewModel)
 		{
-			// Arrange
-
 			// Act
 			var validationResult = await _validator.ValidateAsync(validViewModel);
 
@@ -37,7 +35,7 @@ namespace SecondMap.Services.SMS.UnitTests.Tests.Validators.Reviews
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Arrange
+			// Assert
 			validationResult.IsValid.Should().BeFalse();
 		}
 
@@ -52,7 +50,7 @@ namespace SecondMap.Services.SMS.UnitTests.Tests.Validators.Reviews
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Arrange
+			// Assert
 			validationResult.IsValid.Should().BeFalse();
 		}
 	}

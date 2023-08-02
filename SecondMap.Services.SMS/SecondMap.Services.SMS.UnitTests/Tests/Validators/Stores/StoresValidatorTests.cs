@@ -14,8 +14,6 @@
 		public async Task Validate_WhenEveryFieldValid_ShouldReturnTrue(
 			StoreViewModel validViewModel)
 		{
-			// Arrange
-
 			// Act
 			var validationResult = await _validator.ValidateAsync(validViewModel);
 
@@ -34,7 +32,7 @@
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Arrange
+			// Assert
 			validationResult.IsValid.Should().BeFalse();
 		}
 
@@ -48,7 +46,7 @@
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Arrange
+			// Assert
 			validationResult.IsValid.Should().BeFalse();
 		}
 
@@ -63,7 +61,7 @@
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Arrange
+			// Assert
 			validationResult.IsValid.Should().BeFalse();
 		}
 
@@ -78,7 +76,7 @@
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Arrange
+			// Assert
 			validationResult.IsValid.Should().BeFalse();
 		}
 
@@ -93,7 +91,7 @@
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Arrange
+			// Assert
 			validationResult.IsValid.Should().BeFalse();
 		}
 	}
