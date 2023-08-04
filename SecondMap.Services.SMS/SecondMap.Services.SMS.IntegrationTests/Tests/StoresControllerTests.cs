@@ -35,7 +35,7 @@
 			var validViewModel = await _dataSeeder.CreateStoreAsync();
 
 			// Act
-			var response = await _client.GetAsync(Path.Join(PathConstants.API_STORES, $"{validViewModel.Id}"));
+			var response = await _client.GetAsync(String.Concat(PathConstants.API_STORES, $"{validViewModel.Id}"));
 			var dto = await RequestSerializer.DeserializeFromResponseAsync<StoreDto>(response);
 
 			// Assert
@@ -56,7 +56,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.GetAsync(Path.Join(PathConstants.API_STORES, $"{invalidId}"));
+			var response = await _client.GetAsync(String.Concat(PathConstants.API_STORES, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -69,7 +69,7 @@
 			var (reviewEntity, scheduleEntity) = await _dataSeeder.CreateReviewAndScheduleAsync();
 
 			// Act
-			var response = await _client.GetAsync(Path.Join(PathConstants.API_STORES, PathConstants.DETAILS, $"{reviewEntity.StoreId}"));
+			var response = await _client.GetAsync(String.Concat(PathConstants.API_STORES, PathConstants.DETAILS, $"{reviewEntity.StoreId}"));
 
 			var dtoWithDetails = await RequestSerializer.DeserializeFromResponseAsync<StoreDto>(response);
 
@@ -128,7 +128,7 @@
 			var entityToUpdate = await _dataSeeder.CreateStoreAsync();
 
 			// Act
-			var response = await _client.PutAsync(Path.Join(PathConstants.API_STORES, $"{entityToUpdate.Id}"), RequestSerializer.SerializeRequestBody(validViewModelToUpdate));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_STORES, $"{entityToUpdate.Id}"), RequestSerializer.SerializeRequestBody(validViewModelToUpdate));
 
 			var updatedDto = await RequestSerializer.DeserializeFromResponseAsync<StoreDto>(response);
 
@@ -151,7 +151,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.PutAsync(Path.Join(PathConstants.API_STORES, $"{invalidId}"), RequestSerializer.SerializeRequestBody(validViewModel));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_STORES, $"{invalidId}"), RequestSerializer.SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -168,7 +168,7 @@
 			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE - 1;
 
 			// Act
-			var response = await _client.PutAsync(Path.Join(PathConstants.API_STORES, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_STORES, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -185,7 +185,7 @@
 			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE - 1;
 
 			// Act
-			var response = await _client.PutAsync(Path.Join(PathConstants.API_STORES, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_STORES, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -198,7 +198,7 @@
 			var validId = (await _dataSeeder.CreateStoreAsync()).Id;
 
 			// Act
-			var response = await _client.DeleteAsync(Path.Join(PathConstants.API_STORES, $"{validId}"));
+			var response = await _client.DeleteAsync(String.Concat(PathConstants.API_STORES, $"{validId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -211,7 +211,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.DeleteAsync(Path.Join(PathConstants.API_STORES, $"{invalidId}"));
+			var response = await _client.DeleteAsync(String.Concat(PathConstants.API_STORES, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
