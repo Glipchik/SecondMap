@@ -5,7 +5,15 @@
 		public int Id { get; set; }
 		public string Name { get; set; } = null!;
 		public string Address { get; set; } = null!;
-		public int? Rating { get; set; }
+
+		public double? Rating
+		{
+			get
+			{
+				return Reviews?.Select(r => r.Rating).Average();
+			}
+		}
+
 		public decimal Price { get; set; }
 
 		public IEnumerable<Review>? Reviews { get; set; }

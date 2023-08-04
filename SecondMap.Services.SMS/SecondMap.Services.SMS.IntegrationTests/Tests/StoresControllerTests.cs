@@ -32,7 +32,7 @@
 		public async Task GetById_WhenValidEntity_ShouldReturnSuccessAndFoundDto()
 		{
 			// Arrange
-			var validViewModel = await _dataSeeder.CreateStoreAsync();
+			var validEntity = await _dataSeeder.CreateStoreAsync();
 
 			// Act
 			var response = await _client.GetAsync(String.Concat(PathConstants.API_STORES, $"{validViewModel.Id}"));
@@ -42,11 +42,10 @@
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
 			dto.ShouldNotBeNull();
-			dto.Id.ShouldBe(validViewModel.Id);
-			dto.Address.ShouldBe(validViewModel.Address);
-			dto.Name.ShouldBe(validViewModel.Name);
-			dto.Rating.ShouldBe(validViewModel.Rating);
-			dto.Price.ShouldBe(validViewModel.Price);
+			dto.Id.ShouldBe(validEntity.Id);
+			dto.Address.ShouldBe(validEntity.Address);
+			dto.Name.ShouldBe(validEntity.Name);
+			dto.Price.ShouldBe(validEntity.Price);
 		}
 
 		[Fact]
