@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-	public class StoresControllerTests : BaseControllerTests, IClassFixture<TestWebApplicationFactory<Program>>
+    public class StoresControllerTests : IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;
@@ -20,8 +20,8 @@
 			await _dataSeeder.CreateStoreAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.STORES_URL);
-			var dto = JsonConvert.DeserializeObject<List<StoreDto>>(await response.Content.ReadAsStringAsync());
+			var response = await _client.GetAsync(PathConstants.API_STORES);
+			var dto = await RequestSerializer.DeserializeFromResponseAsync<List<StoreDto>>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -35,8 +35,8 @@
 			var validViewModel = await _dataSeeder.CreateStoreAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.STORES_URL + $"/{validViewModel.Id}");
-			var dto = JsonConvert.DeserializeObject<StoreDto>(await response.Content.ReadAsStringAsync());
+			var response = await _client.GetAsync(String.Concat(PathConstants.API_STORES, $"{validViewModel.Id}"));
+			var dto = await RequestSerializer.DeserializeFromResponseAsync<StoreDto>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -56,7 +56,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.STORES_URL + $"/{invalidId}");
+			var response = await _client.GetAsync(String.Concat(PathConstants.API_STORES, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -69,10 +69,9 @@
 			var (reviewEntity, scheduleEntity) = await _dataSeeder.CreateReviewAndScheduleAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.STORES_URL + "/" + ApiEndpoints.DETAILS_ROUTE +
-			                                      $"{scheduleEntity.StoreId}");
+			var response = await _client.GetAsync(String.Concat(PathConstants.API_STORES, PathConstants.DETAILS, $"{reviewEntity.StoreId}"));
 
-			var dtoWithDetails = JsonConvert.DeserializeObject<StoreDto>(await response.Content.ReadAsStringAsync());
+			var dtoWithDetails = await RequestSerializer.DeserializeFromResponseAsync<StoreDto>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -90,10 +89,10 @@
 			// Arrange
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.STORES_URL,
-				SerializeRequestBody(validViewModel));
+			var response = await _client.PostAsync(PathConstants.API_STORES,
+				RequestSerializer.SerializeRequestBody(validViewModel));
 
-			var dto = JsonConvert.DeserializeObject<StoreDto>(await response.Content.ReadAsStringAsync());
+			var dto = await RequestSerializer.DeserializeFromResponseAsync<StoreDto>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -114,7 +113,7 @@
 			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE - 1;
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.STORES_URL, SerializeRequestBody(invalidViewModel));
+			var response = await _client.PostAsync(PathConstants.API_STORES, RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -129,9 +128,9 @@
 			var entityToUpdate = await _dataSeeder.CreateStoreAsync();
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{entityToUpdate.Id}", SerializeRequestBody(validViewModelToUpdate));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_STORES, $"{entityToUpdate.Id}"), RequestSerializer.SerializeRequestBody(validViewModelToUpdate));
 
-			var updatedDto = JsonConvert.DeserializeObject<StoreDto>(await response.Content.ReadAsStringAsync());
+			var updatedDto = await RequestSerializer.DeserializeFromResponseAsync<StoreDto>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -152,7 +151,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{invalidId}", SerializeRequestBody(validViewModel));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_STORES, $"{invalidId}"), RequestSerializer.SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -169,7 +168,7 @@
 			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE - 1;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_STORES, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -186,7 +185,7 @@
 			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE - 1;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.STORES_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_STORES, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -199,7 +198,7 @@
 			var validId = (await _dataSeeder.CreateStoreAsync()).Id;
 
 			// Act
-			var response = await _client.DeleteAsync(TestConstants.STORES_URL + $"/{validId}");
+			var response = await _client.DeleteAsync(String.Concat(PathConstants.API_STORES, $"{validId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -212,7 +211,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.DeleteAsync(TestConstants.STORES_URL + $"/{invalidId}");
+			var response = await _client.DeleteAsync(String.Concat(PathConstants.API_STORES, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);

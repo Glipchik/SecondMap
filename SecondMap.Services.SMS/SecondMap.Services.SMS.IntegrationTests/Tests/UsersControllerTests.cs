@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-	public class UsersControllerTests : BaseControllerTests, IClassFixture<TestWebApplicationFactory<Program>>
+    public class UsersControllerTests : IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;
@@ -20,8 +20,8 @@
 			await _dataSeeder.CreateUserAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.USERS_URL);
-			var dto = JsonConvert.DeserializeObject<List<UserDto>>(await response.Content.ReadAsStringAsync());
+			var response = await _client.GetAsync(PathConstants.API_USERS);
+			var dto = await RequestSerializer.DeserializeFromResponseAsync<List<UserDto>>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -35,8 +35,8 @@
 			var validViewModel = await _dataSeeder.CreateUserAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.USERS_URL + $"/{validViewModel.Id}");
-			var dto = JsonConvert.DeserializeObject<UserDto>(await response.Content.ReadAsStringAsync());
+			var response = await _client.GetAsync(String.Concat(PathConstants.API_USERS, $"{validViewModel.Id}"));
+			var dto = await RequestSerializer.DeserializeFromResponseAsync<UserDto>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -55,7 +55,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.USERS_URL + $"/{invalidId}");
+			var response = await _client.GetAsync(String.Concat(PathConstants.API_USERS, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -71,7 +71,7 @@
 				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.USERS_URL, SerializeRequestBody(invalidViewModel));
+			var response = await _client.PostAsync(PathConstants.API_USERS, RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -86,9 +86,9 @@
 			var entityToUpdate = await _dataSeeder.CreateUserAsync();
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{entityToUpdate.Id}", SerializeRequestBody(validViewModelToUpdate));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_USERS, $"{entityToUpdate.Id}"), RequestSerializer.SerializeRequestBody(validViewModelToUpdate));
 
-			var updatedDto = JsonConvert.DeserializeObject<UserDto>(await response.Content.ReadAsStringAsync());
+			var updatedDto = await RequestSerializer.DeserializeFromResponseAsync<UserDto>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -107,7 +107,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{invalidId}", SerializeRequestBody(validViewModel));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_USERS, $"{invalidId}"), RequestSerializer.SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -125,7 +125,7 @@
 				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_USERS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -143,7 +143,7 @@
 				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.USERS_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_USERS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -156,7 +156,7 @@
 			var validId = (await _dataSeeder.CreateUserAsync()).Id;
 
 			// Act
-			var response = await _client.DeleteAsync(TestConstants.USERS_URL + $"/{validId}");
+			var response = await _client.DeleteAsync(String.Concat(PathConstants.API_USERS, $"{validId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -169,7 +169,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.DeleteAsync(TestConstants.USERS_URL + $"/{invalidId}");
+			var response = await _client.DeleteAsync(String.Concat(PathConstants.API_USERS, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);

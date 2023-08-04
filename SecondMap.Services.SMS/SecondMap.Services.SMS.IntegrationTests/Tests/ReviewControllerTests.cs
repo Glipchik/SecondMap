@@ -1,9 +1,6 @@
-﻿using SecondMap.Services.SMS.API.ViewModels.AddModels;
-using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
-
-namespace SecondMap.Services.SMS.IntegrationTests.Tests
+﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-	public class ReviewsControllerTests : BaseControllerTests, IClassFixture<TestWebApplicationFactory<Program>>
+    public class ReviewsControllerTests : IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;
@@ -23,7 +20,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			await _dataSeeder.CreateReviewAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.REVIEWS_URL);
+			var response = await _client.GetAsync(PathConstants.API_REVIEWS);
 			var dto = JsonConvert.DeserializeObject<List<ReviewDto>>(await response.Content.ReadAsStringAsync());
 
 			// Assert
@@ -41,8 +38,9 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			
 			// Act
 			var response =
-				await _client.GetAsync(TestConstants.REVIEWS_URL + "/" + ApiEndpoints.STORE_ID_EQUALS + $"{validId}");
-			var dto = JsonConvert.DeserializeObject<List<ReviewDto>>(await response.Content.ReadAsStringAsync());
+				await _client.GetAsync(String.Concat(PathConstants.API_REVIEWS, PathConstants.STORE_ID_EQUALS, $"{validId}"));
+			
+			var dto = await RequestSerializer.DeserializeFromResponseAsync<List<ReviewDto>>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -60,7 +58,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 
 			// Act
 			var response =
-				await _client.GetAsync(TestConstants.REVIEWS_URL + "/" + ApiEndpoints.STORE_ID_EQUALS + $"{invalidId}");
+				await _client.GetAsync(String.Concat(PathConstants.API_REVIEWS, PathConstants.STORE_ID_EQUALS, $"{invalidId}"));
 			
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -73,8 +71,9 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			var validEntity = await _dataSeeder.CreateReviewAsync();
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.REVIEWS_URL + $"/{validEntity.Id}");
-			var dto = JsonConvert.DeserializeObject<ReviewDto>(await response.Content.ReadAsStringAsync());
+			var response = await _client.GetAsync(String.Concat(PathConstants.API_REVIEWS, $"{validEntity.Id}"));
+
+			var dto = await RequestSerializer.DeserializeFromResponseAsync<ReviewDto>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -93,7 +92,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.GetAsync(TestConstants.REVIEWS_URL + $"/{invalidId}");
+			var response = await _client.GetAsync(String.Concat(PathConstants.API_REVIEWS, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -109,9 +108,9 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			validViewModel.UserId = (await _dataSeeder.CreateUserAsync()).Id;
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.REVIEWS_URL, SerializeRequestBody(validViewModel));
+			var response = await _client.PostAsync(PathConstants.API_REVIEWS, RequestSerializer.SerializeRequestBody(validViewModel));
 
-			var dto = JsonConvert.DeserializeObject<ReviewDto>(await response.Content.ReadAsStringAsync());
+			var dto = await RequestSerializer.DeserializeFromResponseAsync<ReviewDto>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -133,7 +132,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			invalidViewModel.Rating = -1;
 
 			// Act
-			var response = await _client.PostAsync(TestConstants.REVIEWS_URL, SerializeRequestBody(invalidViewModel));
+			var response = await _client.PostAsync(PathConstants.API_REVIEWS, RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -148,9 +147,9 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			var entityToUpdate = await _dataSeeder.CreateReviewAsync();
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{entityToUpdate.Id}", SerializeRequestBody(viewModelToUpdate));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_REVIEWS, $"{entityToUpdate.Id}"), RequestSerializer.SerializeRequestBody(viewModelToUpdate));
 
-			var updatedDto = JsonConvert.DeserializeObject<ReviewDto>(await response.Content.ReadAsStringAsync());
+			var updatedDto = await RequestSerializer.DeserializeFromResponseAsync<ReviewDto>(response);
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -170,7 +169,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{invalidId}", SerializeRequestBody(validViewModel));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_REVIEWS, $"{invalidId}"), RequestSerializer.SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -187,7 +186,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			invalidViewModel.Rating = -1;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_REVIEWS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -204,7 +203,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			invalidViewModel.Rating = -1;
 
 			// Act
-			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{validId}", SerializeRequestBody(invalidViewModel));
+			var response = await _client.PutAsync(String.Concat(PathConstants.API_REVIEWS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -217,7 +216,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			var validId = (await _dataSeeder.CreateReviewAsync()).Id;
 
 			// Act
-			var response = await _client.DeleteAsync(TestConstants.REVIEWS_URL + $"/{validId}");
+			var response = await _client.DeleteAsync(String.Concat(PathConstants.API_REVIEWS, $"{validId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -230,7 +229,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.Tests
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.DeleteAsync(TestConstants.REVIEWS_URL + $"/{invalidId}");
+			var response = await _client.DeleteAsync(String.Concat(PathConstants.API_REVIEWS, $"{invalidId}"));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
