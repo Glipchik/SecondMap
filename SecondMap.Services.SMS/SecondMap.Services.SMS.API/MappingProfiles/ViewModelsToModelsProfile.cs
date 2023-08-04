@@ -20,7 +20,7 @@ namespace SecondMap.Services.SMS.API.MappingProfiles
 			CreateMap<ScheduleUpdateViewModel, Schedule>().ReverseMap();
 
 			CreateMap<Review, ReviewDto>().ReverseMap();
-			CreateMap<Store, StoreDto>().ReverseMap();
+			CreateMap<Store, StoreDto>(); 
 			CreateMap<Schedule, ScheduleDto>().ReverseMap();
 			CreateMap<User, UserDto>().ReverseMap();
 		}

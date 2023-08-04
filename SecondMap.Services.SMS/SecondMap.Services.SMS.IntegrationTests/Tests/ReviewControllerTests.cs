@@ -98,6 +98,45 @@
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 		}
 
+		[Fact]
+		public async Task GetByIdWithDetails_WhenReviewsExist_ShouldReturnDtoWithRatingAndReviewCount()
+		{
+			// Arrange
+			var reviewEntity = await _dataSeeder.CreateReviewAsync();
+			
+			// Act
+			var response = await _client.GetAsync($"api/Stores/details/{reviewEntity.StoreId}");
+
+			var dto = JsonConvert.DeserializeObject<StoreDto>(await response.Content.ReadAsStringAsync());
+
+			// Assert
+			response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+			dto.ShouldNotBeNull();
+			dto.Rating.ShouldBe(reviewEntity.Rating);
+			dto.ReviewCount.ShouldBe(1);
+		}
+
+		[Fact]
+		public async Task GetByIdWithDetails_WhenReviewsDontExist_ShouldReturnDtoWithoutRatingAndReviewCount()
+		{
+			// Arrange
+			var storeEntity = await _dataSeeder.CreateStoreAsync();
+
+			// Act
+			var response = await _client.GetAsync($"api/Stores/details/{storeEntity.Id}");
+
+			var dto = JsonConvert.DeserializeObject<StoreDto>(await response.Content.ReadAsStringAsync());
+
+			// Assert
+			response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+			dto.ShouldNotBeNull();
+			dto.Rating.ShouldBeNull();
+			dto.ReviewCount.ShouldBe(0);
+		}
+
+
 		[Theory]
 		[IntegrationTestsAutoData]
 		public async Task AddAsync_WhenValidViewModel_ShouldReturnSuccessAndAddedDto(

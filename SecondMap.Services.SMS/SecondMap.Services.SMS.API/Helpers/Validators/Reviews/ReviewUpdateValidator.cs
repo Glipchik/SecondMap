@@ -8,7 +8,8 @@ namespace SecondMap.Services.SMS.API.Helpers.Validators.Reviews
 	{
 		public ReviewUpdateValidator()
 		{
-			RuleFor(r => r.Rating).Must(rating => rating > ValidationConstants.REVIEW_MIN_RATING);
+			RuleFor(r => r.Rating).InclusiveBetween(ValidationConstants.REVIEW_MIN_RATING,
+				ValidationConstants.REVIEW_MAX_RATING);
 			RuleFor(r => r.Description).MaximumLength(ValidationConstants.REVIEW_MAX_DESCRIPTION_LENGTH);
 		}
 	}

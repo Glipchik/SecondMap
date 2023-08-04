@@ -10,9 +10,16 @@
 		{
 			get
 			{
-				return Reviews?.Select(r => r.Rating).Average();
+				if (Reviews == null || !Reviews.Any())
+					return null;
+
+				ReviewCount = Reviews.Count();
+
+				return Reviews.Average(r => r.Rating);
 			}
 		}
+
+		public int ReviewCount { get; set; }
 
 		public decimal Price { get; set; }
 
