@@ -86,7 +86,7 @@
 			StoreViewModel invalidViewModel)
 		{
 			// Arrange
-			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE;
+			invalidViewModel.Price = ValidationConstants.STORE_MIN_PRICE - 1;
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);

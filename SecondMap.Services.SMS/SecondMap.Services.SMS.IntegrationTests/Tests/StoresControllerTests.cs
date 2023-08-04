@@ -35,7 +35,7 @@
 			var validEntity = await _dataSeeder.CreateStoreAsync();
 
 			// Act
-			var response = await _client.GetAsync(String.Concat(PathConstants.API_STORES, $"{validViewModel.Id}"));
+			var response = await _client.GetAsync(String.Concat(PathConstants.API_STORES, $"{validEntity.Id}"));
 			var dto = await RequestSerializer.DeserializeFromResponseAsync<StoreDto>(response);
 
 			// Assert
