@@ -13,6 +13,6 @@ namespace SecondMap.Services.SMS.DAL.Entities
 		public IEnumerable<ScheduleEntity>? Schedules { get; set; }
 		public IEnumerable<ReviewEntity>? Reviews { get; set; }
 		public bool IsDeleted { get; set; }
-		public DateTimeOffset DeletedAt { get; set; }
+		public DateTimeOffset? DeletedAt { get; set; }
 	}
 }
