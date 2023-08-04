@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SecondMap.Services.SMS.API.Constants;
 using SecondMap.Services.SMS.API.Dto;
-using SecondMap.Services.SMS.API.ViewModels;
-using SecondMap.Services.SMS.BLL.Constants;
+using SecondMap.Services.SMS.API.ViewModels.AddModels;
+using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
 using SecondMap.Services.SMS.BLL.Interfaces;
 using SecondMap.Services.SMS.BLL.Models;
 
@@ -36,7 +37,7 @@ namespace SecondMap.Services.SMS.API.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddAsync([FromBody] ReviewViewModel reviewToAdd)
+		public async Task<IActionResult> AddAsync([FromBody] ReviewAddViewModel reviewToAdd)
 		{
 			var addedReview = _mapper.Map<ReviewDto>(await _reviewService.AddReviewAsync(_mapper.Map<Review>(reviewToAdd)));
 
@@ -44,7 +45,7 @@ namespace SecondMap.Services.SMS.API.Controllers
 		}
 
 		[HttpPut(ApiEndpoints.ID)]
-		public async Task<IActionResult> UpdateAsync(int id, [FromBody] ReviewViewModel reviewToUpdate)
+		public async Task<IActionResult> UpdateAsync(int id, [FromBody] ReviewUpdateViewModel reviewToUpdate)
 		{
 			var mappedReviewToUpdate = _mapper.Map<Review>(reviewToUpdate);
 			mappedReviewToUpdate.Id = id;
@@ -60,6 +61,14 @@ namespace SecondMap.Services.SMS.API.Controllers
 			await _reviewService.DeleteReviewAsync(id);
 
 			return NoContent();
+		}
+
+		[HttpGet(ApiEndpoints.STORE_ID_EQUALS + ApiEndpoints.ID)]
+		public async Task<IActionResult> GetAllByStoreIdAsync(int id)
+		{
+			var foundReviews = _mapper.Map<IEnumerable<ReviewDto>>(await _reviewService.GetAllByStoreIdAsync(id));
+
+			return Ok(foundReviews);
 		}
 	}
 }

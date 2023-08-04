@@ -1,8 +1,8 @@
 ﻿using SecondMap.Services.SMS.DAL.Enums;
 
-namespace SecondMap.Services.SMS.API.ViewModels
+namespace SecondMap.Services.SMS.API.ViewModels.AddModels
 {
-	public class ScheduleViewModel
+	public class ScheduleAddViewModel : IViewModel
 	{
 		public int StoreId { get; set; }
 		public DayOfWeekEu Day { get; set; }

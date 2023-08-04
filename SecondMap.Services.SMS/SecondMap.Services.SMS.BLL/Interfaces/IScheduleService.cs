@@ -9,5 +9,6 @@ namespace SecondMap.Services.SMS.BLL.Interfaces
 		Task<IEnumerable<Schedule>> GetAllAsync();
 		Task<Schedule> GetByIdAsync(int id);
 		Task<Schedule> UpdateScheduleAsync(Schedule scheduleToUpdate);
+		Task<IEnumerable<Schedule>> GetAllByStoreIdAsync(int storeId);
 	}
 }

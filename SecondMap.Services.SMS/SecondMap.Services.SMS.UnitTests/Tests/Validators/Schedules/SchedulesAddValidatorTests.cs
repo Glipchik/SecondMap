@@ -1,21 +1,22 @@
-﻿namespace SecondMap.Services.SMS.UnitTests.Tests.Validators
-{
-	public class SchedulesValidatorTests
-	{
-		private readonly ScheduleValidator _validator;
+﻿using SecondMap.Services.SMS.API.Helpers.Validators.Schedules;
+using SecondMap.Services.SMS.API.ViewModels.AddModels;
 
-		public SchedulesValidatorTests()
+namespace SecondMap.Services.SMS.UnitTests.Tests.Validators.Schedules
+{
+	public class SchedulesAddValidatorTests
+	{
+		private readonly ScheduleAddValidator _validator;
+
+		public SchedulesAddValidatorTests()
 		{
-			_validator = new ScheduleValidator();
+			_validator = new ScheduleAddValidator();
 		}
 
 		[Theory]
 		[AutoMoqData]
 		public async Task Validate_WhenEveryFieldValid_ShouldReturnTrue(
-			ScheduleViewModel validViewModel)
+			ScheduleAddViewModel validViewModel)
 		{
-			// Arrange
-
 			// Act
 			var validationResult = await _validator.ValidateAsync(validViewModel);
 
@@ -26,7 +27,7 @@
 		[Theory]
 		[AutoMoqData]
 		public async Task Validate_WhenInvalidStoreId_ShouldReturnFalse(
-			ScheduleViewModel invalidViewModel)
+			ScheduleAddViewModel invalidViewModel)
 		{
 			// Arrange
 			invalidViewModel.StoreId = ValidationConstants.INVALID_ID;
@@ -41,7 +42,7 @@
 		[Theory]
 		[AutoMoqData]
 		public async Task Validate_WhenInvalidDay_ShouldReturnFalse(
-			ScheduleViewModel invalidViewModel)
+			ScheduleAddViewModel invalidViewModel)
 		{
 			// Arrange
 			invalidViewModel.Day = (DayOfWeekEu)(-1);

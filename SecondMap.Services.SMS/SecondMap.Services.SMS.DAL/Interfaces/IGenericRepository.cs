@@ -1,4 +1,5 @@
 ﻿using SecondMap.Services.SMS.DAL.Abstractions;
+using System.Linq.Expressions;
 
 namespace SecondMap.Services.SMS.DAL.Interfaces
 {
@@ -15,5 +16,7 @@ namespace SecondMap.Services.SMS.DAL.Interfaces
 		public Task<IEnumerable<T>> GetAllAsync();
 
 		public Task<bool> ExistsWithId(int id);
+
+		public Task<IEnumerable<T>> GetAllByPredicateAsync(Expression<Func<T, bool>> predicate);
 	}
 }

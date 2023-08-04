@@ -2,6 +2,7 @@
 using SecondMap.Services.SMS.DAL.Abstractions;
 using SecondMap.Services.SMS.DAL.Context;
 using SecondMap.Services.SMS.DAL.Interfaces;
+using System.Linq.Expressions;
 
 namespace SecondMap.Services.SMS.DAL.Repositories
 {
@@ -51,6 +52,11 @@ namespace SecondMap.Services.SMS.DAL.Repositories
 		public virtual async Task<bool> ExistsWithId(int id)
 		{
 			return await _dbContext.Set<T>().AnyAsync(e => e.Id == id);
+		}
+
+		public virtual async Task<IEnumerable<T>> GetAllByPredicateAsync(Expression<Func<T, bool>> predicate)
+		{
+			return await _dbContext.Set<T>().Where(predicate).ToListAsync();
 		}
 	}
 }

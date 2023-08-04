@@ -10,6 +10,7 @@ namespace SecondMap.Services.SMS.BLL.Models
 		public string PasswordSalt { get; set; } = null!;
 		public int RoleId { get; set; }
 
+		public IEnumerable<Review>? Reviews { get; set; }
 		public RoleEntity? Role { get; set; }
 	}
 }

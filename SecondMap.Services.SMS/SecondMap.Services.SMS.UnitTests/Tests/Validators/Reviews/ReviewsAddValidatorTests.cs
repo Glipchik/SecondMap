@@ -1,21 +1,22 @@
-﻿namespace SecondMap.Services.SMS.UnitTests.Tests.Validators
-{
-	public class ReviewsValidatorTests
-	{
-		private readonly ReviewValidator _validator;
+﻿using SecondMap.Services.SMS.API.Helpers.Validators.Reviews;
+using SecondMap.Services.SMS.API.ViewModels.AddModels;
 
-		public ReviewsValidatorTests()
+namespace SecondMap.Services.SMS.UnitTests.Tests.Validators.Reviews
+{
+	public class ReviewsAddValidatorTests
+	{
+		private readonly ReviewAddValidator _validator;
+
+		public ReviewsAddValidatorTests()
 		{
-			_validator = new ReviewValidator();
+			_validator = new ReviewAddValidator();
 		}
 
 		[Theory]
 		[AutoMoqData]
 		public async Task Validate_WhenEveryFieldValid_ShouldReturnTrue(
-			ReviewViewModel validViewModel)
+			ReviewAddViewModel validViewModel)
 		{
-			// Arrange
-
 			// Act
 			var validationResult = await _validator.ValidateAsync(validViewModel);
 
@@ -26,7 +27,7 @@
 		[Theory]
 		[AutoMoqData]
 		public async Task Validate_WhenInvalidUserId_ShouldReturnFalse(
-			ReviewViewModel invalidViewModel)
+			ReviewAddViewModel invalidViewModel)
 		{
 			// Arrange
 			invalidViewModel.UserId = ValidationConstants.INVALID_ID;
@@ -34,14 +35,14 @@
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Arrange
+			// Assert
 			validationResult.IsValid.Should().BeFalse();
 		}
 
 		[Theory]
 		[AutoMoqData]
 		public async Task Validate_WhenInvalidStoreId_ShouldReturnFalse(
-			ReviewViewModel invalidViewModel)
+			ReviewAddViewModel invalidViewModel)
 		{
 			// Arrange
 			invalidViewModel.StoreId = ValidationConstants.INVALID_ID;
@@ -49,14 +50,14 @@
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Arrange
+			// Assert
 			validationResult.IsValid.Should().BeFalse();
 		}
 
 		[Theory]
 		[AutoMoqData]
 		public async Task Validate_WhenInvalidRating_ShouldReturnFalse(
-			ReviewViewModel invalidViewModel)
+			ReviewAddViewModel invalidViewModel)
 		{
 			// Arrange
 			invalidViewModel.Rating = ValidationConstants.REVIEW_MIN_RATING;
@@ -64,14 +65,14 @@
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Arrange
+			// Assert
 			validationResult.IsValid.Should().BeFalse();
 		}
 
 		[Theory]
 		[AutoMoqData]
 		public async Task Validate_WhenInvalidDescription_ShouldReturnFalse(
-			ReviewViewModel invalidViewModel)
+			ReviewAddViewModel invalidViewModel)
 		{
 			// Arrange
 			invalidViewModel.Description = string.Empty.PadRight(ValidationConstants.REVIEW_MAX_DESCRIPTION_LENGTH + 1, 'a');
@@ -79,7 +80,7 @@
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Arrange
+			// Assert
 			validationResult.IsValid.Should().BeFalse();
 		}
 	}

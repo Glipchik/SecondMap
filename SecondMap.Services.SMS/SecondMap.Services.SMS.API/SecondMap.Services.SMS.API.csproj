@@ -20,6 +20,7 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.6.0">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -32,6 +33,11 @@
   <ItemGroup>
     <ProjectReference Include="..\SecondMap.Services.SMS.BLL\SecondMap.Services.SMS.BLL.csproj" />
     <ProjectReference Include="..\SecondMap.Services.SMS.DAL\SecondMap.Services.SMS.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\Validators\Users\" />
+    <Folder Include="Helpers\Validators\Stores\" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-	public class StoresControllerTests : BaseControllerTests<StoreViewModel>, IClassFixture<TestWebApplicationFactory<Program>>
+	public class StoresControllerTests : BaseControllerTests, IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;
@@ -60,6 +60,26 @@
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+		}
+
+		[Fact]
+		public async Task GetByIdWithDetails_WhenValidId_ShouldReturnStoreWithDetails()
+		{
+			// Arrange
+			var (reviewEntity, scheduleEntity) = await _dataSeeder.CreateReviewAndScheduleAsync();
+
+			// Act
+			var response = await _client.GetAsync(TestConstants.STORES_URL + "/" + ApiEndpoints.DETAILS_ROUTE +
+			                                      $"{scheduleEntity.StoreId}");
+
+			var dtoWithDetails = JsonConvert.DeserializeObject<StoreDto>(await response.Content.ReadAsStringAsync());
+
+			// Assert
+			response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+			dtoWithDetails.ShouldNotBeNull();
+			dtoWithDetails.Schedules.ShouldNotBeEmpty();
+			dtoWithDetails.Reviews.ShouldNotBeEmpty();
 		}
 
 		[Theory]

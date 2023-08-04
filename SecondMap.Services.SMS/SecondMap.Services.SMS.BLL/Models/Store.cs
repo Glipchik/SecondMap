@@ -7,5 +7,8 @@
 		public string Address { get; set; } = null!;
 		public int? Rating { get; set; }
 		public decimal Price { get; set; }
+
+		public IEnumerable<Review>? Reviews { get; set; }
+		public IEnumerable<Schedule>? Schedules { get; set; }
 	}
 }

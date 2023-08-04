@@ -38,14 +38,14 @@
 		[Theory]
 		[AutoMoqData]
 		public async Task GetByIdAsync_WhenValidId_ShouldReturnStore(
-			StoreEntity StoreEntity,
+			StoreEntity arrangedEntity,
 			[Frozen] Store arrangedModel)
 		{
 			// Arrange
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
-				.ReturnsAsync(StoreEntity);
+				.ReturnsAsync(arrangedEntity);
 
-			_mapperMock.Setup(m => m.Map<Store>(StoreEntity))
+			_mapperMock.Setup(m => m.Map<Store>(arrangedEntity))
 				.Returns(arrangedModel);
 
 			// Act 
@@ -67,6 +67,49 @@
 			// Act
 			var act = () => _service.GetByIdAsync(It.IsAny<int>());
 
+			await act.Should().ThrowAsync<NotFoundException>()
+				.WithMessage(ErrorMessages.STORE_NOT_FOUND);
+		}
+
+		[Theory]
+		[AutoMoqData]
+		public async Task GetByIdWithDetailsAsync_WhenValidId_ShouldReturnStoreWithReviewsAndSchedules(
+			StoreEntity arrangedEntity,
+			[Frozen] Store arrangedModel,
+			[Frozen] List<Review> modelReviews,
+			[Frozen] List<Schedule> modelSchedules)
+		{
+			// Arrange
+			arrangedModel.Reviews = modelReviews;
+			arrangedModel.Schedules = modelSchedules; 
+
+			_repositoryMock.Setup(r => r.GetByIdWithDetailsAsync(It.IsAny<int>()))
+				.ReturnsAsync(arrangedEntity);
+
+			_mapperMock.Setup(m => m.Map<Store>(It.IsAny<StoreEntity>()))
+				.Returns(arrangedModel);
+
+			// Act
+			var foundModel = await _service.GetByIdWithDetailsAsync(It.IsAny<int>());
+
+			// Assert
+			foundModel.Should().NotBeNull();
+			foundModel.Should().BeOfType<Store>();
+			foundModel.Reviews.Should().NotBeEmpty();
+			foundModel.Schedules.Should().NotBeEmpty();
+		}
+
+		[Fact]
+		public async Task GetByIdWithDetailsAsync_WhenInvalidId_ShouldThrowNotFoundException()
+		{
+			// Arrange
+			_repositoryMock.Setup(r => r.GetByIdWithDetailsAsync(It.IsAny<int>()))
+				.ReturnsAsync(value: null);
+
+			// Act
+			var act = () => _service.GetByIdWithDetailsAsync(It.IsAny<int>());
+
+			// Assert
 			await act.Should().ThrowAsync<NotFoundException>()
 				.WithMessage(ErrorMessages.STORE_NOT_FOUND);
 		}

@@ -1,6 +1,9 @@
-﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
+﻿using SecondMap.Services.SMS.API.ViewModels.AddModels;
+using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
+
+namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-	public class ReviewsControllerTests : BaseControllerTests<ReviewViewModel>, IClassFixture<TestWebApplicationFactory<Program>>
+	public class ReviewsControllerTests : BaseControllerTests, IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;
@@ -27,6 +30,40 @@
 			response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
 			dto.ShouldNotBeEmpty();
+		}
+
+		[Fact]
+		public async Task GetAllByStoreId_WhenValidStoreId_ShouldReturnSuccessAndDtoList()
+		{
+			// Arrange
+			var reviewEntity = await _dataSeeder.CreateReviewAsync();
+			var validId = reviewEntity.StoreId;
+			
+			// Act
+			var response =
+				await _client.GetAsync(TestConstants.REVIEWS_URL + "/" + ApiEndpoints.STORE_ID_EQUALS + $"{validId}");
+			var dto = JsonConvert.DeserializeObject<List<ReviewDto>>(await response.Content.ReadAsStringAsync());
+
+			// Assert
+			response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+			dto.ShouldNotBeEmpty();
+			dto.ShouldAllBe(r => r.StoreId == validId);
+		}
+
+		[Fact]
+		public async Task GetAllByStoreId_WhenInvalidStoreId_ShouldReturnNotFound()
+		{
+			// Arrange
+			await _dataSeeder.CreateReviewAsync();
+			var invalidId = ValidationConstants.INVALID_ID;
+
+			// Act
+			var response =
+				await _client.GetAsync(TestConstants.REVIEWS_URL + "/" + ApiEndpoints.STORE_ID_EQUALS + $"{invalidId}");
+			
+			// Assert
+			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 		}
 
 		[Fact]
@@ -65,7 +102,7 @@
 		[Theory]
 		[IntegrationTestsAutoData]
 		public async Task AddAsync_WhenValidViewModel_ShouldReturnSuccessAndAddedDto(
-			ReviewViewModel validViewModel)
+			ReviewAddViewModel validViewModel)
 		{
 			// Arrange
 			validViewModel.StoreId = (await _dataSeeder.CreateStoreAsync()).Id;
@@ -90,7 +127,7 @@
 		[Theory]
 		[IntegrationTestsAutoData]
 		public async Task AddAsync_WhenInvalidViewModel_ShouldReturnBadRequest(
-			ReviewViewModel invalidViewModel)
+			ReviewAddViewModel invalidViewModel)
 		{
 			// Arrange
 			invalidViewModel.Rating = -1;
@@ -105,12 +142,10 @@
 		[Theory]
 		[IntegrationTestsAutoData]
 		public async Task UpdateAsync_WhenValidViewModel_ShouldReturnSuccessAndUpdatedDto(
-			ReviewViewModel viewModelToUpdate)
+			ReviewUpdateViewModel viewModelToUpdate)
 		{
 			// Arrange
 			var entityToUpdate = await _dataSeeder.CreateReviewAsync();
-			viewModelToUpdate.StoreId = entityToUpdate.StoreId;
-			viewModelToUpdate.UserId = entityToUpdate.UserId;
 
 			// Act
 			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{entityToUpdate.Id}", SerializeRequestBody(viewModelToUpdate));
@@ -122,8 +157,6 @@
 
 			updatedDto.ShouldNotBeNull();
 			updatedDto.Id.ShouldBe(entityToUpdate.Id);
-			updatedDto.UserId.ShouldBe(viewModelToUpdate.UserId);
-			updatedDto.StoreId.ShouldBe(viewModelToUpdate.StoreId);
 			updatedDto.Rating.ShouldBe(viewModelToUpdate.Rating);
 			updatedDto.Description.ShouldBe(viewModelToUpdate.Description);
 		}
@@ -131,12 +164,10 @@
 		[Theory]
 		[IntegrationTestsAutoData]
 		public async Task UpdateAsync_WhenValidModelButInvalidId_ShouldReturnNotFound(
-			ReviewViewModel validViewModel)
+			ReviewUpdateViewModel validViewModel)
 		{
 			// Arrange
 			var invalidId = ValidationConstants.INVALID_ID;
-			validViewModel.StoreId = (await _dataSeeder.CreateReviewAsync()).Id;
-			validViewModel.UserId = (await _dataSeeder.CreateUserAsync()).Id;
 
 			// Act
 			var response = await _client.PutAsync(TestConstants.REVIEWS_URL + $"/{invalidId}", SerializeRequestBody(validViewModel));
@@ -148,7 +179,7 @@
 		[Theory]
 		[IntegrationTestsAutoData]
 		public async Task UpdateAsync_WhenValidIdButInvalidModel_ShouldReturnBadRequest(
-			ReviewViewModel invalidViewModel)
+			ReviewUpdateViewModel invalidViewModel)
 		{
 			// Arrange
 			var validId = (await _dataSeeder.CreateReviewAsync()).Id;
@@ -165,7 +196,7 @@
 		[Theory]
 		[IntegrationTestsAutoData]
 		public async Task UpdateAsync_WhenInvalidIdAndInvalidModel_ShouldReturnBadRequest(
-			ReviewViewModel invalidViewModel)
+			ReviewUpdateViewModel invalidViewModel)
 		{
 			// Arrange
 			var validId = (await _dataSeeder.CreateReviewAsync()).Id;

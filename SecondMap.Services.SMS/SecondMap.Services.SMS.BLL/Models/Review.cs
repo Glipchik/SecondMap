@@ -1,6 +1,4 @@
-﻿using SecondMap.Services.SMS.DAL.Entities;
-
-namespace SecondMap.Services.SMS.BLL.Models
+﻿namespace SecondMap.Services.SMS.BLL.Models
 {
 	public class Review
 	{
@@ -10,7 +8,7 @@ namespace SecondMap.Services.SMS.BLL.Models
 		public string? Description { get; set; }
 		public int Rating { get; set; }
 
-		public UserEntity? User { get; set; }
-		public StoreEntity? Store { get; set; }
+		public User? User { get; set; }
+		public Store? Store { get; set; }
 	}
 }

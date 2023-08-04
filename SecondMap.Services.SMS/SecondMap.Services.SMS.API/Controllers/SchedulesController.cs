@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SecondMap.Services.SMS.API.Constants;
 using SecondMap.Services.SMS.API.Dto;
-using SecondMap.Services.SMS.API.ViewModels;
-using SecondMap.Services.SMS.BLL.Constants;
+using SecondMap.Services.SMS.API.ViewModels.AddModels;
+using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
 using SecondMap.Services.SMS.BLL.Interfaces;
 using SecondMap.Services.SMS.BLL.Models;
 
@@ -37,7 +38,7 @@ namespace SecondMap.Services.SMS.API.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddAsync([FromBody] ScheduleViewModel scheduleToAdd)
+		public async Task<IActionResult> AddAsync([FromBody] ScheduleAddViewModel scheduleToAdd)
 		{
 			var addedSchedule = _mapper.Map<ScheduleDto>(await _scheduleService.AddScheduleAsync(_mapper.Map<Schedule>(scheduleToAdd)));
 
@@ -45,7 +46,7 @@ namespace SecondMap.Services.SMS.API.Controllers
 		}
 
 		[HttpPut(ApiEndpoints.ID)]
-		public async Task<IActionResult> UpdateAsync(int id, [FromBody] ScheduleViewModel scheduleToUpdate)
+		public async Task<IActionResult> UpdateAsync(int id, [FromBody] ScheduleUpdateViewModel scheduleToUpdate)
 		{
 			var mappedScheduleToUpdate = _mapper.Map<Schedule>(scheduleToUpdate);
 			mappedScheduleToUpdate.Id = id;
@@ -61,6 +62,14 @@ namespace SecondMap.Services.SMS.API.Controllers
 			await _scheduleService.DeleteScheduleAsync(id);
 
 			return NoContent();
+		}
+
+		[HttpGet(ApiEndpoints.STORE_ID_EQUALS + ApiEndpoints.ID)]
+		public async Task<IActionResult> GetAllByStoreIdAsync(int id)
+		{
+			var foundSchedules = _mapper.Map<IEnumerable<ScheduleDto>>(await _scheduleService.GetAllByStoreIdAsync(id));
+
+			return Ok(foundSchedules);
 		}
 	}
 }

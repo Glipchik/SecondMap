@@ -1,4 +1,6 @@
-﻿namespace SecondMap.Services.SMS.UnitTests.Tests.Services
+﻿using System.Linq.Expressions;
+
+namespace SecondMap.Services.SMS.UnitTests.Tests.Services
 {
 	public class ScheduleServiceTests
 	{
@@ -33,6 +35,46 @@
 			foundModels.Should().BeOfType<List<Schedule>>();
 			foundModels.Should().AllBeOfType<Schedule>();
 			foundModels.Should().BeEquivalentTo(arrangedModels);
+		}
+
+		[Theory]
+		[AutoMoqData]
+		public async Task GetAllByStoreIdAsync_WhenValidStoreIdAndStoreHasReviews_ShouldReturnReviews(
+			List<ScheduleEntity> arrangedEntities,
+			[Frozen] List<Schedule> arrangedModels)
+		{
+			// Arrange
+			_repositoryMock.Setup(r => r.GetAllByPredicateAsync(It.IsAny<Expression<Func<ScheduleEntity, bool>>>()))
+				.ReturnsAsync(arrangedEntities);
+
+			_mapperMock.Setup(m => m.Map<IEnumerable<Schedule>>(It.IsAny<IEnumerable<ScheduleEntity>>()))
+				.Returns(arrangedModels);
+
+			// Act
+			var foundReviews = (await _service.GetAllByStoreIdAsync(It.IsAny<int>())).ToList();
+
+			// Assert
+			foundReviews.Should().BeOfType<List<Schedule>>();
+			foundReviews.Should().AllBeOfType<Schedule>();
+			foundReviews.Count.Should().Be(arrangedModels.Count);
+		}
+
+		[Fact]
+		public async Task GetAllByStoreIdAsync_WhenInvalidStoreIdOrStoreHasNoReviews_ShouldThrowNotFoundException()
+		{
+			// Arrange
+			_repositoryMock.Setup(r => r.GetAllByPredicateAsync(It.IsAny<Expression<Func<ScheduleEntity, bool>>>()))
+				.ReturnsAsync(new List<ScheduleEntity>());
+
+			_mapperMock.Setup(m => m.Map<IEnumerable<Schedule>>(It.IsAny<IEnumerable<ScheduleEntity>>()))
+				.Returns(new List<Schedule>());
+
+			// Act
+			var act = () => _service.GetAllByStoreIdAsync(It.IsAny<int>());
+
+			// Assert
+			await act.Should().ThrowAsync<NotFoundException>()
+				.WithMessage(ErrorMessages.SCHEDULES_FOR_STORE_NOT_FOUND);
 		}
 
 		[Theory]

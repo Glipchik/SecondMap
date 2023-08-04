@@ -73,6 +73,19 @@ namespace SecondMap.Services.SMS.BLL.Services
 
 			await _repository.DeleteAsync(entityToDelete);
 		}
+
+		public async Task<Store> GetByIdWithDetailsAsync(int id)
+		{
+			var foundStore = await _repository.GetByIdWithDetailsAsync(id);
+
+			if (foundStore == null)
+			{
+				Log.Error("Store with id = {@id} not found", id);
+				throw new NotFoundException(ErrorMessages.STORE_NOT_FOUND);
+			}
+
+			return _mapper.Map<Store>(foundStore);
+		}
 	}
 }
 

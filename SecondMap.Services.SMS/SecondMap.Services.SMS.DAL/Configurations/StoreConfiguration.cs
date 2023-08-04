@@ -19,6 +19,14 @@ namespace SecondMap.Services.SMS.DAL.Configurations
 			builder.Property(s => s.Rating);
 
 			builder.Property(s => s.Price).IsRequired();
+
+			builder.HasMany(s => s.Reviews)
+				.WithOne(r => r.Store)
+				.HasForeignKey(r => r.StoreId);
+
+			builder.HasMany(s => s.Schedules)
+				.WithOne(s => s.Store)
+				.HasForeignKey(s => s.StoreId);
 		}
 	}
 }
