@@ -22,15 +22,15 @@ namespace SecondMap.Services.SMS.DAL.Repositories
 
 		public async Task<ReviewEntity?> FindDeletedByIdAsync(int id)
 		{
-			return await _dbContext.Reviews.IgnoreQueryFilters().FirstOrDefaultAsync(r => r.Id == id && r.IsDeleted == true);
+			return await _dbContext.Reviews.IgnoreQueryFilters().FirstOrDefaultAsync(r => r.Id == id && r.IsDeleted);
 		}
 
-		public async Task RestoreDeletedEntityAsync(ReviewEntity entity)
+		public async Task RestoreDeletedEntityAsync(ReviewEntity reviewEntity)
 		{
-			entity.IsDeleted = false;
-			entity.DeletedAt = null;
+			reviewEntity.IsDeleted = false;
+			reviewEntity.DeletedAt = null;
 
-			_dbContext.Entry(entity).State = EntityState.Modified;
+			_dbContext.Entry(reviewEntity).State = EntityState.Modified;
 
 			await _dbContext.SaveChangesAsync();
 		}

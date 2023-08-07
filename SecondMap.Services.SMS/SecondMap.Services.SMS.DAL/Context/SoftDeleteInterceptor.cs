@@ -7,7 +7,7 @@ namespace SecondMap.Services.SMS.DAL.Context
 {
 	public class SoftDeleteInterceptor : SaveChangesInterceptor
 	{
-		private List<EntityEntry> _entriesToHardDelete = new();
+		private readonly List<EntityEntry> _entriesToHardDelete = new();
 		public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
 			DbContextEventData eventData,
 			InterceptionResult<int> result,

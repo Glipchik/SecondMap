@@ -28,7 +28,7 @@ namespace SecondMap.Services.SMS.DAL.Configurations
 				.WithOne(s => s.Store)
 				.HasForeignKey(s => s.StoreId);
 
-			builder.HasQueryFilter(s => s.IsDeleted == false);
+			builder.HasQueryFilter(s => !s.IsDeleted);
 				
 		}
 	}

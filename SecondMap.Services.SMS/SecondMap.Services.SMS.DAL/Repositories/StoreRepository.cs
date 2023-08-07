@@ -23,8 +23,8 @@ namespace SecondMap.Services.SMS.DAL.Repositories
 		{
 			return await _dbContext.Stores.IgnoreQueryFilters()
 				.Include(s => s.Reviews!
-					.Where(r => r.IsDeleted == true))
-				.FirstOrDefaultAsync(s => s.Id == id && s.IsDeleted == true);
+					.Where(r => r.IsDeleted))
+				.FirstOrDefaultAsync(s => s.Id == id && s.IsDeleted);
 		}
 
 		public async Task RestoreDeletedEntityAsync(StoreEntity storeEntity)
