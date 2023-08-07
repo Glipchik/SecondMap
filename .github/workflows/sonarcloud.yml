@@ -48,7 +48,7 @@ jobs:
           EXCLUDE_FROM_DUPLICATION: "**/Migrations/*"
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Glipchik_SecondMap" /o:"glebgang" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverage.exclusions="${{ env.EXCLUDE_FROM_COVERAGE }}" /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Glipchik_SecondMap" /o:"glebgang" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverage.exclusions="${{ env.EXCLUDE_FROM_COVERAGE }}" /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html /d:sonar.cpd.exclusions="${{ env.EXCLUDE_FROM_DUPLICATION }}
           dotnet restore ./SecondMap.Services.SMS/SecondMap.Services.SMS.sln
           dotnet build --no-restore ./SecondMap.Services.SMS/SecondMap.Services.SMS.sln
           dotnet dotcover test --dcReportType=HTML ./SecondMap.Services.SMS/SecondMap.Services.SMS.sln
