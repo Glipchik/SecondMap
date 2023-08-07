@@ -71,7 +71,7 @@ namespace SecondMap.Services.SMS.API.Controllers
 			return Ok(foundReviews);
 		}
 
-		[HttpGet(ApiEndpoints.RESTORE + ApiEndpoints.ID)]
+		[HttpPatch(ApiEndpoints.RESTORE + ApiEndpoints.ID)]
 		public async Task<IActionResult> RestoreByIdAsync(int id)
 		{
 			var restoredReview = _mapper.Map<ReviewDto>(await _reviewService.RestoreByIdAsync(id));

@@ -216,5 +216,77 @@
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 		}
+
+		[Fact]
+		public async Task RestoreByIdAsync_WhenStoreIsDeleted_ShouldReturnRestoredStore()
+		{
+			// Arrange
+			var storeEntity = await _dataSeeder.CreateStoreAsync();
+			await _dataSeeder.SoftDeleteStoreAsync(storeEntity);
+
+			// Act
+			var response = await _client.PatchAsync(String.Concat(PathConstants.API_STORES, PathConstants.RESTORE,
+				$"{storeEntity.Id}"), null);
+
+			var restoredDto = await RequestSerializer.DeserializeFromResponseAsync<StoreDto>(response);
+
+			// Assert
+			restoredDto.ShouldBeOfType<StoreDto>();
+			restoredDto.Id.ShouldBe(storeEntity.Id);
+			restoredDto.Name.ShouldBe(storeEntity.Name);
+			restoredDto.Address.ShouldBe(storeEntity.Address);
+			restoredDto.Price.ShouldBe(storeEntity.Price);
+			restoredDto.Rating.ShouldBe(storeEntity.Rating);
+		}
+
+		[Fact]
+		public async Task RestoreByIdAsync_WhenStoreIsNotDeleted_ShouldReturnConflict()
+		{
+			// Arrange
+			var storeEntity = await _dataSeeder.CreateStoreAsync();
+
+			// Act
+			var response = await _client.PatchAsync(String.Concat(PathConstants.API_STORES, PathConstants.RESTORE,
+				$"{storeEntity.Id}"), null);
+
+			// Assert
+			response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
+
+		}
+
+		[Fact]
+		public async Task RestoreByIdAsync_WhenDeletedStoreNotFound_ShouldReturnNotFound()
+		{
+			// Act
+			var response = await _client.PatchAsync(String.Concat(PathConstants.API_STORES, PathConstants.RESTORE,
+				$"{TestConstants.INVALID_ID}"), null);
+
+			// Assert
+			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+		}
+
+		[Fact]
+		public async Task RestoreByIdWithReviewsAsync_WhenStoreIsDeleted_ShouldReturnRestoredStore()
+		{
+			// Arrange
+			var storeEntity = await _dataSeeder.CreateStoreAsync();
+			await _dataSeeder.CreateReviewAsync();
+			await _dataSeeder.SoftDeleteStoreAsync(storeEntity);
+
+			// Act
+			var response = await _client.PatchAsync(String.Concat(PathConstants.API_STORES, PathConstants.RESTORE,
+				$"{storeEntity.Id}", PathConstants.WITH_REVIEWS_TRUE), null);
+
+			var restoredDto = await RequestSerializer.DeserializeFromResponseAsync<StoreDto>(response);
+
+			// Assert
+			restoredDto.ShouldBeOfType<StoreDto>();
+			restoredDto.Id.ShouldBe(storeEntity.Id);
+			restoredDto.Name.ShouldBe(storeEntity.Name);
+			restoredDto.Address.ShouldBe(storeEntity.Address);
+			restoredDto.Price.ShouldBe(storeEntity.Price);
+			restoredDto.Rating.ShouldBe(storeEntity.Rating);
+			restoredDto.Reviews.ShouldNotBeNull();
+		}
 	}
 }
