@@ -5,52 +5,50 @@ using SecondMap.Services.SMS.DAL.Interfaces;
 
 namespace SecondMap.Services.SMS.DAL.Context
 {
-	internal class SoftDeleteInterceptor : SaveChangesInterceptor
+	public class SoftDeleteInterceptor : SaveChangesInterceptor
 	{
+		private List<EntityEntry> _entriesToHardDelete = new();
 		public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
 			DbContextEventData eventData,
 			InterceptionResult<int> result,
-			CancellationToken cancellationToken = new CancellationToken())
+			CancellationToken cancellationToken = new())
 		{
 			if (eventData.Context == null)
 			{
 				return new ValueTask<InterceptionResult<int>>(result);
 			}
 
-			var entriesToDelete = new List<EntityEntry>();
-
 			foreach (var entry in eventData.Context.ChangeTracker.Entries())
 			{
-				if (IsSoftDeletableEntry(entry))
+				if (entry is not { State: EntityState.Deleted, Entity: ISoftDeletable })
 				{
-					SoftDeleteEntry(entry);
+					continue;
 				}
-				else
-				{
-					entriesToDelete.Add(entry);
-				}
+
+				SoftDeleteEntry(entry);
 			}
 
-			foreach (var entry in entriesToDelete)
+			foreach (EntityEntry entityEntry in _entriesToHardDelete)
 			{
-				entry.State = EntityState.Deleted;
+				entityEntry.State = EntityState.Deleted;
 			}
 
 			return new ValueTask<InterceptionResult<int>>(result);
 		}
-
-		private static bool IsSoftDeletableEntry(EntityEntry entry)
+		private void SoftDeleteEntry(EntityEntry entry)
 		{
-			return entry is { State: EntityState.Deleted, Entity: ISoftDeletable };
-		}
-
-		private static void SoftDeleteEntry(EntityEntry entry)
-		{
+			// additional check cause this method is called later on related entries which might be hard deletable
 			if (entry.Entity is ISoftDeletable softDeletableEntity)
 			{
 				entry.State = EntityState.Modified;
 				softDeletableEntity.IsDeleted = true;
 				softDeletableEntity.DeletedAt = DateTimeOffset.UtcNow;
+			}
+
+			// if entry is not soft deletable it means it is related entry which should be hard deleted
+			else
+			{
+				_entriesToHardDelete.Add(entry);
 			}
 
 			foreach (var collectionEntry in entry.Collections)
@@ -60,9 +58,14 @@ namespace SecondMap.Services.SMS.DAL.Context
 					collectionEntry.Load();
 				}
 
-				foreach (var relatedEntry in collectionEntry.CurrentValue)
+				if (collectionEntry.CurrentValue == null)
 				{
-					SoftDeleteEntry((EntityEntry)relatedEntry);
+					continue;
+				}
+
+				foreach (var relatedEntity in collectionEntry.CurrentValue)
+				{
+					SoftDeleteEntry(collectionEntry.FindEntry(relatedEntity)!);
 				}
 			}
 		}
