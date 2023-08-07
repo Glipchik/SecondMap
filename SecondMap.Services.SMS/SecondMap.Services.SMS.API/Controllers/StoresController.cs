@@ -5,6 +5,7 @@ using SecondMap.Services.SMS.API.Dto;
 using SecondMap.Services.SMS.API.ViewModels;
 using SecondMap.Services.SMS.BLL.Interfaces;
 using SecondMap.Services.SMS.BLL.Models;
+using SecondMap.Services.SMS.BLL.Services;
 
 namespace SecondMap.Services.SMS.API.Controllers
 {
@@ -68,6 +69,14 @@ namespace SecondMap.Services.SMS.API.Controllers
 			var foundStore = _mapper.Map<StoreDto>(await _storeService.GetByIdWithDetailsAsync(id));
 
 			return Ok(foundStore);
+		}
+
+		[HttpPatch(ApiEndpoints.RESTORE + ApiEndpoints.ID)]
+		public async Task<IActionResult> RestoreByIdAsync(int id, bool withReviews)
+		{
+			var restoredStore = _mapper.Map<StoreDto>(await _storeService.RestoreByIdAsync(id, withReviews));
+
+			return Ok(restoredStore);
 		}
 	}
 }

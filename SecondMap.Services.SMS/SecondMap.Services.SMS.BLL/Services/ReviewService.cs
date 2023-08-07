@@ -86,5 +86,26 @@ namespace SecondMap.Services.SMS.BLL.Services
 
 			return _mapper.Map<IEnumerable<Review>>(foundReviews);
 		}
+
+		public async Task<Review> RestoreByIdAsync(int id)
+		{
+			if (await _repository.ExistsWithId(id))
+			{
+				Log.Error("Review with id = {@id} already exists", id);
+				throw new AlreadyExistsException(ErrorMessages.REVIEW_ALREADY_EXISTS);
+			}
+
+			var restoredReview = await _repository.FindDeletedByIdAsync(id);
+
+			if (restoredReview == null)
+			{
+				Log.Error("Deleted review with id = {@id} not found", id);
+				throw new NotFoundException(ErrorMessages.REVIEW_NOT_FOUND);
+			}
+
+			await _repository.RestoreDeletedEntityAsync(restoredReview);
+
+			return _mapper.Map<Review>(restoredReview);
+		}
 	}
 }

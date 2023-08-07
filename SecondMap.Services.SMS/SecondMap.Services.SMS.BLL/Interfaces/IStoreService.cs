@@ -10,5 +10,6 @@ namespace SecondMap.Services.SMS.BLL.Interfaces
 		Task<Store> GetByIdAsync(int id);
 		Task<Store> UpdateStoreAsync(Store storeToUpdate);
 		Task<Store> GetByIdWithDetailsAsync(int id);
+		Task<Store> RestoreByIdAsync(int id, bool withReviews);
 	}
 }

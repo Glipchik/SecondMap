@@ -9,7 +9,7 @@ namespace SecondMap.Services.SMS.BLL.Interfaces
 		Task<IEnumerable<Review>> GetAllAsync();
 		Task<Review> GetByIdAsync(int id);
 		Task<Review> UpdateReviewAsync(Review reviewToUpdate);
-
 		Task<IEnumerable<Review>> GetAllByStoreIdAsync(int storeId);
+		Task<Review> RestoreByIdAsync(int id);
 	}
 }
