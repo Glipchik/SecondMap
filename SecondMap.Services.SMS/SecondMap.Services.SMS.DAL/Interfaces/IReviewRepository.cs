@@ -6,6 +6,6 @@ namespace SecondMap.Services.SMS.DAL.Interfaces
 	{
 		public Task<ReviewEntity?> FindDeletedByIdAsync(int id);
 
-		public Task RestoreDeletedEntityAsync(ReviewEntity storeEntity);
+		public Task RestoreDeletedEntityAsync(ReviewEntity reviewEntity);
 	}
 }
