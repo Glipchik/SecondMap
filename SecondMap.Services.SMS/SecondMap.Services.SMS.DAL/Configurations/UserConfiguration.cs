@@ -12,15 +12,8 @@ namespace SecondMap.Services.SMS.DAL.Configurations
 
 			builder.Property(u => u.Username).IsRequired();
 
-			builder.Property(u => u.PasswordHash).IsRequired();
-
-			builder.Property(u => u.PasswordSalt).IsRequired();
-
-			builder.Property(u => u.RoleId).IsRequired();
-
-			builder.HasOne(u => u.Role)
-				.WithMany()
-				.HasForeignKey(u => u.RoleId);
+			builder.Property(u => u.Role).IsRequired()
+				.HasConversion<int>();
 
 			builder.HasMany(u => u.Reviews)
 				.WithOne(r => r.User)

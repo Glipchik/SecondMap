@@ -11,19 +11,9 @@ namespace SecondMap.Services.SMS.DAL.Repositories
 		{
 		}
 
-		public override async Task<UserEntity?> GetByIdAsync(int id)
+		public override Task<UserEntity> AddAsync(UserEntity entity)
 		{
-			return await _dbContext.Set<UserEntity>()
-				.Where(u => u.Id == id)
-				.Include(u => u.Role)
-				.FirstOrDefaultAsync();
-		}
-
-		public override async Task<IEnumerable<UserEntity>> GetAllAsync()
-		{
-			return await _dbContext.Set<UserEntity>()
-				.Include(u => u.Role)
-				.ToListAsync();
+			throw new NotImplementedException("This service doesn't allow users to be created");
 		}
 	}
 }

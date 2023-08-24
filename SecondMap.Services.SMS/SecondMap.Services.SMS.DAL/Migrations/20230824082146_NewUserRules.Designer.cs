@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SecondMap.Services.SMS.DAL.Context;
@@ -11,9 +12,11 @@ using SecondMap.Services.SMS.DAL.Context;
 namespace SecondMap.Services.StoreManagementService.DAL.Migrations
 {
     [DbContext(typeof(StoreManagementDbContext))]
-    partial class StoreManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230824082146_NewUserRules")]
+    partial class NewUserRules
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,15 +33,9 @@ namespace SecondMap.Services.StoreManagementService.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("Description")
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
 
                     b.Property<int>("Rating")
                         .HasColumnType("integer");
@@ -101,12 +98,6 @@ namespace SecondMap.Services.StoreManagementService.DAL.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.Property<DateTimeOffset?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -114,6 +105,9 @@ namespace SecondMap.Services.StoreManagementService.DAL.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
+
+                    b.Property<int?>("Rating")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -172,18 +166,6 @@ namespace SecondMap.Services.StoreManagementService.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Store");
-                });
-
-            modelBuilder.Entity("SecondMap.Services.SMS.DAL.Entities.StoreEntity", b =>
-                {
-                    b.Navigation("Reviews");
-
-                    b.Navigation("Schedules");
-                });
-
-            modelBuilder.Entity("SecondMap.Services.SMS.DAL.Entities.UserEntity", b =>
-                {
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("SecondMap.Services.SMS.DAL.Entities.StoreEntity", b =>

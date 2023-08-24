@@ -44,8 +44,7 @@
 			dto.ShouldNotBeNull();
 			dto.Id.ShouldBe(validViewModel.Id);
 			dto.Username.ShouldBe(validViewModel.Username);
-			dto.Role!.Id.ShouldBe(TestConstants.USER_ROLE_ID);
-			dto.Role!.RoleName.ShouldBe(nameof(AppRoles.Customer));
+			dto.Role.ShouldBe(UserRole.Admin);
 		}
 
 		[Fact]
@@ -63,7 +62,7 @@
 
 		[Theory]
 		[IntegrationTestsAutoData]
-		public async Task AddAsync_WhenInvalidViewModel_ShouldReturnBadRequest(
+		public async Task AddAsync_ShouldReturnMethodNotAllowed(
 			UserViewModel invalidViewModel)
 		{
 			// Arrange
@@ -74,7 +73,7 @@
 			var response = await _client.PostAsync(PathConstants.API_USERS, RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
-			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+			response.StatusCode.ShouldBe(HttpStatusCode.MethodNotAllowed);
 		}
 
 		[Theory]
@@ -86,7 +85,7 @@
 			var entityToUpdate = await _dataSeeder.CreateUserAsync();
 
 			// Act
-			var response = await _client.PutAsync(String.Concat(PathConstants.API_USERS, $"{entityToUpdate.Id}"), RequestSerializer.SerializeRequestBody(validViewModelToUpdate));
+			var response = await _client.PatchAsync(String.Concat(PathConstants.API_USERS, $"{entityToUpdate.Id}"), RequestSerializer.SerializeRequestBody(validViewModelToUpdate));
 
 			var updatedDto = await RequestSerializer.DeserializeFromResponseAsync<UserDto>(response);
 
@@ -107,7 +106,7 @@
 			var invalidId = ValidationConstants.INVALID_ID;
 
 			// Act
-			var response = await _client.PutAsync(String.Concat(PathConstants.API_USERS, $"{invalidId}"), RequestSerializer.SerializeRequestBody(validViewModel));
+			var response = await _client.PatchAsync(String.Concat(PathConstants.API_USERS, $"{invalidId}"), RequestSerializer.SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -125,7 +124,7 @@
 				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
 
 			// Act
-			var response = await _client.PutAsync(String.Concat(PathConstants.API_USERS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
+			var response = await _client.PatchAsync(String.Concat(PathConstants.API_USERS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -143,7 +142,7 @@
 				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
 
 			// Act
-			var response = await _client.PutAsync(String.Concat(PathConstants.API_USERS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
+			var response = await _client.PatchAsync(String.Concat(PathConstants.API_USERS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);

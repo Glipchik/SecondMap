@@ -35,15 +35,7 @@ namespace SecondMap.Services.SMS.API.Controllers
 			return Ok(foundUser);
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> AddAsync([FromBody] UserViewModel userToAdd)
-		{
-			var addedUser = _mapper.Map<UserDto>(await _userService.AddUserAsync(_mapper.Map<User>(userToAdd)));
-
-			return Ok(addedUser);
-		}
-
-		[HttpPut(ApiEndpoints.ID)]
+		[HttpPatch(ApiEndpoints.ID)]
 		public async Task<IActionResult> UpdateAsync(int id, [FromBody] UserViewModel userToUpdate)
 		{
 			var mappedUserToUpdate = _mapper.Map<User>(userToUpdate);

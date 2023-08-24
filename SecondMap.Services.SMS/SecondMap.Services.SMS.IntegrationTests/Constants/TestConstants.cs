@@ -8,5 +8,7 @@
 		public const int INVALID_ID = -1;
 
 		public static readonly MediaTypeHeaderValue MEDIA_TYPE_APP_JSON = new("application/json");
+
+		public const string VALID_EMAIL = "valid@email.com";
 	}
 }

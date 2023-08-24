@@ -42,10 +42,9 @@ namespace SecondMap.Services.SMS.IntegrationTests.DataSetups
                     f.OmitAutoProperties()
                     .Without(u => u.Id)
                     .Without(u => u.Role)
-                    .With(u => u.PasswordSalt)
-                    .With(u => u.PasswordHash)
                     .Do(u => u.Username = string.Empty.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH - 1, 'a'))
-                    .Do(u => u.RoleId = 1));
+                    .Do(u => u.Email = TestConstants.VALID_EMAIL)
+                    .Do(u => u.Role = UserRole.Admin));
 
             fixture.Customize<ReviewAddViewModel>(f =>
                     f.OmitAutoProperties()
@@ -82,7 +81,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.DataSetups
             fixture.Customize<UserViewModel>(f =>
                     f.OmitAutoProperties()
                     .Do(u => u.Username = string.Empty.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH, 'a'))
-                    .Do(u => u.Password = string.Empty.PadRight(ValidationConstants.USER_PASSWORD_MIN_LENGTH, 'a')));
+                    .Do(u => u.Email = TestConstants.VALID_EMAIL));
         }
     }
 }

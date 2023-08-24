@@ -1,4 +1,6 @@
-﻿namespace SecondMap.Services.SMS.UnitTests.Tests.Validators.Users
+﻿using SecondMap.Services.SMS.UnitTests.Constants;
+
+namespace SecondMap.Services.SMS.UnitTests.Tests.Validators.Users
 {
 	public class UsersValidatorTests
 	{
@@ -54,41 +56,23 @@
 
 		[Theory]
 		[AutoMoqData]
-		public async Task Validate_WhenEmptyPassword_ShouldReturnFalse(
-			UserViewModel invalidViewModel)
+		public async Task Validate_WhenValidEmail_ShouldReturnFalse(
+			UserViewModel validViewModel)
 		{
-			// Arrange
-			invalidViewModel.Password = string.Empty;
-
 			// Act
-			var validationResult = await _validator.ValidateAsync(invalidViewModel);
+			var validationResult = await _validator.ValidateAsync(validViewModel);
 
 			// Assert
-			validationResult.IsValid.Should().BeFalse();
+			validationResult.IsValid.Should().BeTrue();
 		}
 
 		[Theory]
 		[AutoMoqData]
-		public async Task Validate_WhenTooShortPassword_ShouldReturnFalse(
+		public async Task Validate_WhenInvalidEmail_ShouldReturnFalse(
 			UserViewModel invalidViewModel)
 		{
 			// Arrange
-			invalidViewModel.Password = string.Empty.PadRight(ValidationConstants.USER_PASSWORD_MIN_LENGTH - 1, 'a');
-
-			// Act
-			var validationResult = await _validator.ValidateAsync(invalidViewModel);
-
-			// Assert
-			validationResult.IsValid.Should().BeFalse();
-		}
-
-		[Theory]
-		[AutoMoqData]
-		public async Task Validate_WhenTooLongPassword_ShouldReturnFalse(
-			UserViewModel invalidViewModel)
-		{
-			// Arrange
-			invalidViewModel.Password = string.Empty.PadRight(ValidationConstants.USER_PASSWORD_MAX_LENGTH + 1, 'a');
+			invalidViewModel.Email = TestConstants.INVALID_EMAIL;
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);
