@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SecondMap.Services.SMS.DAL.Context;
+﻿using SecondMap.Services.SMS.DAL.Context;
 using SecondMap.Services.SMS.DAL.Entities;
 using SecondMap.Services.SMS.DAL.Interfaces;
 

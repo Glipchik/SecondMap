@@ -1,5 +1,9 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Logging;
+using Newtonsoft.Json;
 using SecondMap.Services.SMS.API.MappingProfiles;
 using SecondMap.Services.SMS.API.Middleware;
 using SecondMap.Services.SMS.BLL.Extensions;
@@ -7,14 +11,7 @@ using SecondMap.Services.SMS.BLL.MappingProfiles;
 using SecondMap.Services.SMS.DAL.Extensions;
 using Serilog;
 using System.Reflection;
-using System.Security.Claims;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.IdentityModel.Logging;
 
 
 namespace SecondMap.Services.SMS.API
@@ -26,7 +23,7 @@ namespace SecondMap.Services.SMS.API
 			var builder = WebApplication.CreateBuilder(args);
 
 			builder.Services.AddControllers()
-				.AddJsonOptions(options => 
+				.AddJsonOptions(options =>
 					options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
 				.AddNewtonsoftJson(options =>
 					options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
