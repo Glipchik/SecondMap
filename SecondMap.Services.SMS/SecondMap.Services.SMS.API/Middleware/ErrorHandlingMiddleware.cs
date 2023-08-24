@@ -38,6 +38,10 @@ namespace SecondMap.Services.SMS.API.Middleware
 					httpStatusCode = HttpStatusCode.Conflict;
 					break;
 
+				case NotImplementedException:
+					httpStatusCode = HttpStatusCode.MethodNotAllowed;
+					break;
+
 				default:
 					httpStatusCode = HttpStatusCode.InternalServerError;
 					break;

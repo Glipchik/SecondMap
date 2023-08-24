@@ -1,14 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using IdentityServer4.EntityFramework.Mappers;
+using MassTransit;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Security.Claims;
-using IdentityServer4.EntityFramework.Mappers;
-using Microsoft.AspNetCore.Identity;
+using SecondMap.Services.Auth.Application.MessageConsumers;
+using SecondMap.Services.Auth.Application.Services;
 using SecondMap.Services.Auth.Domain.Entities;
 using SecondMap.Services.Auth.Domain.Enums;
 using SecondMap.Services.Auth.Infrastructure.Configurations;
-using SecondMap.Services.Auth.Application.Services;
 using SecondMap.Services.Auth.Infrastructure.Context;
+using System.Security.Claims;
 
 namespace SecondMap.Services.Auth.Infrastructure.Extensions
 {
@@ -165,6 +167,32 @@ namespace SecondMap.Services.Auth.Infrastructure.Extensions
 				options.LoginPath = "/auth/login";
 				options.LogoutPath = "/auth/logout";
 				options.Cookie.Name = "IdentityServer.Cookies";
+			});
+		}
+
+		public static void AddRabbitMq(this IServiceCollection services)
+		{
+			services.AddMassTransit(mtConfig =>
+			{
+				mtConfig.SetKebabCaseEndpointNameFormatter();
+				mtConfig.SetInMemorySagaRepositoryProvider();
+
+				var assembly = typeof(UpdateUserConsumer).Assembly;
+
+				mtConfig.AddConsumers(assembly);
+				mtConfig.AddSagaStateMachines(assembly);
+				mtConfig.AddSagas(assembly);
+				mtConfig.AddActivities(assembly);
+
+				mtConfig.UsingRabbitMq((context, rbConfig) =>
+				{
+					rbConfig.Host("localhost", h =>
+					{
+						h.Username("guest");
+						h.Password("guest");
+					});
+					rbConfig.ConfigureEndpoints(context);
+				});
 			});
 		}
 	}

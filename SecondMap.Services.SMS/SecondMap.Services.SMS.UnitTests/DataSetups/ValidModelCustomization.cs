@@ -1,5 +1,6 @@
 ﻿using SecondMap.Services.SMS.API.ViewModels.AddModels;
 using SecondMap.Services.SMS.API.ViewModels.UpdateModels;
+using SecondMap.Services.SMS.UnitTests.Constants;
 
 namespace SecondMap.Services.SMS.UnitTests.Utilities
 {
@@ -39,8 +40,7 @@ namespace SecondMap.Services.SMS.UnitTests.Utilities
 
 			fixture.Customize<UserViewModel>(f =>
 				f.OmitAutoProperties()
-					.Do(u => u.Username = string.Empty.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH, 'a'))
-					.Do(u => u.Password = string.Empty.PadRight(ValidationConstants.USER_PASSWORD_MIN_LENGTH, 'a')));
+					.Do(u => u.Email = TestConstants.VALID_EMAIL));
 		}
 	}
 }

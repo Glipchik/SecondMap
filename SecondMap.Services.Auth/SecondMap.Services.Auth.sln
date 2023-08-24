@@ -40,4 +40,7 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B74A881-58EE-4F71-9DD9-973618F98E0D}
 	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\SecondMap.Shared\SecondMap.Shared.Messages\SecondMap.Shared.Messages.projitems*{9dffb21e-d6fa-4e91-a02c-7141fb74f0dc}*SharedItemsImports = 5
+	EndGlobalSection
 EndGlobal

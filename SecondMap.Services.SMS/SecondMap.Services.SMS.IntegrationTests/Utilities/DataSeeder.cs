@@ -81,13 +81,6 @@
 
 		public async Task<UserEntity> CreateUserAsync()
 		{
-			var addedRole = (await _testStoreManagementDbContext.Roles.AddAsync(
-				new RoleEntity
-				{
-					RoleName = nameof(AppRoles.Customer)
-				}
-			));
-
 			var addedUser = (await _testStoreManagementDbContext.Users.AddAsync(
 				_fixture.Create<UserEntity>()))
 				.Entity;
