@@ -1,0 +1,49 @@
+﻿@model RegisterRequestModel
+
+<link rel="stylesheet" href="~/css/login.css"/>
+<link rel="stylesheet" href="~/css/font-awesome-4.7.0/css/font-awesome.min.css">
+
+<div class="container">
+	<div class="screen">
+		<div class="screen__content">
+
+			<form style="padding-top: 50px" class="login" asp-controller="Auth" asp-action="Register" method="post">
+				<input hidden asp-for="ReturnUrl"/>
+				<span>Enter your info</span>
+				<div class="login__field">
+					<i class="login__icon fa fa-user"></i>
+					<input class="login__input" type="text" placeholder="Username" asp-for="UserName">
+				</div>
+				<span asp-validation-for="UserName"></span>
+				<div class="login__field">
+					<i class="login__icon fa fa-user"></i>
+					<input class="login__input" type="email" placeholder="Email" asp-for="Email">
+				</div>
+				<span asp-validation-for="Email"></span>
+
+				<div class="login__field">
+					<i class="login__icon fa fa-lock"></i>
+					<input class="login__input" type="password" placeholder="Password" asp-for="Password">
+				</div>
+				<span asp-validation-for="Password"></span>
+				<div class="login__field">
+					<i class="login__icon fa fa-lock"></i>
+					<input class="login__input" type="password" placeholder="Confirm password" asp-for="ConfirmPassword">
+				</div>
+				<span asp-validation-for="ConfirmPassword"></span>
+				<button class="login__submit" type="submit" asp-action="Register" asp>
+					<span>Register</span>
+					<i class="button__icon fa fa-chevron-right"></i>
+				</button>
+			</form>
+
+			<a type="button" class="login__register" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">Login</a>
+		</div>
+		<div class="screen__background">
+			<span class="screen__background__shape screen__background__shape4"></span>
+			<span class="screen__background__shape screen__background__shape3"></span>
+			<span class="screen__background__shape screen__background__shape2"></span>
+			<span class="screen__background__shape screen__background__shape1"></span>
+		</div>
+	</div>
+</div>
