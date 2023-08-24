@@ -411,3 +411,5 @@ FodyWeavers.xsd
 /SecondMap.Services.SMS/stryker-config.json
 /SecondMap.Services.SMS/stryker-config.json
 /SecondMap.Services.SMS/stryker.bat
+/SecondMap.Services.Auth/tempkey.jwk
+/SecondMap.Services.Auth/SecondMap.Services.Auth.API/tempkey.jwk
