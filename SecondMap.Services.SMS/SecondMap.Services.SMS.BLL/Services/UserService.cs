@@ -38,15 +38,6 @@ namespace SecondMap.Services.SMS.BLL.Services
 			return _mapper.Map<User>(foundUser);
 		}
 
-		public async Task<User> AddUserAsync(User userToAdd)
-		{
-			var addedUser = _mapper.Map<User>(await _repository.AddAsync(_mapper.Map<UserEntity>(userToAdd)));
-
-			Log.Information("Added user: {@addedUser}", addedUser);
-
-			return addedUser;
-		}
-
 		public async Task<User> UpdateUserAsync(User userToUpdate)
 		{
 			if (!await _repository.ExistsWithId(userToUpdate.Id))

@@ -30,7 +30,6 @@ namespace SecondMap.Services.SMS.API.Controllers
 		}
 
 		[HttpGet(ApiEndpoints.ID)]
-		[Authorize]
 		public async Task<IActionResult> GetByIdAsync(int id)
 		{
 			var foundReview = _mapper.Map<ReviewDto>(await _reviewService.GetByIdAsync(id));
