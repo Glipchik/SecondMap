@@ -22,7 +22,7 @@ namespace SecondMap.Services.Auth.Infrastructure.Extensions
 				options.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
 			});
 		}
-		public static void InitializeDatabase(this IServiceCollection services)
+		public static async void InitializeDatabase(this IServiceCollection services)
 		{
 			var serviceProvider = services.BuildServiceProvider().CreateScope().ServiceProvider;
 
@@ -31,51 +31,51 @@ namespace SecondMap.Services.Auth.Infrastructure.Extensions
 			var userManager = serviceProvider.GetRequiredService<UserManager<AuthUser>>();
 			var roleManager = serviceProvider.GetRequiredService<RoleManager<AuthRole>>();
 
-			if (!authDbContext.IdentityResources.Any())
+			if (!authDbContext.IdentityResources!.Any())
 			{
 				foreach (var identityResource in IdentityConfiguration.GetIdentityResources())
 				{
-					authDbContext.IdentityResources.Add(identityResource.ToEntity());
+					authDbContext.IdentityResources!.Add(identityResource.ToEntity());
 				}
 
-				authDbContext.SaveChangesAsync().GetAwaiter().GetResult();
+				await authDbContext.SaveChangesAsync();
 			}
 
-			if (!authDbContext.ApiResources.Any())
+			if (!authDbContext.ApiResources!.Any())
 			{
 				foreach (var apiResource in IdentityConfiguration.GetApiResources())
 				{
-					authDbContext.ApiResources.Add(apiResource.ToEntity());
+					authDbContext.ApiResources!.Add(apiResource.ToEntity());
 				}
 
-				authDbContext.SaveChangesAsync().GetAwaiter().GetResult();
+				await authDbContext.SaveChangesAsync();
 			}
 
-			if (!authDbContext.ApiScopes.Any())
+			if (!authDbContext.ApiScopes!.Any())
 			{
 				foreach (var apiScope in IdentityConfiguration.GetApiScopes())
 				{
-					authDbContext.ApiScopes.Add(apiScope.ToEntity());
+					authDbContext.ApiScopes!.Add(apiScope.ToEntity());
 				}
 
-				authDbContext.SaveChangesAsync().GetAwaiter().GetResult();
+				await authDbContext.SaveChangesAsync();
 			}
 
-			if (!authDbContext.Clients.Any())
+			if (!authDbContext.Clients!.Any())
 			{
 				foreach (var client in IdentityConfiguration.GetClients())
 				{
-					authDbContext.Clients.Add(client.ToEntity());
+					authDbContext.Clients!.Add(client.ToEntity());
 				}
 
-				authDbContext.SaveChangesAsync().GetAwaiter().GetResult();
+				await authDbContext.SaveChangesAsync();
 			}
 
 			if (!authDbContext.Roles.Any())
 			{
 				foreach (var role in IdentityConfiguration.GetRoles())
 				{
-					roleManager.CreateAsync(new AuthRole(role)).GetAwaiter().GetResult();
+					await roleManager.CreateAsync(new AuthRole(role));
 				}
 			}
 
@@ -83,31 +83,19 @@ namespace SecondMap.Services.Auth.Infrastructure.Extensions
 			{
 				var user = IdentityConfiguration.GetTestAuthUser();
 
-				userManager.CreateAsync(user, "password")
-					.GetAwaiter().GetResult();
+				await userManager.CreateAsync(user, "password");
 
-				userManager.AddClaimsAsync(user, new List<Claim>
-				{
-					new Claim(ClaimTypes.Email, user.Email),
-					new Claim(ClaimTypes.Name, user.UserName),
-					new Claim(ClaimTypes.Role, Roles.Customer.ToString())
-				}).GetAwaiter().GetResult();
+				await userManager.AddClaimsAsync(user, new List<Claim> { new Claim(ClaimTypes.Email, user.Email), new Claim(ClaimTypes.Name, user.UserName), new Claim(ClaimTypes.Role, Roles.Customer.ToString()) });
 
-				userManager.AddToRoleAsync(user, Roles.Customer.ToString()).GetAwaiter().GetResult();
+				await userManager.AddToRoleAsync(user, Roles.Customer.ToString());
 
 				var admin = IdentityConfiguration.GetTestAdmin();
 
-				userManager.CreateAsync(admin, "admin")
-					.GetAwaiter().GetResult();
+				await userManager.CreateAsync(admin, "admin");
 
-				userManager.AddClaimsAsync(admin, new List<Claim>
-				{
-					new Claim(ClaimTypes.Email, admin.Email),
-					new Claim(ClaimTypes.Name, admin.UserName),
-					new Claim(ClaimTypes.Role, Roles.Admin.ToString())
-				}).GetAwaiter().GetResult();
+				await userManager.AddClaimsAsync(admin, new List<Claim> { new Claim(ClaimTypes.Email, admin.Email), new Claim(ClaimTypes.Name, admin.UserName), new Claim(ClaimTypes.Role, Roles.Admin.ToString()) });
 
-				userManager.AddToRoleAsync(admin, Roles.Admin.ToString()).GetAwaiter().GetResult();
+				await userManager.AddToRoleAsync(admin, Roles.Admin.ToString());
 			}
 		}
 
