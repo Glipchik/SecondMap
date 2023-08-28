@@ -95,9 +95,7 @@ namespace SecondMap.Services.SMS.API
 
 			app.UseCors(policy =>
 			{
-				policy.AllowAnyOrigin();
-				policy.AllowAnyHeader();
-				policy.AllowAnyMethod();
+				policy.WithOrigins("https://localhost:5001");
 			});
 
 			app.Run();
