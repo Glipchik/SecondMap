@@ -1,33 +1,34 @@
 ﻿@model LoginRequestModel
 
 <link rel="stylesheet" href="~/css/auth_form.css"/>
+<script src="https://kit.fontawesome.com/17c0d1a827.js" crossorigin="anonymous"></script>
 
 <div class="container">
 	<div class="screen">
 		<div class="screen__content">
 			<form class="login" asp-controller="Auth" asp-action="Login" method="post">
 				<input hidden asp-for="ReturnUrl"/>
-				<span>Login here</span>
+				<span class="header">Login here</span>
 				<div class="login__field">
-					<i class="login__icon"></i>
+					<i class="login__icon fas fa-user"></i>
 					<input type="text" class="login__input" placeholder="User name / Email" asp-for="Email">
 				</div>
 				<span asp-validation-for="Email"></span>
 				<div class="login__field">
-					<i class="login__icon"></i>
+					<i class="login__icon fas fa-lock"></i>
 					<input type="password" class="login__input" placeholder="Password" asp-for="Password">
 				</div>
 				<span asp-validation-for="Password"></span>
 				<button class="login__submit" asp-action="Login">
 					<span>Log In</span>
-					<i class="button__icon"></i>
+					<i class="button__icon fas fa-chevron-right"></i>
 				</button>
 			</form>
 				<a type="button" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl" class="login__register">Register now</a>
 			<div class="social-login">
 				<h3>Or via</h3>
 				<div class="social-icons">
-					<a href="#" class="social-login__icon"></a>
+					<a href="#" class="social-login__icon fas fa-brands fa-google"></a>
 				</div>
 			</div>
 		</div>

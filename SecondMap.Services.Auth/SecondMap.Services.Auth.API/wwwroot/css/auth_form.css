@@ -185,18 +185,7 @@ body {
 		transform: scale(1.5);
 	}
 
-.fa-user:before {
-	content: "\f007"
-}
-
-.fa-lock:before {
-	content: "\f023"
-}
-
-.fa-chevron-right:before {
-	content: "\f054"
-}
-
-.fa-google:before {
-	content: "\f1a0"
+.header {
+	color: #4C489D;
+	text-transform: uppercase;
 }
