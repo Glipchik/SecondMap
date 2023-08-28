@@ -61,7 +61,7 @@ namespace SecondMap.Services.Auth.API.Controllers
 			return View(new RegisterRequestModel { ReturnUrl = returnUrl });
 		}
 
-		[HttpPost, Route("register")]
+		[HttpPost, Route(ApiRoutes.REGISTER)]
 		public async Task<ActionResult> Register(RegisterRequestModel requestModel)
 		{
 			var validationResult = await _registerValidator.ValidateAsync(requestModel);
@@ -87,7 +87,7 @@ namespace SecondMap.Services.Auth.API.Controllers
 			return Redirect(requestModel.ReturnUrl);
 		}
 
-		[HttpGet, Route("logout")]
+		[HttpGet, Route(ApiRoutes.LOGOUT)]
 		public async Task<ActionResult> Logout()
 		{
 			if (User.Identity!.IsAuthenticated)
