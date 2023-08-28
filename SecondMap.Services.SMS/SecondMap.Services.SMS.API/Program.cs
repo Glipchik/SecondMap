@@ -7,8 +7,15 @@ using SecondMap.Services.SMS.BLL.MappingProfiles;
 using SecondMap.Services.SMS.DAL.Extensions;
 using Serilog;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Logging;
+
 
 namespace SecondMap.Services.SMS.API
 {
@@ -39,6 +46,28 @@ namespace SecondMap.Services.SMS.API
 				typeof(ModelToEntityProfile).Assembly
 			);
 
+			builder.Services.AddAuthentication(config =>
+				{
+					config.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+					config.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+					config.DefaultAuthenticateScheme = "Cookies";
+				})
+				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, config =>
+				{
+					config.SignInScheme = "Cookies";
+					config.Authority = "https://localhost:5001";
+					config.ClientId = "test-client";
+					config.ClientSecret = "test-secret";
+					config.SaveTokens = true;
+					config.ResponseType = "code";
+
+					config.GetClaimsFromUserInfoEndpoint = true;
+				});
+
+			builder.Services.AddAuthorization();
+			IdentityModelEventSource.ShowPII = true;
+
 			Log.Logger = new LoggerConfiguration()
 				.MinimumLevel.Information()
 				.WriteTo.Console()
@@ -57,12 +86,17 @@ namespace SecondMap.Services.SMS.API
 			app.UseMiddleware<ErrorHandlingMiddleware>();
 
 			app.UseHttpsRedirection();
-
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseMiddleware<LoggingMiddleware>();
 
 			app.MapControllers();
+
+			app.UseCors(policy =>
+			{
+				policy.WithOrigins("https://localhost:5001");
+			});
 
 			app.Run();
 		}
