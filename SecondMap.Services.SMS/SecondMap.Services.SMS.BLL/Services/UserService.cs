@@ -20,6 +20,13 @@ namespace SecondMap.Services.SMS.BLL.Services
 			_mapper = mapper;
 		}
 
+		public async Task AddUserAsync(User userToAdd)
+		{
+			var addedUser = await _repository.AddAsync(_mapper.Map<UserEntity>(userToAdd));
+
+			Log.Information("Added user\n{@addedUser}", addedUser);
+		}
+
 		public async Task<IEnumerable<User>> GetAllAsync()
 		{
 			return _mapper.Map<IEnumerable<User>>(await _repository.GetAllAsync());

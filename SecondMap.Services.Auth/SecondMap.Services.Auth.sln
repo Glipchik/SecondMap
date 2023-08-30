@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecondMap.Services.Auth.Inf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecondMap.Services.Auth.Application", "SecondMap.Services.Auth.Application\SecondMap.Services.Auth.Application.csproj", "{9DFFB21E-D6FA-4E91-A02C-7141FB74F0DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondMap.Services.Auth.Messages", "SecondMap.Services.Auth.Messages\SecondMap.Services.Auth.Messages.csproj", "{2BA12C3E-5265-40CF-98E3-FFFA4D4384C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,11 +35,18 @@ Global
 		{9DFFB21E-D6FA-4E91-A02C-7141FB74F0DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DFFB21E-D6FA-4E91-A02C-7141FB74F0DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DFFB21E-D6FA-4E91-A02C-7141FB74F0DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BA12C3E-5265-40CF-98E3-FFFA4D4384C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BA12C3E-5265-40CF-98E3-FFFA4D4384C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BA12C3E-5265-40CF-98E3-FFFA4D4384C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BA12C3E-5265-40CF-98E3-FFFA4D4384C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B74A881-58EE-4F71-9DD9-973618F98E0D}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\SecondMap.Shared\SecondMap.Messages\SecondMap.Messages.projitems*{9dffb21e-d6fa-4e91-a02c-7141fb74f0dc}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

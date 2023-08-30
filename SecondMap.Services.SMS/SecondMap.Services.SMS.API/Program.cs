@@ -12,6 +12,8 @@ using SecondMap.Services.SMS.DAL.Extensions;
 using Serilog;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using SecondMap.Services.SMS.Messages.Extensions;
+using ServiceCollectionExtensions = SecondMap.Services.SMS.Messages.Extensions.ServiceCollectionExtensions;
 
 
 namespace SecondMap.Services.SMS.API
@@ -70,6 +72,8 @@ namespace SecondMap.Services.SMS.API
 				.WriteTo.Console()
 				.WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
 				.CreateLogger();
+
+			builder.Services.AddRabbitMq();
 
 			var app = builder.Build();
 
