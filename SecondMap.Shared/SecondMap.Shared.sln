@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SecondMap.Shared.Messages", "SecondMap.Messages\SecondMap.Shared.Messages.shproj", "{191F9BF2-5951-44D0-8752-63E93B0D5E28}"
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {59464E9C-62B1-4616-B59A-68C27C199C62}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SecondMap.Messages\SecondMap.Messages.projitems*{191f9bf2-5951-44d0-8752-63e93b0d5e28}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal

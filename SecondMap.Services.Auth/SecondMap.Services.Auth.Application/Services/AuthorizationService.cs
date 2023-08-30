@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Identity;
+using SecondMap.Messages;
 using SecondMap.Services.Auth.Application.Results;
 using SecondMap.Services.Auth.Application.Services.Abstract;
 using SecondMap.Services.Auth.Domain.Entities;
+using SecondMap.Shared.Messages;
 
 namespace SecondMap.Services.Auth.Application.Services
 {
@@ -9,12 +12,15 @@ namespace SecondMap.Services.Auth.Application.Services
 	{
 		private readonly SignInManager<AuthUser> _signInManager;
 		private readonly IUserService _userService;
+		private readonly IPublishEndpoint _publishEndpoint;
 
 		public AuthorizationService(SignInManager<AuthUser> signInManager,
-			IUserService userService)
+			IUserService userService,
+			IPublishEndpoint publishEndpoint)
 		{
 			_signInManager = signInManager;
 			_userService = userService;
+			_publishEndpoint = publishEndpoint;
 		}
 
 		public async Task<AuthResult<SignInResult>> LoginAsync(string email, string password)
@@ -52,6 +58,8 @@ namespace SecondMap.Services.Auth.Application.Services
 				};
 			}
 
+			await _publishEndpoint.Publish(new AddUser(email, username));
+			
 			var signInResult = await _signInManager.PasswordSignInAsync(userServiceResult.Result!, password, false, false);
 
 			return new AuthResult<SignInResult>

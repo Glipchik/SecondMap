@@ -9,10 +9,5 @@ namespace SecondMap.Services.SMS.DAL.Repositories
 		public UserRepository(StoreManagementDbContext dbContext) : base(dbContext)
 		{
 		}
-
-		public override Task<UserEntity> AddAsync(UserEntity entity)
-		{
-			throw new NotImplementedException("This service doesn't allow users to be created");
-		}
 	}
 }

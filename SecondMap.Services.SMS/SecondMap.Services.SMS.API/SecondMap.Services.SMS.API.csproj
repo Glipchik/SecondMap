@@ -46,6 +46,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SecondMap.Services.SMS.BLL\SecondMap.Services.SMS.BLL.csproj" />
     <ProjectReference Include="..\SecondMap.Services.SMS.DAL\SecondMap.Services.SMS.DAL.csproj" />
+    <ProjectReference Include="..\SecondMap.Services.SMS.Messages\SecondMap.Services.SMS.Messages.csproj" />
   </ItemGroup>
 
 </Project>

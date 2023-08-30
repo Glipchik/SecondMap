@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SecondMap.Services.SMS.API.Constants;
 using SecondMap.Services.SMS.API.Dto;
@@ -11,6 +12,7 @@ namespace SecondMap.Services.SMS.API.Controllers
 {
 	[Route(ApiEndpoints.API_CONTROLLER_ROUTE)]
 	[ApiController]
+	[Authorize]
 	public class ReviewsController : ControllerBase
 	{
 		private readonly IReviewService _reviewService;
