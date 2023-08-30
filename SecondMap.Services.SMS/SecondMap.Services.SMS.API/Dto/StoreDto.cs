@@ -5,7 +5,8 @@
 		public int Id { get; set; }
 		public string? Name { get; set; }
 		public string? Address { get; set; }
-		public int? Rating { get; set; }
+		public double? Rating { get; set; }
+		public int ReviewCount { get; set; }
 		public decimal Price { get; set; }
 
 		public IEnumerable<ScheduleDto>? Schedules { get; set; }

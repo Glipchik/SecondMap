@@ -60,7 +60,7 @@ namespace SecondMap.Services.SMS.UnitTests.Tests.Validators.Reviews
 			ReviewAddViewModel invalidViewModel)
 		{
 			// Arrange
-			invalidViewModel.Rating = ValidationConstants.REVIEW_MIN_RATING;
+			invalidViewModel.Rating = ValidationConstants.REVIEW_MIN_RATING - 1;
 
 			// Act
 			var validationResult = await _validator.ValidateAsync(invalidViewModel);

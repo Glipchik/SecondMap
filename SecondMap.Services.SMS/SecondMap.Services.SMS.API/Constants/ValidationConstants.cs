@@ -3,6 +3,7 @@
 	public static class ValidationConstants
 	{
 		public const int REVIEW_MIN_RATING = 0;
+		public const int REVIEW_MAX_RATING = 5;
 		public const int REVIEW_MAX_DESCRIPTION_LENGTH = 300;
 
 		public const int STORE_MAX_NAME_LENGTH = 200;

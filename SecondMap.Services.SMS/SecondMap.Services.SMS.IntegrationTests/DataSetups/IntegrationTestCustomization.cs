@@ -18,8 +18,8 @@ namespace SecondMap.Services.SMS.IntegrationTests.DataSetups
                     .Without(r => r.StoreId)
                     .Without(r => r.User)
                     .Without(r => r.Store)
-                    .With(r => r.Rating)
-                    .Do(r => r.Description = string.Empty.PadRight(ValidationConstants.REVIEW_MAX_DESCRIPTION_LENGTH, 'a')));
+					.Do(r => r.Rating = ValidationConstants.REVIEW_MIN_RATING)
+					.Do(r => r.Description = string.Empty.PadRight(ValidationConstants.REVIEW_MAX_DESCRIPTION_LENGTH, 'a')));
 
             fixture.Customize<ScheduleEntity>(f =>
                     f.OmitAutoProperties()
@@ -34,8 +34,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.DataSetups
             fixture.Customize<StoreEntity>(f =>
                     f.OmitAutoProperties()
                     .Without(s => s.Id)
-                    .With(s => s.Price)
-                    .With(s => s.Rating)
+                    .Do(s => s.Price = ValidationConstants.STORE_MIN_PRICE)
                     .Do(s => s.Address = string.Empty.PadRight(ValidationConstants.STORE_MAX_ADDRESS_LENGTH, 'a'))
                     .Do(s => s.Name = string.Empty.PadRight(ValidationConstants.STORE_MAX_NAME_LENGTH, 'a')));
 
@@ -52,12 +51,12 @@ namespace SecondMap.Services.SMS.IntegrationTests.DataSetups
                     f.OmitAutoProperties()
                     .Without(r => r.UserId)
                     .Without(r => r.StoreId)
-                    .With(r => r.Rating)
-                    .Do(r => r.Description = string.Empty.PadRight(ValidationConstants.REVIEW_MAX_DESCRIPTION_LENGTH, 'a')));
+					.Do(r => r.Rating = ValidationConstants.REVIEW_MIN_RATING)
+					.Do(r => r.Description = string.Empty.PadRight(ValidationConstants.REVIEW_MAX_DESCRIPTION_LENGTH, 'a')));
 
             fixture.Customize<ReviewUpdateViewModel>(f =>
                 f.OmitAutoProperties()
-                    .With(r => r.Rating)
+                    .Do(r => r.Rating = ValidationConstants.REVIEW_MIN_RATING)
                     .Do(r => r.Description = string.Empty.PadRight(ValidationConstants.REVIEW_MAX_DESCRIPTION_LENGTH, 'a')));
 
             fixture.Customize<ScheduleAddViewModel>(f =>
@@ -76,7 +75,7 @@ namespace SecondMap.Services.SMS.IntegrationTests.DataSetups
 
             fixture.Customize<StoreViewModel>(f =>
                     f.OmitAutoProperties()
-                    .With(s => s.Price)
+                    .Do(s => s.Price = ValidationConstants.STORE_MIN_PRICE)
                     .Do(s => s.Address = string.Empty.PadRight(ValidationConstants.STORE_MAX_ADDRESS_LENGTH, 'a'))
                     .Do(s => s.Name = string.Empty.PadRight(ValidationConstants.STORE_MAX_NAME_LENGTH, 'a')));
 

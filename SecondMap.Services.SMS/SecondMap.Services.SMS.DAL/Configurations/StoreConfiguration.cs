@@ -16,8 +16,6 @@ namespace SecondMap.Services.SMS.DAL.Configurations
 			builder.Property(s => s.Address).IsRequired()
 				.HasMaxLength(256);
 
-			builder.Property(s => s.Rating);
-
 			builder.Property(s => s.Price).IsRequired();
 
 			builder.HasMany(s => s.Reviews)
