@@ -10,5 +10,8 @@
 		public const string STORE_ID_EQUALS = "storeId=";
 
 		public const string DETAILS = "details/";
+
+		public const string RESTORE = "restore/";
+		public const string WITH_REVIEWS_TRUE = "?withReviews=true";
 	}
 }

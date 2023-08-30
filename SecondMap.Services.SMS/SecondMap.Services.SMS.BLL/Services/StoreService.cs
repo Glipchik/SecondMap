@@ -86,6 +86,32 @@ namespace SecondMap.Services.SMS.BLL.Services
 
 			return _mapper.Map<Store>(foundStore);
 		}
+
+		public async Task<Store> RestoreByIdAsync(int id, bool withReviews)
+		{
+			if (await _repository.ExistsWithId(id))
+			{
+				Log.Error("Store with id = {@id} already exists", id);
+				throw new AlreadyExistsException(ErrorMessages.STORE_ALREADY_EXISTS);
+			}
+
+			var restoredStore = await _repository.FindDeletedByIdAsync(id);
+
+			if (restoredStore == null)
+			{
+				Log.Error("Deleted store with id = {@id} not found", id);
+				throw new NotFoundException(ErrorMessages.STORE_NOT_FOUND);
+			}
+
+			await _repository.RestoreDeletedEntityAsync(restoredStore);
+
+			if (withReviews)
+			{
+				await _repository.RestoreStoreReviewsAsync(restoredStore);
+			}
+
+			return _mapper.Map<Store>(restoredStore);
+		}
 	}
 }
 

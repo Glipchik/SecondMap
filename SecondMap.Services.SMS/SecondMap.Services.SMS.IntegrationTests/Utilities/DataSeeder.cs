@@ -54,6 +54,16 @@
 			return addedReview;
 		}
 
+		public async Task SoftDeleteReviewAsync(ReviewEntity reviewEntity)
+		{
+			reviewEntity.IsDeleted = true;
+			reviewEntity.DeletedAt = DateTimeOffset.UtcNow;
+
+			_testStoreManagementDbContext.Entry(reviewEntity).State = EntityState.Modified;
+
+			await _testStoreManagementDbContext.SaveChangesAsync();
+		}
+
 		public async Task<ScheduleEntity> CreateScheduleAsync()
 		{
 			var addedStore = await CreateStoreAsync();
@@ -77,6 +87,16 @@
 			await _testStoreManagementDbContext.SaveChangesAsync();
 
 			return addedStore;
+		}
+
+		public async Task SoftDeleteStoreAsync(StoreEntity storeEntity)
+		{
+			storeEntity.IsDeleted = true;
+			storeEntity.DeletedAt = DateTimeOffset.UtcNow;
+
+			_testStoreManagementDbContext.Entry(storeEntity).State = EntityState.Modified;
+
+			await _testStoreManagementDbContext.SaveChangesAsync();
 		}
 
 		public async Task<UserEntity> CreateUserAsync()

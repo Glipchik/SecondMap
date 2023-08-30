@@ -27,7 +27,10 @@ namespace SecondMap.Services.SMS.DAL.Extensions
 			{
 				optionsBuilder.UseNpgsql(
 					 configuration.GetConnectionString(DbConnections.DEFAULT_CONNECTION));
+
 				optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+
+				optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
 			});
 		}
 	}

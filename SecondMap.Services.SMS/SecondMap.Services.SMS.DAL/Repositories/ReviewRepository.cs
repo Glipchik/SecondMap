@@ -19,5 +19,20 @@ namespace SecondMap.Services.SMS.DAL.Repositories
 				.Include(r => r.User)
 				.ToListAsync();
 		}
+
+		public async Task<ReviewEntity?> FindDeletedByIdAsync(int id)
+		{
+			return await _dbContext.Reviews.IgnoreQueryFilters().FirstOrDefaultAsync(r => r.Id == id && r.IsDeleted);
+		}
+
+		public async Task RestoreDeletedEntityAsync(ReviewEntity reviewEntity)
+		{
+			reviewEntity.IsDeleted = false;
+			reviewEntity.DeletedAt = null;
+
+			_dbContext.Entry(reviewEntity).State = EntityState.Modified;
+
+			await _dbContext.SaveChangesAsync();
+		}
 	}
 }

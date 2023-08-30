@@ -234,5 +234,53 @@
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 		}
+
+		[Fact]
+		public async Task RestoreByIdAsync_WhenReviewIsDeleted_ShouldReturnRestoredReview()
+		{
+			// Arrange
+			var reviewEntity = await _dataSeeder.CreateReviewAsync();
+			await _dataSeeder.SoftDeleteReviewAsync(reviewEntity);
+
+			// Act
+			var response = await _client.PatchAsync(String.Concat(PathConstants.API_REVIEWS, PathConstants.RESTORE,
+				$"{reviewEntity.Id}"), null);
+
+			var restoredDto = await RequestSerializer.DeserializeFromResponseAsync<ReviewDto>(response);
+
+			// Assert
+			restoredDto.ShouldBeOfType<ReviewDto>();
+			restoredDto.Id.ShouldBe(reviewEntity.Id);
+			restoredDto.StoreId.ShouldBe(reviewEntity.StoreId);
+			restoredDto.UserId.ShouldBe(reviewEntity.UserId);
+			restoredDto.Description.ShouldBe(reviewEntity.Description);
+			restoredDto.Rating.ShouldBe(reviewEntity.Rating);
+		}
+
+		[Fact]
+		public async Task RestoreByIdAsync_WhenReviewIsNotDeleted_ShouldReturnConflict()
+		{
+			// Arrange
+			var reviewEntity = await _dataSeeder.CreateReviewAsync();
+
+			// Act
+			var response = await _client.PatchAsync(String.Concat(PathConstants.API_REVIEWS, PathConstants.RESTORE,
+				$"{reviewEntity.Id}"), null);
+
+			// Assert
+			response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
+
+		}
+
+		[Fact]
+		public async Task RestoreByIdAsync_WhenDeletedReviewNotFound_ShouldReturnNotFound()
+		{
+			// Act
+			var response = await _client.PatchAsync(String.Concat(PathConstants.API_REVIEWS, PathConstants.RESTORE,
+				$"{TestConstants.INVALID_ID}"), null);
+
+			// Assert
+			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+		}
 	}
 }
