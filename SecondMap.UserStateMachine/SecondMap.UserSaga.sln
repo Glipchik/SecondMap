@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecondMap.UserSaga.UserStateMachine", "SecondMap.UserStateMachine\SecondMap.UserSaga.UserStateMachine.csproj", "{56C45F52-1036-413C-B5FF-A9C6F025FB86}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56C45F52-1036-413C-B5FF-A9C6F025FB86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56C45F52-1036-413C-B5FF-A9C6F025FB86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56C45F52-1036-413C-B5FF-A9C6F025FB86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56C45F52-1036-413C-B5FF-A9C6F025FB86}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4DC2B0FB-E19F-4EF8-9272-99F0370CB48A}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\SecondMap.Shared\SecondMap.Shared.Messages\SecondMap.Shared.Messages.projitems*{56c45f52-1036-413c-b5ff-a9c6f025fb86}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal

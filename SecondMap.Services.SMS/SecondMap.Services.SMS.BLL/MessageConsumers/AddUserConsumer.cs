@@ -1,11 +1,10 @@
-﻿using AutoMapper;
-using MassTransit;
+﻿using MassTransit;
 using SecondMap.Messages;
 using SecondMap.Services.SMS.BLL.Interfaces;
 using SecondMap.Services.SMS.BLL.Models;
 using Serilog;
 
-namespace SecondMap.Services.SMS.Messages.Consumers
+namespace SecondMap.Services.SMS.BLL.MessageConsumers
 {
 	public class AddUserConsumer : IConsumer<AddUser>
 	{

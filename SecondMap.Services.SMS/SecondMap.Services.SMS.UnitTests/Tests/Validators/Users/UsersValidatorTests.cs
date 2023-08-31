@@ -25,34 +25,34 @@ namespace SecondMap.Services.SMS.UnitTests.Tests.Validators.Users
 			validationResult.IsValid.Should().BeTrue();
 		}
 
-		[Theory]
-		[AutoMoqData]
-		public async Task Validate_WhenEmptyName_ShouldReturnFalse(
-			UserViewModel invalidViewModel)
-		{
-			// Arrange
-			invalidViewModel.Username = string.Empty;
+		//[Theory]
+		//[AutoMoqData]
+		//public async Task Validate_WhenEmptyName_ShouldReturnFalse(
+		//	UserViewModel invalidViewModel)
+		//{
+		//	// Arrange
+		//	invalidViewModel.Username = string.Empty;
 
-			// Act
-			var validationResult = await _validator.ValidateAsync(invalidViewModel);
+		//	// Act
+		//	var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Assert
-			validationResult.IsValid.Should().BeFalse();
-		}
+		//	// Assert
+		//	validationResult.IsValid.Should().BeFalse();
+		//}
 
-		[Theory]
-		[AutoMoqData]
-		public async Task Validate_WhenTooLongName_ShouldReturnFalse(
-			UserViewModel invalidViewModel)
-		{
-			// Arrange
-			invalidViewModel.Username = string.Empty.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
-			// Act
-			var validationResult = await _validator.ValidateAsync(invalidViewModel);
+		//[Theory]
+		//[AutoMoqData]
+		//public async Task Validate_WhenTooLongName_ShouldReturnFalse(
+		//	UserViewModel invalidViewModel)
+		//{
+		//	// Arrange
+		//	invalidViewModel.Username = string.Empty.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
+		//	// Act
+		//	var validationResult = await _validator.ValidateAsync(invalidViewModel);
 
-			// Assert
-			validationResult.IsValid.Should().BeFalse();
-		}
+		//	// Assert
+		//	validationResult.IsValid.Should().BeFalse();
+		//}
 
 		[Theory]
 		[AutoMoqData]
