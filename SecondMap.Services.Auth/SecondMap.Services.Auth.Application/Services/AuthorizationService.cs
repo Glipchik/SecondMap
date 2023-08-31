@@ -25,7 +25,7 @@ namespace SecondMap.Services.Auth.Application.Services
 
 		public async Task<AuthResult<SignInResult>> LoginAsync(string email, string password)
 		{
-			var userServiceResult = await _userService.GetUserAsync(email);
+			var userServiceResult = await _userService.GetUserByEmailAsync(email);
 
 			if (!userServiceResult.Success)
 			{

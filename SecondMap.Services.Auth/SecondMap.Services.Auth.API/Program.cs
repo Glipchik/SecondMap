@@ -2,7 +2,6 @@ using SecondMap.Services.Auth.API.Extensions;
 using SecondMap.Services.Auth.Application.Services;
 using SecondMap.Services.Auth.Application.Services.Abstract;
 using SecondMap.Services.Auth.Infrastructure.Extensions;
-using SecondMap.Services.Auth.Messages.Extensions;
 
 namespace SecondMap.Services.Auth.API
 {

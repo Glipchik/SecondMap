@@ -40,7 +40,6 @@ namespace SecondMap.Services.SMS.UnitTests.Utilities
 
 			fixture.Customize<UserViewModel>(f =>
 				f.OmitAutoProperties()
-					.Do(u => u.Username = string.Empty.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH, 'a'))
 					.Do(u => u.Email = TestConstants.VALID_EMAIL));
 		}
 	}

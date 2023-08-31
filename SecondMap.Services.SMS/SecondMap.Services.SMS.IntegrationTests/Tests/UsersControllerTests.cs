@@ -63,14 +63,10 @@
 		[Theory]
 		[IntegrationTestsAutoData]
 		public async Task AddAsync_ShouldReturnMethodNotAllowed(
-			UserViewModel invalidViewModel)
+			UserViewModel validViewModel)
 		{
-			// Arrange
-			invalidViewModel.Username =
-				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
-
 			// Act
-			var response = await _client.PostAsync(PathConstants.API_USERS, RequestSerializer.SerializeRequestBody(invalidViewModel));
+			var response = await _client.PostAsync(PathConstants.API_USERS, RequestSerializer.SerializeRequestBody(validViewModel));
 
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.MethodNotAllowed);
@@ -94,7 +90,6 @@
 
 			updatedDto.ShouldNotBeNull();
 			updatedDto.Id.ShouldBe(entityToUpdate.Id);
-			updatedDto.Username.ShouldBe(validViewModelToUpdate.Username);
 		}
 
 		[Theory]
@@ -120,8 +115,7 @@
 			// Arrange
 			var validId = (await _dataSeeder.CreateUserAsync()).Id;
 
-			invalidViewModel.Username =
-				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
+			invalidViewModel.Email = "invalidEmail";
 
 			// Act
 			var response = await _client.PatchAsync(String.Concat(PathConstants.API_USERS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
@@ -138,8 +132,7 @@
 			// Arrange
 			var validId = (await _dataSeeder.CreateUserAsync()).Id;
 
-			invalidViewModel.Username =
-				invalidViewModel.Username!.PadRight(ValidationConstants.USER_NAME_MAX_LENGTH + 1, 'a');
+			invalidViewModel.Email = "invalidEmail";
 
 			// Act
 			var response = await _client.PatchAsync(String.Concat(PathConstants.API_USERS, $"{validId}"), RequestSerializer.SerializeRequestBody(invalidViewModel));
