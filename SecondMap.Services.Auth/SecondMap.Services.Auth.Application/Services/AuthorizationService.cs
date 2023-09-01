@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.AspNetCore.Identity;
-using SecondMap.Messages;
+using SecondMap.Services.Auth.Application.Constants;
 using SecondMap.Services.Auth.Application.Results;
 using SecondMap.Services.Auth.Application.Services.Abstract;
 using SecondMap.Services.Auth.Domain.Entities;
@@ -12,15 +12,15 @@ namespace SecondMap.Services.Auth.Application.Services
 	{
 		private readonly SignInManager<AuthUser> _signInManager;
 		private readonly IUserService _userService;
-		private readonly IPublishEndpoint _publishEndpoint;
+		private readonly IRequestClient<AddUserCommand> _requestClient;
 
 		public AuthorizationService(SignInManager<AuthUser> signInManager,
 			IUserService userService,
-			IPublishEndpoint publishEndpoint)
+			IRequestClient<AddUserCommand> requestClient)
 		{
 			_signInManager = signInManager;
 			_userService = userService;
-			_publishEndpoint = publishEndpoint;
+			_requestClient = requestClient;
 		}
 
 		public async Task<AuthResult<SignInResult>> LoginAsync(string email, string password)
@@ -58,8 +58,19 @@ namespace SecondMap.Services.Auth.Application.Services
 				};
 			}
 
-			await _publishEndpoint.Publish(new AddUser(email, username));
-			
+			var addUserInSmsResponse = await _requestClient.GetResponse<AddUserResponse>(new AddUserCommand(email, username));
+
+			if (!addUserInSmsResponse.Message.IsSuccessful)
+			{
+				await _userService.DeleteUserAsync(userServiceResult.Result!);
+
+				return new AuthResult<SignInResult>
+				{
+					Success = false,
+					ErrorMessage = ErrorMessages.SMS_FAILED
+				};
+			}
+
 			var signInResult = await _signInManager.PasswordSignInAsync(userServiceResult.Result!, password, false, false);
 
 			return new AuthResult<SignInResult>

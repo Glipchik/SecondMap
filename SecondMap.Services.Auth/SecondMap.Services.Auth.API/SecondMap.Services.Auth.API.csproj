@@ -33,7 +33,6 @@
     <ProjectReference Include="..\SecondMap.Services.Auth.Application\SecondMap.Services.Auth.Application.csproj" />
     <ProjectReference Include="..\SecondMap.Services.Auth.Domain\SecondMap.Services.Auth.Domain.csproj" />
     <ProjectReference Include="..\SecondMap.Services.Auth.Infrastructure\SecondMap.Services.Auth.Infrastructure.csproj" />
-    <ProjectReference Include="..\SecondMap.Services.Auth.Messages\SecondMap.Services.Auth.Messages.csproj" />
   </ItemGroup>
 
 </Project>
