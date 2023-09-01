@@ -15,12 +15,12 @@ namespace SecondMap.Services.SMS.BLL.Services
 	{
 		private readonly IUserRepository _repository;
 		private readonly IMapper _mapper;
-		private readonly IPublishEndpoint _publishEndpoint;
-		public UserService(IUserRepository repository, IMapper mapper, IPublishEndpoint publishEndpoint)
+		private readonly IRequestClient<UpdateUserCommand> _updateUserRequestClient;
+		public UserService(IUserRepository repository, IMapper mapper, IRequestClient<UpdateUserCommand> updateUserRequestClient)
 		{
 			_repository = repository;
 			_mapper = mapper;
-			_publishEndpoint = publishEndpoint;
+			_updateUserRequestClient = updateUserRequestClient;
 		}
 
 		public async Task AddUserAsync(User userToAdd)
@@ -56,22 +56,31 @@ namespace SecondMap.Services.SMS.BLL.Services
 				throw new NotFoundException(ErrorMessages.USER_NOT_FOUND);
 			}
 
-			var oldUserEmail = (await GetByIdAsync(userToUpdate.Id)).Email;
-
 			if ((await _repository.GetAllByPredicateAsync(u => u.Email == userToUpdate.Email)).Any())
 			{
 				Log.Error("Email {@userToUpdateEmail} is already taken", userToUpdate.Email);
 				throw new AlreadyExistsException(ErrorMessages.USER_EMAIL_TAKEN);
 			}
 
+			var userBeforeUpdate = await GetByIdAsync(userToUpdate.Id);
+
 			var updatedUser = await _repository.UpdateAsync(_mapper.Map<UserEntity>(userToUpdate));
 
 			Log.Information("Updated user: {@addedUser}", updatedUser);
 
-			var updateUserMessage = new UpdateUser(oldUserEmail, updatedUser!.Email,(int)updatedUser.Role!);
-			await _publishEndpoint.Publish(updateUserMessage);
+			Log.Information("Sent message: Update user in Identity Server {@userToUpdate}", userToUpdate);
 
-			Log.Information("Sent message: Update user {@userToUpdate}", updateUserMessage);
+			var updateUserInIdentityResponse = await
+				_updateUserRequestClient.GetResponse<UpdateUserResponse>(new UpdateUserCommand(userBeforeUpdate.Email, updatedUser!.Email,
+					(int)updatedUser.Role!));
+
+			if (!updateUserInIdentityResponse.Message.IsSuccessful)
+			{
+				Log.Error("Failed to update user {@updatedUser} in Identity Server. Rolling back.", updatedUser);
+				await _repository.UpdateAsync(_mapper.Map<UserEntity>(userBeforeUpdate));
+			}
+
+			Log.Information("Successfully updated in Identity");
 
 			return _mapper.Map<User>(updatedUser);
 		}
@@ -86,11 +95,18 @@ namespace SecondMap.Services.SMS.BLL.Services
 			}
 
 			await _repository.DeleteAsync(entityToDelete);
+		}
 
-			var deleteUserMessage = new DeleteUserByEmail(entityToDelete.Email);
-			await _publishEndpoint.Publish(deleteUserMessage);
-			
-			Log.Information("Sent message: Delete user {@userToDelete}", deleteUserMessage);
+		public async Task<User> GetByEmailAsync(string email)
+		{
+			var foundUser = (await _repository.GetAllByPredicateAsync(u => u.Email == email)).ToList();
+			if (!foundUser.Any())
+			{
+				Log.Error("User with email = {@email} not found", email);
+				throw new NotFoundException(ErrorMessages.USER_NOT_FOUND);
+			}
+
+			return _mapper.Map<User>(foundUser.First());
 		}
 	}
 }

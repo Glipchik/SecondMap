@@ -9,8 +9,13 @@
     <Import_RootNamespace>SecondMap.Messages</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AddUser.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UpdateUser.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DeleteUserByEmail.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AddUser\AddUserCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)adduser\AddUserResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UpdateUser\UpdateUserCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)updateuser\UpdateUserResponse.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)AddUser\" />
+    <Folder Include="$(MSBuildThisFileDirectory)UpdateUser\" />
   </ItemGroup>
 </Project>

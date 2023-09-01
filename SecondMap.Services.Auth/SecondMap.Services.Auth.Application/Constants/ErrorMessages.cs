@@ -13,5 +13,7 @@
 		public const string PASSWORD_MISMATCH = "Passwords don't match";
 
 		public const string USER_NOT_REGISTERED = "The user is not registered yet";
+
+		public const string SMS_FAILED = "Unknown problem. Try using different email/username or contact support";
 	}
 }

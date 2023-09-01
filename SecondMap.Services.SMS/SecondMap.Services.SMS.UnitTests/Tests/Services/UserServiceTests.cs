@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using SecondMap.Shared.Messages;
 
 namespace SecondMap.Services.SMS.UnitTests.Tests.Services
 {
@@ -12,7 +13,7 @@ namespace SecondMap.Services.SMS.UnitTests.Tests.Services
 		{
 			_repositoryMock = new Mock<IUserRepository>();
 			_mapperMock = new Mock<IMapper>();
-			_service = new UserService(_repositoryMock.Object, _mapperMock.Object, new Mock<IPublishEndpoint>().Object);
+			_service = new UserService(_repositoryMock.Object, _mapperMock.Object, new Mock<IRequestClient<UpdateUserCommand>>().Object);
 		}
 
 		[Theory]

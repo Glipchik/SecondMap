@@ -4,7 +4,7 @@ using SecondMap.Shared.Messages;
 
 namespace SecondMap.Services.Auth.Application.MessageConsumers
 {
-	public class UpdateUserConsumer : IConsumer<UpdateUser>
+	public class UpdateUserConsumer : IConsumer<UpdateUserCommand>
 	{
 		private readonly IUserService _userService;
 
@@ -13,17 +13,25 @@ namespace SecondMap.Services.Auth.Application.MessageConsumers
 			_userService = userService;
 		}
 
-		public async Task Consume(ConsumeContext<UpdateUser> context)
+		public async Task Consume(ConsumeContext<UpdateUserCommand> context)
 		{
 			var updateUserMessage = context.Message;
 
 			var foundUserResult = await _userService.GetUserByEmailAsync(updateUserMessage.OldEmail);
 
-			if (!foundUserResult.Success) { }
+			if (!foundUserResult.Success)
+			{
+				await context.RespondAsync(new UpdateUserResponse(context.Message, false, foundUserResult.ErrorMessage));
+			}
 
 			var updateResult = await _userService.UpdateUserAsync(foundUserResult.Result!, updateUserMessage.NewEmail, updateUserMessage.RoleId);
 
-			// if update result is not success than should return some error message back to producer
+			if (!updateResult.Success)
+			{
+				await context.RespondAsync(new UpdateUserResponse(context.Message, false, foundUserResult.ErrorMessage));
+			}
+
+			await context.RespondAsync(new UpdateUserResponse(context.Message, true, String.Empty));
 		}
 	}
 }

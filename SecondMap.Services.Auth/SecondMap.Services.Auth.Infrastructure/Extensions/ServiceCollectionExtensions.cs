@@ -1,16 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using IdentityServer4.EntityFramework.Mappers;
+using MassTransit;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Security.Claims;
-using IdentityServer4.EntityFramework.Mappers;
-using Microsoft.AspNetCore.Identity;
+using SecondMap.Services.Auth.Application.MessageConsumers;
+using SecondMap.Services.Auth.Application.Services;
 using SecondMap.Services.Auth.Domain.Entities;
 using SecondMap.Services.Auth.Domain.Enums;
 using SecondMap.Services.Auth.Infrastructure.Configurations;
-using SecondMap.Services.Auth.Application.Services;
 using SecondMap.Services.Auth.Infrastructure.Context;
-using MassTransit;
-using SecondMap.Services.Auth.Application.MessageConsumers;
+using System.Security.Claims;
 
 namespace SecondMap.Services.Auth.Infrastructure.Extensions
 {

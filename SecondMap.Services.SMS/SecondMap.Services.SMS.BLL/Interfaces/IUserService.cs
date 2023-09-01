@@ -9,5 +9,6 @@ namespace SecondMap.Services.SMS.BLL.Interfaces
 		Task<IEnumerable<User>> GetAllAsync();
 		Task<User> GetByIdAsync(int id);
 		Task<User> UpdateUserAsync(User userToUpdate);
+		Task<User> GetByEmailAsync(string email);
 	}
 }

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 using SecondMap.Services.Auth.Application.Constants;
-using SecondMap.Services.Auth.Domain.Entities;
-using SecondMap.Services.Auth.Domain.Enums;
 using SecondMap.Services.Auth.Application.Results;
 using SecondMap.Services.Auth.Application.Services.Abstract;
+using SecondMap.Services.Auth.Domain.Entities;
+using SecondMap.Services.Auth.Domain.Enums;
+using System.Security.Claims;
 
 namespace SecondMap.Services.Auth.Application.Services
 {
