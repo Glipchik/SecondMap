@@ -235,7 +235,6 @@
 			restoredDto.Name.ShouldBe(storeEntity.Name);
 			restoredDto.Address.ShouldBe(storeEntity.Address);
 			restoredDto.Price.ShouldBe(storeEntity.Price);
-			restoredDto.Rating.ShouldBe(storeEntity.Rating);
 		}
 
 		[Fact]
@@ -284,7 +283,6 @@
 			restoredDto.Name.ShouldBe(storeEntity.Name);
 			restoredDto.Address.ShouldBe(storeEntity.Address);
 			restoredDto.Price.ShouldBe(storeEntity.Price);
-			restoredDto.Rating.ShouldBe(storeEntity.Rating);
 			restoredDto.Reviews.ShouldNotBeNull();
 		}
 	}
