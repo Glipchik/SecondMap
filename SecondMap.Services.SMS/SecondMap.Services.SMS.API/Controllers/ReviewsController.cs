@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SecondMap.Services.SMS.API.Constants;
 using SecondMap.Services.SMS.API.Dto;
