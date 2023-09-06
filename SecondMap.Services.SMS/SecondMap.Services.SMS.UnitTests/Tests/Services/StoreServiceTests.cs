@@ -81,7 +81,7 @@
 		{
 			// Arrange
 			arrangedModel.Reviews = modelReviews;
-			arrangedModel.Schedules = modelSchedules; 
+			arrangedModel.Schedules = modelSchedules;
 
 			_repositoryMock.Setup(r => r.GetByIdWithDetailsAsync(It.IsAny<int>()))
 				.ReturnsAsync(arrangedEntity);

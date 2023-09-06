@@ -1,6 +1,6 @@
 ﻿namespace SecondMap.Services.SMS.IntegrationTests.Tests
 {
-    public class ReviewsControllerTests : IClassFixture<TestWebApplicationFactory<Program>>
+	public class ReviewsControllerTests : IClassFixture<TestWebApplicationFactory<Program>>
 	{
 		private readonly TestWebApplicationFactory<Program> _factory;
 		private readonly DataSeeder _dataSeeder;
@@ -35,11 +35,11 @@
 			// Arrange
 			var reviewEntity = await _dataSeeder.CreateReviewAsync();
 			var validId = reviewEntity.StoreId;
-			
+
 			// Act
 			var response =
 				await _client.GetAsync(String.Concat(PathConstants.API_REVIEWS, PathConstants.STORE_ID_EQUALS, $"{validId}"));
-			
+
 			var dto = await RequestSerializer.DeserializeFromResponseAsync<List<ReviewDto>>(response);
 
 			// Assert
@@ -59,7 +59,7 @@
 			// Act
 			var response =
 				await _client.GetAsync(String.Concat(PathConstants.API_REVIEWS, PathConstants.STORE_ID_EQUALS, $"{invalidId}"));
-			
+
 			// Assert
 			response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 		}

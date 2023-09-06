@@ -11,6 +11,7 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
@@ -20,5 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SecondMap.Services.SMS.DAL\SecondMap.Services.SMS.DAL.csproj" />
   </ItemGroup>
+
+<Import Project="..\..\SecondMap.Shared\SecondMap.Shared.Messages\SecondMap.Shared.Messages.projitems" Label="Shared" Condition="Exists('..\..\SecondMap.Shared\SecondMap.Shared.Messages\SecondMap.Shared.Messages.projitems')"></Import>
 
 </Project>

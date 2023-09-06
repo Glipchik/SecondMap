@@ -1,4 +1,7 @@
-﻿namespace SecondMap.Services.SMS.UnitTests.Tests.Services
+﻿using MassTransit;
+using SecondMap.Shared.Messages;
+
+namespace SecondMap.Services.SMS.UnitTests.Tests.Services
 {
 	public class UserServiceTests
 	{
@@ -10,7 +13,7 @@
 		{
 			_repositoryMock = new Mock<IUserRepository>();
 			_mapperMock = new Mock<IMapper>();
-			_service = new UserService(_repositoryMock.Object, _mapperMock.Object);
+			_service = new UserService(_repositoryMock.Object, _mapperMock.Object, new Mock<IRequestClient<UpdateUserCommand>>().Object);
 		}
 
 		[Theory]
@@ -38,14 +41,14 @@
 		[Theory]
 		[AutoMoqData]
 		public async Task GetByIdAsync_WhenValidId_ShouldReturnUser(
-			UserEntity UserEntity,
+			UserEntity userEntity,
 			[Frozen] User arrangedModel)
 		{
 			// Arrange
 			_repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
-				.ReturnsAsync(UserEntity);
+				.ReturnsAsync(userEntity);
 
-			_mapperMock.Setup(m => m.Map<User>(UserEntity))
+			_mapperMock.Setup(m => m.Map<User>(userEntity))
 				.Returns(arrangedModel);
 
 			// Act 
@@ -69,28 +72,6 @@
 
 			await act.Should().ThrowAsync<NotFoundException>()
 				.WithMessage(ErrorMessages.USER_NOT_FOUND);
-		}
-
-		[Theory]
-		[AutoMoqData]
-		public async Task AddUserAsync_WhenValidModel_ShouldReturnAddedModel(
-			UserEntity arrangedEntity,
-			[Frozen] User arrangedModel)
-		{
-			// Arrange
-			_repositoryMock.Setup(r => r.AddAsync(It.IsAny<UserEntity>()))
-				.ReturnsAsync(arrangedEntity);
-
-			_mapperMock.Setup(m => m.Map<User>(It.IsAny<UserEntity>()))
-				.Returns(arrangedModel);
-
-			// Act
-			var addedModel = await _service.AddUserAsync(arrangedModel);
-
-			// Assert
-			addedModel.Should().NotBeNull();
-			addedModel.Should().BeOfType<User>();
-			addedModel.Should().BeEquivalentTo(arrangedModel);
 		}
 
 		[Theory]

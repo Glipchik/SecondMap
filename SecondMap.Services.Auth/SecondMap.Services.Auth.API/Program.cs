@@ -18,10 +18,13 @@ namespace SecondMap.Services.Auth.API
 			builder.Services.SetupIdentityServer(builder.Configuration);
 			builder.Services.SetupIdentityServerCookie();
 			builder.Services.InitializeDatabase();
+
 			builder.Services.AddValidations();
 
 			builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 			builder.Services.AddScoped<IUserService, UserService>();
+
+			builder.Services.AddRabbitMq();
 
 			var app = builder.Build();
 
@@ -42,6 +45,11 @@ namespace SecondMap.Services.Auth.API
 			app.UseAuthorization();
 
 			app.MapDefaultControllerRoute();
+
+			app.UseCors(options =>
+			{
+				options.WithOrigins("localhost");
+			});
 
 			app.Run();
 		}

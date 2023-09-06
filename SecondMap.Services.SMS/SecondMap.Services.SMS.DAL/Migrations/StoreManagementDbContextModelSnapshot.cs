@@ -58,24 +58,6 @@ namespace SecondMap.Services.StoreManagementService.DAL.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("SecondMap.Services.SMS.DAL.Entities.RoleEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("SecondMap.Services.SMS.DAL.Entities.ScheduleEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -146,15 +128,11 @@ namespace SecondMap.Services.StoreManagementService.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("RoleId")
+                    b.Property<int>("Role")
                         .HasColumnType("integer");
 
                     b.Property<string>("Username")
@@ -162,8 +140,6 @@ namespace SecondMap.Services.StoreManagementService.DAL.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -198,15 +174,16 @@ namespace SecondMap.Services.StoreManagementService.DAL.Migrations
                     b.Navigation("Store");
                 });
 
+            modelBuilder.Entity("SecondMap.Services.SMS.DAL.Entities.StoreEntity", b =>
+                {
+                    b.Navigation("Reviews");
+
+                    b.Navigation("Schedules");
+                });
+
             modelBuilder.Entity("SecondMap.Services.SMS.DAL.Entities.UserEntity", b =>
                 {
-                    b.HasOne("SecondMap.Services.SMS.DAL.Entities.RoleEntity", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("SecondMap.Services.SMS.DAL.Entities.StoreEntity", b =>

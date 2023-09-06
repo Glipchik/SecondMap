@@ -13,5 +13,6 @@
 		public const string STORE_ALREADY_EXISTS = "Store already exists";
 
 		public const string USER_NOT_FOUND = "User not found";
+		public const string USER_EMAIL_TAKEN = "Given email is already taken";
 	}
 }

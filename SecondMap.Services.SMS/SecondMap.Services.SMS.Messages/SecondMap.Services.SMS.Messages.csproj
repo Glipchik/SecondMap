@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SecondMap.Services.SMS.BLL\SecondMap.Services.SMS.BLL.csproj" />
+  </ItemGroup>
+
+	<Import Project="..\..\SecondMap.Shared\SecondMap.Messages\SecondMap.Messages.projitems" Label="Shared" Condition="Exists('..\..\SecondMap.Shared\SecondMap.Messages\SecondMap.Messages.projitems')" />
+
+</Project>

@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Helpers\Validators\Stores\**" />
+    <Compile Remove="Helpers\Validators\Users\**" />
+    <Content Remove="Helpers\Validators\Stores\**" />
+    <Content Remove="Helpers\Validators\Users\**" />
+    <EmbeddedResource Remove="Helpers\Validators\Stores\**" />
+    <EmbeddedResource Remove="Helpers\Validators\Users\**" />
+    <None Remove="Helpers\Validators\Stores\**" />
+    <None Remove="Helpers\Validators\Users\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
@@ -35,11 +46,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SecondMap.Services.SMS.BLL\SecondMap.Services.SMS.BLL.csproj" />
     <ProjectReference Include="..\SecondMap.Services.SMS.DAL\SecondMap.Services.SMS.DAL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Helpers\Validators\Users\" />
-    <Folder Include="Helpers\Validators\Stores\" />
   </ItemGroup>
 
 </Project>

@@ -76,7 +76,7 @@ namespace SecondMap.Services.SMS.UnitTests.Tests.Services
 				.Returns(new List<Review>());
 
 			// Act
-			var act = () =>_service.GetAllByStoreIdAsync(It.IsAny<int>());
+			var act = () => _service.GetAllByStoreIdAsync(It.IsAny<int>());
 
 			// Assert
 			await act.Should().ThrowAsync<NotFoundException>()
