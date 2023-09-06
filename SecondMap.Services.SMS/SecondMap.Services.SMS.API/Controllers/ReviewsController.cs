@@ -12,7 +12,6 @@ namespace SecondMap.Services.SMS.API.Controllers
 {
 	[Route(ApiEndpoints.API_CONTROLLER_ROUTE)]
 	[ApiController]
-	[Authorize]
 	public class ReviewsController : ControllerBase
 	{
 		private readonly IReviewService _reviewService;
